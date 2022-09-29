@@ -1,13 +1,12 @@
 import React from 'react'
 import Header from '../components/Header'
-function Roles() {
+function Role() {
   return (
     <>
     <Header />
-    <div>this is roles</div>
+    <div>This is role</div>
     </>
-    
   )
 }
 
-export default Roles
+export default Role
