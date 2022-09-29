@@ -1,17 +1,32 @@
 const express = require('express');
-const db = require('./server.js')
+const bodyParser = require('body-parser')
 const cors = require('cors')
-
 const app = express();
+const mysql = require('mysql');
+
+const db = mysql.createPool({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database:"spm" 
+})
+
 const  PORT = 5000;
+
 app.use(cors());
 app.use(express.json())
+app.use(bodyParser.urlencoded({extended: true}))
+
+app.get("/", (req,res)=>{
+    console.log("HELLO WORLD")
+});
 
 // Route to get all courses
 app.get("/api/getCourses", (req,res)=>{
 db.query("SELECT * FROM course", (err,result)=>{
+    console.log(result)
     if(err) {
-    console.log(err)
+        console.log(err)
     } 
     res.send(result)
 });   });
