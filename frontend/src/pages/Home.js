@@ -4,7 +4,9 @@ function Home() {
   return (
     <>
     <Header />
-    <div>Home</div>
+    <div>
+    
+    </div>
     </>
   )
 }
