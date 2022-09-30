@@ -67,13 +67,12 @@ app.get("/api/getRole/:role_id", (req,res)=>{
 
 // Route for creating job role
 app.post('/api/createRole', (req,res)=> {
-    const role_id = req.body.role_id; // should i set as auto increment in db?
     const role_name = req.body.role_name;
     const role_desc = req.body.role_desc;
     const role_responsibilities = req.body.role_responsibilities;
     const role_status = req.body.role_status;
 
-    db.query("INSERT INTO jobrole (role_id, role_name, role_desc, role_responsibilities, role_status) VALUES (?,?,?,?,?)",[role_id,role_name,role_desc,role_responsibilities,role_status], (err,result)=>{
+    db.query("INSERT INTO jobrole (role_name, role_desc, role_responsibilities, role_status) VALUES (?,?,?,?)",[role_name,role_desc,role_responsibilities,role_status], (err,result)=>{
         if(err) {
             console.log(err)
         }
@@ -94,12 +93,11 @@ app.get("/api/getSkills", (req,res)=>{
 
 // Route for creating skill
 app.post('/api/createSkill', (req,res)=> {
-    const skill_id = req.body.skill_id; // should i set as auto increment in db?
     const skill_name = req.body.skill_name;
     const skill_desc = req.body.skill_desc;
     const skill_status = req.body.skill_status;
 
-    db.query("INSERT INTO skill (skill_id, skill_name, skill_desc, skill_status) VALUES (?,?,?,?)",[skill_id,skill_name,skill_desc,skill_status], (err,result)=>{
+    db.query("INSERT INTO skill (skill_name, skill_desc, skill_status) VALUES (?,?,?)",[skill_name,skill_desc,skill_status], (err,result)=>{
         if(err) {
             console.log(err)
         }
@@ -120,11 +118,10 @@ app.get("/api/getJourneys/:staff_id", (req,res)=>{
 
 // Route for creating journey
 app.post('/api/createJourney', (req,res)=> {
-    const journey_id = req.body.journey_id; // should i set as auto increment in db?
     const staff_id = req.body.staff_id;
     const role_id = req.body.role_id;
 
-    db.query("INSERT INTO journey (journey_id, staff_id, role_id) VALUES (?,?,?)",[journey_id,staff_id,role_id], (err,result)=>{
+    db.query("INSERT INTO journey (staff_id, role_id) VALUES (?,?)",[staff_id,role_id], (err,result)=>{
         if(err) {
             console.log(err)
         }
