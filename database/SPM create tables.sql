@@ -38,7 +38,7 @@ CREATE TABLE registration (
 );
 
 CREATE TABLE jobrole (
-    role_id INT NOT NULL PRIMARY KEY,
+    role_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     role_name VARCHAR(50) NOT NULL,
     role_desc VARCHAR(255) NOT NULL,
     role_responsibilities VARCHAR(255) NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE jobrole (
 );
 
 CREATE TABLE skill (
-    skill_id INT NOT NULL PRIMARY KEY,
+    skill_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     skill_name VARCHAR(20) NOT NULL,
     skill_desc VARCHAR(255) NOT NULL,
     skill_status VARCHAR(15) NOT NULL
@@ -73,7 +73,7 @@ CREATE TABLE courseskill (
 );
 
 CREATE TABLE journey (
-    journey_id INT NOT NULL PRIMARY KEY,
+    journey_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     staff_id INT NOT NULL,
     role_id INT NOT NULL,
     CONSTRAINT journey_fk1 FOREIGN KEY (staff_id)
