@@ -7,11 +7,11 @@ const mysql = require('mysql');
 const db = mysql.createPool({
     host: "localhost",
     user: "root",
-    password: "",
+    password: "root",
     database:"spm" 
 })
 
-const  PORT = 5000;
+const  PORT = 5005;
 
 app.use(cors());
 app.use(express.json())
