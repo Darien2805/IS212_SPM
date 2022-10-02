@@ -51,7 +51,7 @@ function Header() {
                 <Link to="/teams" className="headerLink">Systems</Link>
                 <div className="dropdown-content">
                         <Link to="/" className="dropdownLink">Role Maintenance</Link>
-                        <Link to="/" className="dropdownLink">Skill Maintenance</Link>
+                        <Link to="/SkillMaintenance" className="dropdownLink">Skill Maintenance</Link>
                         <Link to="/" className="dropdownLink">Skill Assignmentt</Link>
                 </div>
                 <button className="dropbtn"><KeyboardArrowDownIcon  /></button>
