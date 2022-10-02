@@ -1,3 +1,5 @@
+// Tse Hwee is afraid that the e.target value is not the same as skillName because one character is missing. If there are any errors with skill creation do check lines 60-63 on console.log(skillname var and sthe such)
+
 import React,{useState,useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import Axios from 'axios'
@@ -41,7 +43,7 @@ function CreateSkill(){
                 skillNames.push(skill.skill_name.toLowerCase())
             });            
             setCurrSkillNames(skillNames)
-            console.log("hi",currSkillNames)
+            // console.log("hi",currSkillNames)
         });
     },[skillName])
 
@@ -50,7 +52,7 @@ function CreateSkill(){
         // store all deleted skills
         Axios.get("http://localhost:5005/api/getDeletedSkills").then((response)=>{
             setDelSkills(response.data)
-            console.log("bye",delSkills)
+            // console.log("bye",delSkills)
         });
     },[checked])
 
@@ -60,7 +62,7 @@ function CreateSkill(){
         console.log('skillName var:',skillName)
         console.log(currSkillNames.includes(e.target.value.toLowerCase()))
         if (currSkillNames.includes(e.target.value.toLowerCase())){
-            setNameError("The skill name you inputed already exist in the system.")
+            setNameError("The skill name already exists in the system.")
             setShowNameError(true)
         }
         else if (e.target.value.length === 0){
@@ -111,7 +113,7 @@ function CreateSkill(){
     const updateSelectedDelSkill = (skillId) => {
         setSelectedSkillId(skillId)
         delSkills.forEach(skill => {
-            if (skill.skill_id==skillId){
+            if (skill.skill_id === skillId){
                 setSelectedSkillDesc(skill.skill_desc)
             }
         });
@@ -142,7 +144,7 @@ function CreateSkill(){
         })
 
         delSkills.forEach(skill => {
-            if (skill.skill_id==selectedSkillId){
+            if (skill.skill_id === selectedSkillId){
                 successAlert(skill.skill_name, skill.skill_desc)
             }
         });
