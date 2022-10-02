@@ -69,11 +69,12 @@ app.get("/api/getDeletedSkills", (req,res)=>{
     });
 });
 
-// Route for creating skill (previously deleted) --> need to update everything, not just status
+// Route for creating skill (previously deleted) --> updates the description and status
 app.post('/api/updateDeletedSkill', (req,res)=> {
     const skill_id = req.body.skill_id;
+    const skill_desc = req.body.skill_desc;
 
-    db.query("UPDATE skill SET skill_status = 'Active' WHERE skill_id = ?",skill_id, (err,result)=>{
+    db.query("UPDATE skill SET skill_desc = ?, skill_status = 'Active' WHERE skill_id = ?",[skill_desc,skill_id], (err,result)=>{
         if(err) {
             console.log(err)
         }
@@ -129,11 +130,13 @@ app.get("/api/getDeletedRoles", (req,res)=>{
     });
 });
 
-// Route for creating role (previously deleted) --> need to update everything, not just status
+// Route for creating role (previously deleted) --> updates the everything except id and name of role
 app.post('/api/updateDeletedRole', (req,res)=> {
     const role_id = req.body.role_id;
+    const role_desc = req.body.role_desc;
+    const role_responsibilities = req.body.role_responsibilities;
 
-    db.query("UPDATE role SET role_status = 'Active' WHERE role_id = ?",role_id, (err,result)=>{
+    db.query("UPDATE role SET role_desc = ?, role_responsibilities = ?, role_status = 'Active' WHERE role_id = ?",[role_desc,role_responsibilities,role_id], (err,result)=>{
         if(err) {
             console.log(err)
         }
