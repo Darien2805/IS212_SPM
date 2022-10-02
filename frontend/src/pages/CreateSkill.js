@@ -105,9 +105,7 @@ function CreateSkill(){
         }).then(()=>{
             alert("successfully insert")
         })
-        alert("The skill, "+skillName+", was successfully created!")
-        navigate('/SkillMaintenance')
-        e.preventDefault()
+        successAlert(skillName, skillDesc)
     }
 
     const updateSelectedDelSkill = (skillId) => {
@@ -145,12 +143,15 @@ function CreateSkill(){
 
         delSkills.forEach(skill => {
             if (skill.skill_id==selectedSkillId){
-                alert("The skill, "+skill.skill_name+", was successfully created!")
-                navigate('/SkillMaintenance')
-                e.preventDefault()
+                successAlert(skill.skill_name, skill.skill_desc)
             }
         });
         
+    }
+
+    const successAlert = (skillName, skillDesc) => {
+        alert("The skill has been created successfully.\n\nSkill Name: "+skillName+"\nSkill Description: "+skillDesc)
+        navigate('/SkillMaintenance')
     }
 
     return (
