@@ -280,7 +280,8 @@ app.get("/api/getJourneys/:staff_id", (req,res)=>{
 // Route to get journey courses for selected journey
 app.get("/api/getJourneyCourses/:journey_id", (req,res)=>{
     const journey_id = req.params.journey_id;
-    const stmt = `SELECT skills.skill_id as role_skill_id, skills.skill_name as role_skill_name, course_id, 
+    const stmt = `SELECT DISTINCTROW * FROM (
+                SELECT skills.skill_id as role_skill_id, skills.skill_name as role_skill_name, course_id, 
                 course_name, course_desc, course_status, course_type, courses.skill_id as course_skill_id, 
                 courses.skill_name as course_skill_name FROM (
                     SELECT s.skill_id, skill_name FROM skill s, roleskill rs WHERE role_id = 
@@ -306,7 +307,8 @@ app.get("/api/getJourneyCourses/:journey_id", (req,res)=>{
                         WHERE cs.course_id = jc.course_id AND c.course_id = jc.course_id AND cs.skill_id=s.skill_id 
                         AND journey_id = ?
                     ) as courses
-                ON skills.skill_id=courses.skill_id`
+                ON skills.skill_id=courses.skill_id) as new_table 
+                ORDER BY ISNULL(role_skill_id), role_skill_id ASC`
     db.query(stmt, [journey_id, journey_id,journey_id, journey_id], (err,result)=>{
         if(err) {
             console.log(err)
