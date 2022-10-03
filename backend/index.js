@@ -7,7 +7,7 @@ const mysql = require('mysql');
 const db = mysql.createPool({
     host: "localhost",
     user: "root",
-    password: "root",
+    password: "",
     database:"spm" 
 })
 
@@ -282,7 +282,7 @@ app.get("/api/getJourneyCourses/:journey_id", (req,res)=>{
     const journey_id = req.params.journey_id;
     const stmt = `SELECT skills.skill_id as role_skill_id, course_id, course_name, course_desc, course_status, course_type, courses.skill_id as course_skill_id FROM (
                     SELECT skill_id FROM roleskill WHERE role_id = 
-                        (SELECT role_id FROM journey WHERE journey_id = 8)
+                        (SELECT role_id FROM journey WHERE journey_id = ?)
                     ) AS skills
                 LEFT JOIN (
                     SELECT c.course_id, course_name, course_desc, course_status, course_type, skill_id FROM courseskill cs, journeycourse jc, course c
@@ -292,14 +292,14 @@ app.get("/api/getJourneyCourses/:journey_id", (req,res)=>{
                 UNION ALL
                 SELECT skills.skill_id as role_skill_id, course_id, course_name, course_desc, course_status, course_type, courses.skill_id as course_skill_id FROM (
                     SELECT skill_id FROM roleskill WHERE role_id = 
-                        (SELECT role_id FROM journey WHERE journey_id = 8)
+                        (SELECT role_id FROM journey WHERE journey_id = ?)
                     ) AS skills
                 RIGHT JOIN (
                     SELECT c.course_id, course_name, course_desc, course_status, course_type, skill_id FROM courseskill cs, journeycourse jc, course c
                         WHERE cs.course_id = jc.course_id AND c.course_id = jc.course_id AND journey_id = ?
                     ) as courses
                 ON skills.skill_id=courses.skill_id`
-    db.query(stmt, [journey_id, journey_id], (err,result)=>{
+    db.query(stmt, [journey_id, journey_id,journey_id, journey_id], (err,result)=>{
         if(err) {
             console.log(err)
         }
