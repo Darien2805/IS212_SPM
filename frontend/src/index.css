@@ -11,21 +11,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-.newButton{
-  background: #e50914;
-  border-radius: 4px;
-  font-size: 16px;
-  font-weight: bold;
-  
-  padding: 6px;
-  border: 0;
-  color: white;
-  cursor: pointer;
-  transition: ease-in-out 0.1s;
-}
+
 .addButton{
   background: #7FB77E;
-  border-radius: 4px;
+  border-radius: 100%;
   font-size: 16px;
   font-weight: bold;
   

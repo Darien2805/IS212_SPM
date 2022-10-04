@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect,useRef} from 'react'
 import Axios from 'axios'
 import Header from '../components/Header'
 import Collapsible from "react-collapsible"
@@ -13,7 +13,7 @@ import "../index.css"
 function LearningJourney() {
 
     const [learningJourneyData, setLearningJourneyData] = useState([])
-
+    const dataFetchedRef = useRef(false)
     const populateRelevantFields = async(role_id,journey_id) => {
         const role = await Axios.get(`http://localhost:5005/api/getRole/${role_id}`)
         
@@ -36,29 +36,31 @@ function LearningJourney() {
         setLearningJourneyData(prevArray => [...prevArray,result])
         return result
     }
+    const getData = async() => {
+
+        const data = await Axios.get("http://localhost:5005/api/getJourneys/1")
+        console.log(data.data)
+     //    for (let i = 0; i < data.data.length; i++) {
+     //     console.log("I am being called")
+     //     populateRelevantFields(data.data.role_id,data.data.journey_id)
+         
+     //    }
+        
+        data.data.map(journey => populateRelevantFields(journey.role_id,journey.journey_id))
+        
+       
+     
+     }
     useEffect(() => {
 
-        const getData = async() => {
-
-               const data = await Axios.get("http://localhost:5005/api/getJourneys/1")
-               console.log(data.data)
-            //    for (let i = 0; i < data.data.length; i++) {
-            //     console.log("I am being called")
-            //     populateRelevantFields(data.data.role_id,data.data.journey_id)
-                
-            //    }
-               
-               data.data.map(journey => populateRelevantFields(journey.role_id,journey.journey_id))
-               
-              
-            
-            }
+        if(dataFetchedRef.current) return;
+        dataFetchedRef.current = true
         getData().catch(console.error)
         // if(collapsableData.length === 0){
         //     setCollapsableData(actualLearningJourneyData)
         //    }
         // actualLearningJourneyData.map((m) => console.log(m))
-        console.log("I am being triggered")
+
     }, [])    
         if(learningJourneyData.length > 0 ){
             // for(const key in learningJourneyData[0].journeyCourses){
@@ -66,7 +68,7 @@ function LearningJourney() {
             //     console.log(learningJourneyData[0].journeyCourses[key])
             // console.log("I am happening"+ learningJourneyData[0])
             
-            console.log(learningJourneyData[0])
+            console.log(learningJourneyData)
         // console.log(learningJourneyData[0].journeyCourses.map(x=>console.log(x)))
     
     }
@@ -76,32 +78,35 @@ function LearningJourney() {
     <div className="learningJourneyContainer">
         
         {/* {
-            learningJourneyData.map(m => populateRelevantFields(m.role_id,m.journey_id).then(result=> result.map(x => console.log(x))))
+
+            [...Array(Math.floor(learningJourneyData.length/2))] to get only half of the tables because use effect calls data twice
         } */}
         {
-            [...Array(Math.floor(learningJourneyData.length/2))].map((element, index) => (
+            learningJourneyData.map((element, index) => (
                 <>
-                <div className="collapsibleMenu">
+                <div className="collapsibleMenu" key={index}>
                 
                 <Collapsible trigger={[`LJ to ${learningJourneyData[index].role[0].role_name}`,<ArrowDropDownIcon />]}>
                     <div className="innerContent">
                     {
-                        Object.keys(learningJourneyData[index].journeyCourses).map(journey => (
+                        Object.keys(learningJourneyData[index].journeyCourses).map((journey) => journey === "null" ? (<p>whoops no skill</p>) : (
                             <>
-                            <h3>{journey}</h3>
-                            {learningJourneyData[index].journeyCourses[journey].map(skill=>
-                            <div key={skill.course_id}>
+                            <h3 key={journey}>{journey}</h3>
+                            {learningJourneyData[index].journeyCourses[journey].map((skill) => skill.course_name === null ? (<p>no course name</p>) : (
+                            <div key={skill.course_id} className="courseJourney">
                             <p>{skill.course_name}</p>
+                            <button className="newButton"><DeleteIcon /></button>
                             </div>
-                            )}
+                            ))}
                             </>
                         ))
                     }
-                    </div>
+                    
 
-                    <div>
+                    <div className="addJourney">
                         <button className="addButton"><AddIcon /></button>
                         
+                    </div>
                     </div>
                 </Collapsible>
                 
@@ -109,9 +114,7 @@ function LearningJourney() {
                 <div className="triggerComponent">
                     <button className="newButton"><DeleteIcon /></button>
                 </div>
-                <div className="triggerComponent">
-                    <p>%Completion</p>
-                </div>
+
                 </div>
                 </>
             ))
