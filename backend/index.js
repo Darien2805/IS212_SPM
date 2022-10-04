@@ -277,7 +277,79 @@ app.get("/api/getJourneys/:staff_id", (req,res)=>{
     });
 });
 
+// Route to get journey courses for selected journey
+app.get("/api/getJourneyCourses/:journey_id", (req,res)=>{
+    const journey_id = req.params.journey_id;
+    const stmt = `SELECT DISTINCTROW * FROM (
+                SELECT skills.skill_id as role_skill_id, skills.skill_name as role_skill_name, course_id, 
+                course_name, course_desc, course_status, course_type, courses.skill_id as course_skill_id, 
+                courses.skill_name as course_skill_name FROM (
+                    SELECT s.skill_id, skill_name FROM skill s, roleskill rs WHERE role_id = 
+                        (SELECT role_id FROM journey WHERE journey_id = ?) AND s.skill_id=rs.skill_id
+                    ) AS skills
+                LEFT JOIN (
+                    SELECT c.course_id, course_name, course_desc, course_status, course_type, s.skill_id, 
+                    skill_name FROM courseskill cs, journeycourse jc, course c, skill s
+                        WHERE cs.course_id = jc.course_id AND c.course_id = jc.course_id AND cs.skill_id=s.skill_id 
+                        AND journey_id = ?
+                    ) as courses
+                ON skills.skill_id=courses.skill_id
+                UNION ALL
+                SELECT skills.skill_id as role_skill_id, skills.skill_name as role_skill_name, course_id, 
+                course_name, course_desc, course_status, course_type, courses.skill_id as course_skill_id, 
+                courses.skill_name as course_skill_name FROM (
+                    SELECT s.skill_id, skill_name FROM skill s, roleskill rs WHERE role_id = 
+                        (SELECT role_id FROM journey WHERE journey_id = ?) AND s.skill_id=rs.skill_id
+                    ) AS skills
+                RIGHT JOIN (
+                    SELECT c.course_id, course_name, course_desc, course_status, course_type, s.skill_id, 
+                    skill_name FROM courseskill cs, journeycourse jc, course c, skill s
+                        WHERE cs.course_id = jc.course_id AND c.course_id = jc.course_id AND cs.skill_id=s.skill_id 
+                        AND journey_id = ?
+                    ) as courses
+                ON skills.skill_id=courses.skill_id) as new_table 
+                ORDER BY ISNULL(role_skill_id), role_skill_id ASC`
+    db.query(stmt, [journey_id, journey_id,journey_id, journey_id], (err,result)=>{
+        if(err) {
+            console.log(err)
+        }
+        res.send(result)
+    });
+});
 
+// // Route to get courses related to skill that are added for selected journey
+// app.get("/api/getJourneySkillCourses/:journey_id/:skill_id", (req,res)=>{
+//     const journey_id = req.params.journey_id;
+//     const skill_id = req.params.skill_id;
+//     const stmt = `SELECT * FROM course WHERE course_id in (
+//                         SELECT course_id FROM courseskill WHERE skill_id = ?
+//                     ) AND course_id in (
+//                         SELECT course_id FROM journeycourse WHERE journey_id = ?
+//                     )`
+//     db.query(stmt, [skill_id, journey_id], (err,result)=>{
+//         if(err) {
+//             console.log(err)
+//         }
+//         res.send(result)
+//     });
+// });
+
+// // Route to get other courses that are added for selected journey (not related to the skills of the role)
+// app.get("/api/getJourneyOtherCourses/:journey_id", (req,res)=>{
+//     const journey_id = req.params.journey_id;
+//     const skill_id = req.params.skill_id;
+//     const stmt = `SELECT * FROM course WHERE course_id in (
+//                         SELECT course_id FROM courseskill WHERE skill_id = ?
+//                     ) AND course_id in (
+//                         SELECT course_id FROM journeycourse WHERE journey_id = ?
+//                     )`
+//     db.query(stmt, [skill_id, journey_id], (err,result)=>{
+//         if(err) {
+//             console.log(err)
+//         }
+//         res.send(result)
+//     });
+// });
 
 
 
