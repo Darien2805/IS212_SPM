@@ -1,8 +1,8 @@
 import React,{useState,useEffect} from 'react'
 import Axios from 'axios'
 import Header from '../components/Header'
-import _ from "lodash"
 import Collapsible from "react-collapsible"
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { ClassNames } from '@emotion/react'
 
 function LearningJourney() {
@@ -76,7 +76,7 @@ function LearningJourney() {
         {
             [...Array(Math.floor(learningJourneyData.length/2))].map((element, index) => (
                 <>
-                
+                <div>
                 <Collapsible trigger={`LJ to ${learningJourneyData[index].role[0].role_name}`}>
                     {/* <h1>{learningJourneyData[index].journeyCourses[index].course_name}</h1> */}
                     {/* {
@@ -98,6 +98,8 @@ function LearningJourney() {
                         ))
                     }
                 </Collapsible>
+                <ArrowDropDownIcon />
+                </div>
                 <p>{index}</p>
                 </>
             ))
