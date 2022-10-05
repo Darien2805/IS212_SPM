@@ -24,7 +24,7 @@ function Courses() {
             {courses.map((val)=>{
             
               return( val.course_status === "Active" ?
-                <CourseCard key={val.course_id} title={val.course_name} description={val.course_desc} roleRes/> : "You suck, Ben"
+                <CourseCard key={val.course_id} title={val.course_name} description={val.course_desc}/> : "You suck, Ben"
               )
             })}
         </div>
