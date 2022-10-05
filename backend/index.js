@@ -7,7 +7,7 @@ const mysql = require('mysql');
 const db = mysql.createPool({
     host: "localhost",
     user: "root",
-    password: "root",
+    password: "",
     database:"spm" 
 })
 
@@ -177,6 +177,17 @@ app.get("/api/getCourse/:course_id", (req,res)=>{
     });
 });
 
+// Route to get skill name from one course
+app.get("/api/getCourseSkill/:course_id", (req,res)=>{
+    const course_id = req.params.course_id;
+    db.query("SELECT skill_id, skill_name from skill WHERE skill_id IN (SELECT skill_id FROM courseskill WHERE course_id = ?)", course_id, (err,result)=>{
+        if(err) {
+            console.log(err)
+        }
+        res.send(result)
+    });
+});
+
 // Route for creating course skill
 app.post('/api/createCourseSkills', (req,res)=> {
     const course_id = req.body.course_id;
@@ -282,8 +293,7 @@ app.get("/api/getJourneyCourses/:journey_id", (req,res)=>{
     const journey_id = req.params.journey_id;
     const stmt = `SELECT DISTINCTROW * FROM (
                 SELECT skills.skill_id as role_skill_id, skills.skill_name as role_skill_name, course_id, 
-                course_name, course_desc, course_status, course_type, courses.skill_id as course_skill_id, 
-                courses.skill_name as course_skill_name FROM (
+                course_name, course_desc, course_status, course_type FROM (
                     SELECT s.skill_id, skill_name FROM skill s, roleskill rs WHERE role_id = 
                         (SELECT role_id FROM journey WHERE journey_id = ?) AND s.skill_id=rs.skill_id
                     ) AS skills
@@ -296,8 +306,7 @@ app.get("/api/getJourneyCourses/:journey_id", (req,res)=>{
                 ON skills.skill_id=courses.skill_id
                 UNION ALL
                 SELECT skills.skill_id as role_skill_id, skills.skill_name as role_skill_name, course_id, 
-                course_name, course_desc, course_status, course_type, courses.skill_id as course_skill_id, 
-                courses.skill_name as course_skill_name FROM (
+                course_name, course_desc, course_status, course_type FROM (
                     SELECT s.skill_id, skill_name FROM skill s, roleskill rs WHERE role_id = 
                         (SELECT role_id FROM journey WHERE journey_id = ?) AND s.skill_id=rs.skill_id
                     ) AS skills
@@ -305,11 +314,20 @@ app.get("/api/getJourneyCourses/:journey_id", (req,res)=>{
                     SELECT c.course_id, course_name, course_desc, course_status, course_type, s.skill_id, 
                     skill_name FROM courseskill cs, journeycourse jc, course c, skill s
                         WHERE cs.course_id = jc.course_id AND c.course_id = jc.course_id AND cs.skill_id=s.skill_id 
-                        AND journey_id = ?
+                        AND journey_id = ? AND c.course_id NOT IN (
+                            SELECT DISTINCT IFNULL(course_id,"") FROM (
+                                SELECT s.skill_id, skill_name FROM skill s, roleskill rs WHERE role_id = 
+                                    (SELECT role_id FROM journey WHERE journey_id = ?) AND s.skill_id=rs.skill_id
+                                ) AS skills
+                            LEFT JOIN (
+                                SELECT c.course_id, s.skill_id FROM courseskill cs, journeycourse jc, course c, skill s
+                                    WHERE cs.course_id = jc.course_id AND c.course_id = jc.course_id AND cs.skill_id=s.skill_id AND journey_id = ?
+                                ) as courses
+                            ON skills.skill_id=courses.skill_id )
                     ) as courses
                 ON skills.skill_id=courses.skill_id) as new_table 
                 ORDER BY ISNULL(role_skill_id), role_skill_id ASC`
-    db.query(stmt, [journey_id, journey_id,journey_id, journey_id], (err,result)=>{
+    db.query(stmt, [journey_id, journey_id, journey_id, journey_id, journey_id, journey_id], (err,result)=>{
         if(err) {
             console.log(err)
         }
