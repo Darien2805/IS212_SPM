@@ -53,13 +53,13 @@ function Header() {
                         <Link to="/" className="dropdownLink">Role Maintenance</Link>
                         <Link to="/" className="dropdownLink">Skill Maintenance</Link>
                         <Link to="/SkillAssignment" className="dropdownLink">Skill Assignment</Link>
+                        <Link to="/SkillMaintenance" className="dropdownLink">Skill Maintenance</Link>
                 </div>
                 <button className="dropbtn"><KeyboardArrowDownIcon  /></button>
                 </div>
           
             </div>
         ) 
-    
     
     }
     <div>

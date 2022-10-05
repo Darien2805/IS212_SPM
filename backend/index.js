@@ -69,11 +69,12 @@ app.get("/api/getDeletedSkills", (req,res)=>{
     });
 });
 
-// Route for creating skill (previously deleted) --> need to update everything, not just status
+// Route for creating skill (previously deleted) --> updates the description and status
 app.post('/api/updateDeletedSkill', (req,res)=> {
     const skill_id = req.body.skill_id;
+    const skill_desc = req.body.skill_desc;
 
-    db.query("UPDATE skill SET skill_status = 'Active' WHERE skill_id = ?",skill_id, (err,result)=>{
+    db.query("UPDATE skill SET skill_desc = ?, skill_status = 'Active' WHERE skill_id = ?",[skill_desc,skill_id], (err,result)=>{
         if(err) {
             console.log(err)
         }
@@ -129,11 +130,13 @@ app.get("/api/getDeletedRoles", (req,res)=>{
     });
 });
 
-// Route for creating role (previously deleted) --> need to update everything, not just status
+// Route for creating role (previously deleted) --> updates the everything except id and name of role
 app.post('/api/updateDeletedRole', (req,res)=> {
     const role_id = req.body.role_id;
+    const role_desc = req.body.role_desc;
+    const role_responsibilities = req.body.role_responsibilities;
 
-    db.query("UPDATE role SET role_status = 'Active' WHERE role_id = ?",role_id, (err,result)=>{
+    db.query("UPDATE role SET role_desc = ?, role_responsibilities = ?, role_status = 'Active' WHERE role_id = ?",[role_desc,role_responsibilities,role_id], (err,result)=>{
         if(err) {
             console.log(err)
         }
@@ -285,7 +288,86 @@ app.get("/api/getJourneys/:staff_id", (req,res)=>{
     });
 });
 
+// Route to get journey courses for selected journey
+app.get("/api/getJourneyCourses/:journey_id", (req,res)=>{
+    const journey_id = req.params.journey_id;
+    const stmt = `SELECT DISTINCTROW * FROM (
+                SELECT skills.skill_id as role_skill_id, skills.skill_name as role_skill_name, course_id, 
+                course_name, course_desc, course_status, course_type FROM (
+                    SELECT s.skill_id, skill_name FROM skill s, roleskill rs WHERE role_id = 
+                        (SELECT role_id FROM journey WHERE journey_id = ?) AND s.skill_id=rs.skill_id
+                    ) AS skills
+                LEFT JOIN (
+                    SELECT c.course_id, course_name, course_desc, course_status, course_type, s.skill_id, 
+                    skill_name FROM courseskill cs, journeycourse jc, course c, skill s
+                        WHERE cs.course_id = jc.course_id AND c.course_id = jc.course_id AND cs.skill_id=s.skill_id 
+                        AND journey_id = ?
+                    ) as courses
+                ON skills.skill_id=courses.skill_id
+                UNION ALL
+                SELECT skills.skill_id as role_skill_id, skills.skill_name as role_skill_name, course_id, 
+                course_name, course_desc, course_status, course_type FROM (
+                    SELECT s.skill_id, skill_name FROM skill s, roleskill rs WHERE role_id = 
+                        (SELECT role_id FROM journey WHERE journey_id = ?) AND s.skill_id=rs.skill_id
+                    ) AS skills
+                RIGHT JOIN (
+                    SELECT c.course_id, course_name, course_desc, course_status, course_type, s.skill_id, 
+                    skill_name FROM courseskill cs, journeycourse jc, course c, skill s
+                        WHERE cs.course_id = jc.course_id AND c.course_id = jc.course_id AND cs.skill_id=s.skill_id 
+                        AND journey_id = ? AND c.course_id NOT IN (
+                            SELECT DISTINCT IFNULL(course_id,"") FROM (
+                                SELECT s.skill_id, skill_name FROM skill s, roleskill rs WHERE role_id = 
+                                    (SELECT role_id FROM journey WHERE journey_id = ?) AND s.skill_id=rs.skill_id
+                                ) AS skills
+                            LEFT JOIN (
+                                SELECT c.course_id, s.skill_id FROM courseskill cs, journeycourse jc, course c, skill s
+                                    WHERE cs.course_id = jc.course_id AND c.course_id = jc.course_id AND cs.skill_id=s.skill_id AND journey_id = ?
+                                ) as courses
+                            ON skills.skill_id=courses.skill_id )
+                    ) as courses
+                ON skills.skill_id=courses.skill_id) as new_table 
+                ORDER BY ISNULL(role_skill_id), role_skill_id ASC`
+    db.query(stmt, [journey_id, journey_id, journey_id, journey_id, journey_id, journey_id], (err,result)=>{
+        if(err) {
+            console.log(err)
+        }
+        res.send(result)
+    });
+});
 
+// // Route to get courses related to skill that are added for selected journey
+// app.get("/api/getJourneySkillCourses/:journey_id/:skill_id", (req,res)=>{
+//     const journey_id = req.params.journey_id;
+//     const skill_id = req.params.skill_id;
+//     const stmt = `SELECT * FROM course WHERE course_id in (
+//                         SELECT course_id FROM courseskill WHERE skill_id = ?
+//                     ) AND course_id in (
+//                         SELECT course_id FROM journeycourse WHERE journey_id = ?
+//                     )`
+//     db.query(stmt, [skill_id, journey_id], (err,result)=>{
+//         if(err) {
+//             console.log(err)
+//         }
+//         res.send(result)
+//     });
+// });
+
+// // Route to get other courses that are added for selected journey (not related to the skills of the role)
+// app.get("/api/getJourneyOtherCourses/:journey_id", (req,res)=>{
+//     const journey_id = req.params.journey_id;
+//     const skill_id = req.params.skill_id;
+//     const stmt = `SELECT * FROM course WHERE course_id in (
+//                         SELECT course_id FROM courseskill WHERE skill_id = ?
+//                     ) AND course_id in (
+//                         SELECT course_id FROM journeycourse WHERE journey_id = ?
+//                     )`
+//     db.query(stmt, [skill_id, journey_id], (err,result)=>{
+//         if(err) {
+//             console.log(err)
+//         }
+//         res.send(result)
+//     });
+// });
 
 
 
