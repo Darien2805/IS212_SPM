@@ -52,7 +52,7 @@ function Header() {
                 <div className="dropdown-content">
                         <Link to="/" className="dropdownLink">Role Maintenance</Link>
                         <Link to="/" className="dropdownLink">Skill Maintenance</Link>
-                        <Link to="/SkillAssignment" className="dropdownLink">Skill Assignmentt</Link>
+                        <Link to="/SkillAssignment" className="dropdownLink">Skill Assignment</Link>
                 </div>
                 <button className="dropbtn"><KeyboardArrowDownIcon  /></button>
                 </div>
