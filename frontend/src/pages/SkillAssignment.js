@@ -130,7 +130,7 @@ function SkillAssignment() {
         <>
         <Header />
         <div>
-            <Row>
+            <Row className = "m-4">
                 <h1>Skill Assignment</h1>
             </Row>
             
