@@ -7,7 +7,7 @@ function RoleCard({roleName,roleDesc,roleRes}) {
 
     let navigate = useNavigate(); 
     const routeChange = () =>{ 
-        let path = `../Courses`; 
+        let path = `../Courses`; //need to change the route to create learning journey page
         navigate(path);
     }
 
