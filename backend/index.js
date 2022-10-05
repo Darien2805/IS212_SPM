@@ -7,7 +7,7 @@ const mysql = require('mysql');
 const db = mysql.createPool({
     host: "localhost",
     user: "root",
-    password: "root",
+    password: "",
     database:"spm" 
 })
 
@@ -170,6 +170,17 @@ app.get("/api/getActiveCourses", (req,res)=>{
 app.get("/api/getCourse/:course_id", (req,res)=>{
     const course_id = req.params.course_id;
     db.query("SELECT * FROM course WHERE course_id = ?", course_id, (err,result)=>{
+        if(err) {
+            console.log(err)
+        }
+        res.send(result)
+    });
+});
+
+// Route to get skill name from one course
+app.get("/api/getCourseSkill/:course_id", (req,res)=>{
+    const course_id = req.params.course_id;
+    db.query("SELECT skill_id, skill_name from skill WHERE skill_id IN (SELECT skill_id FROM courseskill WHERE course_id = ?)", course_id, (err,result)=>{
         if(err) {
             console.log(err)
         }
