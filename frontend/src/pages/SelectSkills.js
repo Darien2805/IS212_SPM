@@ -22,13 +22,11 @@ function SelectSkills2(props) {
     console.log(skill)
 
     function getcourses(){
-        useEffect(()=>{
           axios.get("http://localhost:5005/api/getSkillCourses/" + skill).then((response)=>
             response.data.forEach(cid => {setcourses(cid.course_id)})
           );
-          },[])
+
           return (courses)
-    
         }
 
   // useEffect(()=>{
