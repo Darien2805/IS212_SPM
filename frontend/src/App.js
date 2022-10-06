@@ -1,7 +1,7 @@
 
 import './App.css';
 import {BrowserRouter,Route,Routes} from "react-router-dom"
-import {Home, Roles, Courses, SkillMaintenance, SkillAssignment, CreateSkill,EasterEgg, LearningJourney} from "./pages"
+import {Home, Roles, Courses, SkillMaintenance, SkillAssignment, CreateSkill,EasterEgg, LearningJourney,SelectSkills} from "./pages"
 import * as ROUTES from './constants/routes.js';
 
 function App() {
@@ -16,6 +16,7 @@ function App() {
       <Route path={ROUTES.CREATESKILL} element={<CreateSkill />}></Route>
       <Route path={ROUTES.EASTEREGG} element={<EasterEgg />}></Route>
       <Route path={ROUTES.LEARNINGJOURNEY} element={<LearningJourney />}></Route>
+      <Route path={ROUTES.SELECTSKILLS} element={<SelectSkills />}></Route>
       </Routes>
 
     </BrowserRouter>
