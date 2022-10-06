@@ -177,6 +177,17 @@ app.get("/api/getCourse/:course_id", (req,res)=>{
     });
 });
 
+// Route to get skill name from one course
+app.get("/api/getCourseSkill/:course_id", (req,res)=>{
+    const course_id = req.params.course_id;
+    db.query("SELECT skill_id, skill_name from skill WHERE skill_id IN (SELECT skill_id FROM courseskill WHERE course_id = ?)", course_id, (err,result)=>{
+        if(err) {
+            console.log(err)
+        }
+        res.send(result)
+    });
+});
+
 // Route for creating course skill
 app.post('/api/createCourseSkills', (req,res)=> {
     const course_id = req.body.course_id;
