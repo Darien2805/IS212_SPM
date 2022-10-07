@@ -7,7 +7,7 @@ const mysql = require('mysql');
 const db = mysql.createPool({
     host: "localhost",
     user: "root",
-    password: "",
+    password: "root",
     database:"spm" 
 })
 
@@ -17,7 +17,7 @@ app.use(cors());
 app.use(express.json())
 app.use(bodyParser.urlencoded({extended: true}))
 
-app.get("/", (req,res)=>{
+app.get("/", (req,res)=>{456
     console.log("HELLO WORLD")
 });
 
