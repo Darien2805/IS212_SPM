@@ -1,63 +1,99 @@
 import React, {useState,useEffect} from 'react'
 import axios from 'axios'
 import "./SelectSkills.css"
-import PropTypes from 'prop-types'
+import Select from 'react-select';
+//Bootstrap
+// import Row from 'react-bootstrap/Row';
+// import Col from 'react-bootstrap/Col';
+import { Button } from 'react-bootstrap'
+import { Link } from "react-router-dom";
+// import ListGroup from 'react-bootstrap/ListGroup';
+// import Form from 'react-bootstrap/Form';
+// import Dropdown from 'react-bootstrap/Dropdown';
+// import Tab from 'react-bootstrap/Tab';
 
-function SelectSkills2(props) {
-    const [selectedskills, setselectskills] = useState([])
-    const [skill,setskills] = useState(Number)
-    const [courses, setcourses] = useState(skill)
+function SelectSkills(props) {
+    const [selectedskills, setselectskills] = useState([])      // Skills for current role
+    const [courses,setcourses] = useState([])                   // Course name and desc
+    const [selectedcourses, setselectedcourses] = useState([])  // Dropdown box selections
     const role_id =2
-    const [coursename, setcoursename] = useState([])
 
-    const handleChange = (data) => {
-        setskills(data)
-      }
-    useEffect(()=>{
-      axios.get("http://localhost:5005/api/getRoleSkills/" + role_id).then((response)=>
-        setselectskills(response.data)
-      );
-      },[])
+    useEffect(()=>{        
+        const getcourses = (skillid) => {
+            let course = []
+            axios.get("http://localhost:5005/api/getSkillCourses/" + skillid).then((response)=>
+                response.data.forEach(cid => {
+                    axios.get("http://localhost:5005/api/getCourse/" + cid.course_id).then((res)=>{
+                        res.data.forEach(data => {
+                            course.push({
+                                value: cid.course_id,
+                                label: data['course_name'] + ": " + data['course_desc']
+                            });
+                        })
+                    });
+                }
+            ));
 
-    console.log(skill)
-
-    function getcourses(){
-          axios.get("http://localhost:5005/api/getSkillCourses/" + skill).then((response)=>
-            response.data.forEach(cid => {setcourses(cid.course_id)})
-          );
-
-          return (courses)
+            return (course)
         }
 
-  // useEffect(()=>{
-  //   axios.get("http://localhost:5005/api/getCourse/:course_id").then((response)=>{
-  //     let name = response.data.map((coursesname)=>coursesname['course_name'])
-  //     let desc = response.data.map((cdesc)=>cdesc['course_desc'])
-  //     setcoursename(name,desc)
-  //   });
-  //   },[])
+      axios.get("http://localhost:5005/api/getRoleSkills/" + role_id).then((response)=>{
+        setselectskills(response.data);
+        // Prepare course selections
+        let courseLists = []
+        response.data.forEach(skill => {
+            courseLists.push(getcourses(skill.skill_id));
+        })
+        setcourses(courseLists);
+        setselectedcourses(new Array(response.data.length).fill(null));
+    });
+      },[])
 
-
+    const handleChange = (data, index) => {
+        const newArray = selectedcourses.map((v, i) => {
+            if (i === index) return data;
+            return v;
+        });
+        setselectedcourses(newArray);
+        }
 
   return (
     <div>
         <h1>Pick a skill for role {role_id}</h1>
         <div className = "selectedskills">
+          {selectedskills.map((skills, index)=>
+            <div key={index}>
+            <label>Skill {skills.skill_id}</label>
+            <Select
+            options={courses[index]}
+            isMulti
+            closeMenuOnSelect={false}
+            hideSelectedOptions={false}
+            onChange={(e)=>handleChange(e, index)}
+            allowSelectAll={true}
+            value={skills[index]}
+            />
+            </div>)}
+          
+           {/* <label>
+           <input type="checkbox" value = '' onChange={()=>handleChange(skills.skill_id)}/>Skill {skills.skill_id}</label> */}
+          {/* {courses.map((course)=><label><input type="checkbox" />{course.course_id}</label>)} */}
 
-          {selectedskills.map((skills)=><label>
-          <input type="checkbox" value = {skills.skill_id} onChange={()=>handleChange(skills.skill_id)}/>Skill {skills.skill_id}</label>)}
-
+        </div>
+        <div>
+            <Button variant="outline-primary" type="submit" className="submit">
+                <Link to="/learningjourney">Create</Link>
+            </Button>
         </div>
       
     </div>
   )
 }
 
-SelectSkills2.propTypes = {
+SelectSkills.propTypes = {
 
 }
 
-export default SelectSkills2
-
+export default SelectSkills
 
 
