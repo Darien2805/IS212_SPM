@@ -1,10 +1,21 @@
 .courseContainer{
-    margin: 25px 25px 25px 140px;
-    width: 80vw;
+    
+    width: 100vw;
 
     
 }
 .child{
     margin:0 auto;
     
+}
+@media screen and (max-width:680px){
+    .courseContainer{
+        display:flex;
+
+    }
+    .child{
+        width:60vw;
+        
+    }
+
 }

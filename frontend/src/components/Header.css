@@ -6,7 +6,7 @@ display:flex;
 justify-content:space-between;
 background-color: #7895B2;
 padding:1%;
-height:10vh;
+min-height:11vh;
 
 }
 .brandingLeft{
