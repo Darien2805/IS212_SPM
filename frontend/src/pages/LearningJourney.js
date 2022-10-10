@@ -5,12 +5,13 @@ import Collapsible from "react-collapsible"
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import { ClassNames } from '@emotion/react'
+import { Link } from 'react-router-dom';
+
 
 import "./LearningJourney.css"
 import "../index.css"
 
-function LearningJourney() {
+function LearningJourney(props) {
 
     const [learningJourneyData, setLearningJourneyData] = useState([])
     const dataFetchedRef = useRef(false)
@@ -51,23 +52,14 @@ function LearningJourney() {
        
      
      }
+
     useEffect(() => {
 
         if(dataFetchedRef.current) return;
         dataFetchedRef.current = true
         getData().catch(console.error)
-        // if(collapsableData.length === 0){
-        //     setCollapsableData(actualLearningJourneyData)
-        //    }
-        // actualLearningJourneyData.map((m) => console.log(m))
-
     }, [])    
         if(learningJourneyData.length > 0 ){
-            // for(const key in learningJourneyData[0].journeyCourses){
-            //     console.log(key)
-            //     console.log(learningJourneyData[0].journeyCourses[key])
-            // console.log("I am happening"+ learningJourneyData[0])
-            
             console.log(learningJourneyData)
         // console.log(learningJourneyData[0].journeyCourses.map(x=>console.log(x)))
     
@@ -86,7 +78,7 @@ function LearningJourney() {
                 <>
                 <div className="collapsibleMenu" key={index}>
                 
-                <Collapsible trigger={[`LJ to ${learningJourneyData[index].role[0].role_name}`,<ArrowDropDownIcon />]}>
+                <Collapsible trigger={[`LJ to ${learningJourneyData[index].role[0].role_name}`,<><div className="test"><ArrowDropDownIcon /><button className="newButton" ><DeleteIcon /></button></div></>]}>
                     <div className="innerContent">
                     {
                         Object.keys(learningJourneyData[index].journeyCourses).map((journey) => journey === "null" ? (<p>whoops no skill</p>) : (
@@ -104,16 +96,23 @@ function LearningJourney() {
                     
 
                     <div className="addJourney">
-                        <button className="addButton"><AddIcon /></button>
+                        <Link to={`addCourses?role_id=${learningJourneyData[index].role[0].role_id}`} className="fancyLink" target="_blank">
+                            
+                        
+                        <p><AddIcon />Add Courses to Journey</p>
+                        
+                        
+                        
+                        </Link>
                         
                     </div>
                     </div>
                 </Collapsible>
                 
                 
-                <div className="triggerComponent">
-                    <button className="newButton"><DeleteIcon /></button>
-                </div>
+                {/* <div className="triggerComponent">
+                    <button className="newButton" ><DeleteIcon /></button>
+                </div> */}
 
                 </div>
                 </>

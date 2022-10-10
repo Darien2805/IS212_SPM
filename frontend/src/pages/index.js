@@ -8,4 +8,4 @@ export {default as SkillMaintenance} from "./SkillMaintenance";
 export {default as CreateSkill} from "./CreateSkill";
 export {default as EasterEgg} from "./EasterEgg.js";
 export {default as LearningJourney } from "./LearningJourney";
-
+export {default as AddCoursesFromLJ} from "./AddCoursesFromLJ"
