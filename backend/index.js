@@ -17,7 +17,7 @@ app.use(cors());
 app.use(express.json())
 app.use(bodyParser.urlencoded({extended: true}))
 
-app.get("/", (req,res)=>{456
+app.get("/", (req,res)=>{
     console.log("HELLO WORLD")
 });
 
@@ -108,10 +108,9 @@ app.get("/api/getActiveRoles", (req,res)=>{
 app.post('/api/createRole', (req,res)=> {
     const role_name = req.body.role_name;
     const role_desc = req.body.role_desc;
-    const role_responsibilities = req.body.role_responsibilities;
     const role_status = 'Active';
 
-    db.query("INSERT INTO jobrole (role_name, role_desc, role_responsibilities, role_status) VALUES (?,?,?,?)",[role_name,role_desc,role_responsibilities,role_status], (err,result)=>{
+    db.query("INSERT INTO jobrole (role_name, role_desc, role_status) VALUES (?,?,?)",[role_name,role_desc,role_status], (err,result)=>{
         if(err) {
             console.log(err)
         }
@@ -134,9 +133,8 @@ app.get("/api/getDeletedRoles", (req,res)=>{
 app.post('/api/updateDeletedRole', (req,res)=> {
     const role_id = req.body.role_id;
     const role_desc = req.body.role_desc;
-    const role_responsibilities = req.body.role_responsibilities;
 
-    db.query("UPDATE role SET role_desc = ?, role_responsibilities = ?, role_status = 'Active' WHERE role_id = ?",[role_desc,role_responsibilities,role_id], (err,result)=>{
+    db.query("UPDATE role SET role_desc = ?, role_status = 'Active' WHERE role_id = ?",[role_desc,role_id], (err,result)=>{
         if(err) {
             console.log(err)
         }
@@ -156,13 +154,23 @@ app.get("/api/getAllRoles", (req,res)=>{
 });
 
 // Route to get all active courses
-app.get("/api/getActiveCourses", (req,res)=>{
-    db.query("SELECT * FROM course WHERE course_status = 'Active'", (err,result)=>{
-        console.log(result)
+app.get("/api/getActiveCourses/:staff_id", (req,res)=>{
+    const staff_id = req.params.staff_id;
+    db.query(`SELECT t1.*, completion_status FROM (
+                SELECT c.*, JSON_ARRAYAGG(s.skill_id) AS skill_ids, JSON_ARRAYAGG(s.skill_name) AS skill_names 
+                FROM course c, courseskill cs, skill s 
+                WHERE c.course_id = cs.course_id AND cs.skill_id = s.skill_id
+                AND skill_status = 'Active' and course_status = 'Active' 
+                GROUP BY c.course_id
+                ) as t1
+            LEFT JOIN registration r 
+            ON t1.course_id = r.course_id AND staff_id = ?`, staff_id, (err,result)=>{
         if(err) {
             console.log(err)
         }
-        res.send(result)
+        else{
+            res.send(result)
+        }
     });
 });
 
@@ -268,7 +276,7 @@ app.post('/api/createJourneyCourses', (req,res)=> {
     const courses = req.body.courses; //list of course_ids
 
     courses.forEach(course_id => {
-        db.query("INSERT INTO journey (journey_id, course_id) VALUES (?,?)",[journey_id,course_id], (err,result)=>{
+        db.query("INSERT INTO journeycourse (journey_id, course_id) VALUES (?,?)",[journey_id,course_id], (err,result)=>{
             if(err) {
                 console.log(err)
             }
@@ -334,6 +342,94 @@ app.get("/api/getJourneyCourses/:journey_id", (req,res)=>{
         res.send(result)
     });
 });
+
+// Route to get all active courses grouped by active skills
+app.get("/api/getGroupedSkillCourses", (req,res)=>{
+    db.query(`SELECT s.*, JSON_ARRAYAGG(c.course_id) AS course_ids, JSON_ARRAYAGG(c.course_name) AS course_names 
+            FROM course c, courseskill cs, skill s 
+            WHERE c.course_id = cs.course_id AND cs.skill_id = s.skill_id AND skill_status = 'Active' AND course_status = 'Active' 
+            GROUP BY s.skill_id`, (err,result)=>{
+        if(err) {
+            console.log(err)
+        }
+        else{
+            res.send(result)
+        }        
+    });
+});
+
+// Route to delete a journey course
+app.delete('/api/deleteJourneyCourse/:journey_id/:course_id',(req,res)=>{
+    const journey_id = req.params.journey_id;
+    const course_id = req.params.course_id;
+
+    db.query("DELETE FROM journeycourse WHERE journey_id = ? AND course_id = ?", [journey_id, course_id], (err,result)=>{
+        if(err) {
+            console.log(err)
+        }
+        // else{
+        //     res.send(result)
+        // }
+    }) 
+})
+
+// // Route for updating skill
+// app.post('/api/updateSkill', (req,res)=> {
+//     const skill_id = req.body.skill_id;
+//     const skill_name = req.body.skill_name;
+//     const skill_desc = req.body.skill_desc;
+
+//     db.query("UPDATE skill SET skill_name = ?, skill_desc = ? WHERE skill_id = ?",[skill_name,skill_desc,skill_id], (err,result)=>{
+//         if(err) {
+//             console.log(err)
+//         }
+//         else{
+//             console.log("Success! \n", result)
+//         }        
+//     });
+// })
+
+// // Route for creating role (previously deleted) --> updates the everything except id and name of role
+// app.post('/api/updateRole', (req,res)=> {
+//     const role_id = req.body.role_id;
+//     const role_name = req.body.role_name;
+//     const role_desc = req.body.role_desc;
+
+//     db.query("UPDATE role SET role_name = ?, role_desc = '?' WHERE role_id = ?",[role_name,role_desc,role_id], (err,result)=>{
+//         if(err) {
+//             console.log(err)
+//         }
+//         else{
+//             console.log("Success! \n", result)
+//         }
+//     });
+// })
+
+// // Route to like a post
+// app.post('/api/like/:id',(req,res)=>{
+
+//     const id = req.params.id;
+//     db.query("UPDATE posts SET likes = likes + 1 WHERE id = ?",id, (err,result)=>{
+//         if(err) {
+//             console.log(err)   
+//         } 
+//         console.log(result)
+//     });    
+// });
+
+// // Route to delete a post
+// app.delete('/api/delete/:id',(req,res)=>{
+//     const id = req.params.id;
+
+//     db.query("DELETE FROM posts WHERE id= ?", id, (err,result)=>{
+//         if(err) {
+//         console.log(err)
+//         } 
+//     }) 
+// })
+
+
+
 
 // // Route to get courses related to skill that are added for selected journey
 // app.get("/api/getJourneySkillCourses/:journey_id/:skill_id", (req,res)=>{
