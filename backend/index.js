@@ -44,7 +44,7 @@ app.get("/api/getActiveSkills", (req,res)=>{
     });
 });
 
-// Route for creating skill
+// Route to create skill
 app.post('/api/createSkill', (req,res)=> {
     const skill_name = req.body.skill_name;
     const skill_desc = req.body.skill_desc;
@@ -69,7 +69,7 @@ app.get("/api/getDeletedSkills", (req,res)=>{
     });
 });
 
-// Route for creating skill (previously deleted) --> updates the description and status
+// Route to recreate skill (previously deleted) --> updates the description and status
 app.post('/api/updateDeletedSkill', (req,res)=> {
     const skill_id = req.body.skill_id;
     const skill_desc = req.body.skill_desc;
@@ -104,7 +104,7 @@ app.get("/api/getActiveRoles", (req,res)=>{
     });
 });
 
-// Route for creating job role (new)
+// Route to create job role (new)
 app.post('/api/createRole', (req,res)=> {
     const role_name = req.body.role_name;
     const role_desc = req.body.role_desc;
@@ -129,7 +129,7 @@ app.get("/api/getDeletedRoles", (req,res)=>{
     });
 });
 
-// Route for creating role (previously deleted) --> updates the everything except id and name of role
+// Route to create role (previously deleted) --> updates the everything except id and name of role
 app.post('/api/updateDeletedRole', (req,res)=> {
     const role_id = req.body.role_id;
     const role_desc = req.body.role_desc;
@@ -196,7 +196,7 @@ app.get("/api/getCourseSkill/:course_id", (req,res)=>{
     });
 });
 
-// Route for creating course skill
+// Route to create course skill
 app.post('/api/createCourseSkills', (req,res)=> {
     const course_id = req.body.course_id;
     const skills = req.body.skills; //list of skill_ids
@@ -257,7 +257,7 @@ app.get("/api/getSkillCourses/:skill_id", (req,res)=>{
     });
 });
 
-// Route for creating journey
+// Route to create journey
 app.post('/api/createJourney', (req,res)=> {
     const staff_id = req.body.staff_id;
     const role_id = req.body.role_id;
@@ -270,7 +270,7 @@ app.post('/api/createJourney', (req,res)=> {
     });
 })
 
-// Route for creating journey courses
+// Route to create journey courses
 app.post('/api/createJourneyCourses', (req,res)=> {
     const journey_id = req.body.journey_id;
     const courses = req.body.courses; //list of course_ids
@@ -373,60 +373,64 @@ app.delete('/api/deleteJourneyCourse/:journey_id/:course_id',(req,res)=>{
     }) 
 })
 
-// // Route for updating skill
-// app.post('/api/updateSkill', (req,res)=> {
-//     const skill_id = req.body.skill_id;
-//     const skill_name = req.body.skill_name;
-//     const skill_desc = req.body.skill_desc;
+// Route for updating skill
+app.put('/api/updateActiveSkill', (req,res)=> {
+    const skill_id = req.body.skill_id;
+    const skill_name = req.body.skill_name;
+    const skill_desc = req.body.skill_desc;
 
-//     db.query("UPDATE skill SET skill_name = ?, skill_desc = ? WHERE skill_id = ?",[skill_name,skill_desc,skill_id], (err,result)=>{
-//         if(err) {
-//             console.log(err)
-//         }
-//         else{
-//             console.log("Success! \n", result)
-//         }        
-//     });
-// })
+    db.query("UPDATE skill SET skill_name = ?, skill_desc = ? WHERE skill_id = ?",[skill_name,skill_desc,skill_id], (err,result)=>{
+        if(err) {
+            console.log(err)
+        }
+        // else{
+        //     console.log("Success! \n", result)
+        // }
+    });
+})
 
-// // Route for creating role (previously deleted) --> updates the everything except id and name of role
-// app.post('/api/updateRole', (req,res)=> {
-//     const role_id = req.body.role_id;
-//     const role_name = req.body.role_name;
-//     const role_desc = req.body.role_desc;
+// Route for updating active role
+app.put('/api/updateActiveRole', (req,res)=> {
+    const role_id = req.body.role_id;
+    const role_name = req.body.role_name;
+    const role_desc = req.body.role_desc;
 
-//     db.query("UPDATE role SET role_name = ?, role_desc = '?' WHERE role_id = ?",[role_name,role_desc,role_id], (err,result)=>{
-//         if(err) {
-//             console.log(err)
-//         }
-//         else{
-//             console.log("Success! \n", result)
-//         }
-//     });
-// })
+    db.query("UPDATE jobrole SET role_name = ?, role_desc = ? WHERE role_id = ?",[role_name,role_desc,role_id], (err,result)=>{
+        if(err) {
+            console.log(err)
+        }
+        // else{
+        //     console.log("Success! \n", result)
+        // }
+    });
+})
 
-// // Route to like a post
-// app.post('/api/like/:id',(req,res)=>{
+// Route to update status of skill to deleted
+app.put('/api/deleteActiveSkill',(req,res)=>{
+    const skill_id = req.body.skill_id;
 
-//     const id = req.params.id;
-//     db.query("UPDATE posts SET likes = likes + 1 WHERE id = ?",id, (err,result)=>{
-//         if(err) {
-//             console.log(err)   
-//         } 
-//         console.log(result)
-//     });    
-// });
+    db.query("UPDATE skill SET skill_status = 'Deleted' WHERE skill_id = ?", skill_id, (err,result)=>{
+        if(err) {
+            console.log(err)
+        }
+        // else{
+        //     res.send(result)
+        // }
+    }) 
+})
 
-// // Route to delete a post
-// app.delete('/api/delete/:id',(req,res)=>{
-//     const id = req.params.id;
+// Route to update status of role to deleted
+app.put('/api/deleteActiveRole',(req,res)=>{
+    const role_id = req.body.role_id;
 
-//     db.query("DELETE FROM posts WHERE id= ?", id, (err,result)=>{
-//         if(err) {
-//         console.log(err)
-//         } 
-//     }) 
-// })
+    db.query("UPDATE jobrole SET role_status = 'Deleted' WHERE role_id = ?", role_id, (err,result)=>{
+        if(err) {
+            console.log(err)
+        }
+    }) 
+})
+
+
 
 
 
