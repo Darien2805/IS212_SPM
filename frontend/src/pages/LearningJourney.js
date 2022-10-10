@@ -31,7 +31,7 @@ function LearningJourney(props) {
         const result = {
             "role": role.data,
             "journeyCourses": groups,
-
+            "journeyID" : journey_id
         }
         // setCollapsableData(actualLearningJourneyData)
         setLearningJourneyData(prevArray => [...prevArray,result])
@@ -58,7 +58,7 @@ function LearningJourney(props) {
         if(dataFetchedRef.current) return;
         dataFetchedRef.current = true
         getData().catch(console.error)
-    }, [])    
+    },)    
         if(learningJourneyData.length > 0 ){
             console.log(learningJourneyData)
         // console.log(learningJourneyData[0].journeyCourses.map(x=>console.log(x)))
@@ -96,7 +96,7 @@ function LearningJourney(props) {
                     
 
                     <div className="addJourney">
-                        <Link to={`addCourses?role_id=${learningJourneyData[index].role[0].role_id}`} className="fancyLink" target="_blank">
+                        <Link to={`addCourses?journey_id=${learningJourneyData[index].journeyID}&role_name=${learningJourneyData[index].role[0].role_name}`} className="fancyLink" target="_blank">
                             
                         
                         <p><AddIcon />Add Courses to Journey</p>
