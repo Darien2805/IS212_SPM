@@ -1,0 +1,44 @@
+.addCourseContainer{
+    display: flex;
+}
+.requiredSkills{
+    flex:1;
+}
+.selectedSkills{
+    flex:0.7;
+    
+}
+.defaultButton{
+    background: #7895B2;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    
+    padding: 6px;
+    border: 0;
+    color: white;
+    cursor: pointer;
+    transition: ease-in-out 0.1s;
+  }
+  .collapsibleMenu{
+
+    background-color:#AEBDCA;
+
+    color:#FFF;
+
+    width:80%;
+    margin-top:5%;
+}
+.innerContent{
+    background-color:#E8DFCA;
+    color:black;
+    
+    
+}
+.innerContent > label {
+    margin-right:5%;
+}
+.createContainer{
+    float:right;
+    margin:5%;
+}

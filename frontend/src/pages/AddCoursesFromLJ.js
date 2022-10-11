@@ -3,15 +3,20 @@ import { useSearchParams } from "react-router-dom";
 import Axios from 'axios'
 import Header from '../components/Header'
 import Collapsible from "react-collapsible"
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
+
+import "./AddCoursesFromLJ.css"
 function AddCoursesFromLJ(props) {
     const [allSkills,setAllSkills] = useState([])
-    const [courseDetail , setCourseDetail] = useState("")
-    const [currentCourseID , setCurrentCourseID] = useState("")
+
+
     const [requiredSkills , setRequiredSkills] = useState([])
     const [currentCoursesDoing, setCurrentCoursesDoing] = useState([])
     const [searchParams, setSearchParams] = useSearchParams()
     const [roleName , setRoleName] = useSearchParams()
+    const [isDetailButtonPressed , setIsDetailButtonPressed] = useState(false)
+    const [coursesToAdd , setCoursesToAdd] = useState([])
     const dataFetchedRef = useRef(false)
     const learningJourneyID = searchParams.get("journey_id")
     const learningJourneyName = roleName.get("role_name")
@@ -24,6 +29,7 @@ function AddCoursesFromLJ(props) {
         const journey = await Axios.get(`http://localhost:5005/api/getJourneyCourses/${journeyID}`)
         const tempSkills = []
         const tempCourses = []
+        console.log(journey.data)
         const groups = journey.data.reduce((groups, item) => {
             const group = (groups[item.role_skill_name] || []);
             group.push(item);
@@ -39,23 +45,39 @@ function AddCoursesFromLJ(props) {
 
 
         for(const [key,value] of Object.entries(groups)){
-
-            value.map(item => tempCourses.includes(item) ? null : tempCourses.push(item))
-
+            // tempCourses.includes(item) ? null : tempCourses.push(item) setCurrentCoursesDoing(prevArray => [...prevArray,item])
+            value.map(item => tempCourses.includes(item.course_id) ? null : tempCourses.push(item.course_id))
+            
             if (!tempSkills.includes(key)){
                 tempSkills.push(key)
             }
         }
 
-        setRequiredSkills(tempSkills)
-        setCurrentCoursesDoing(tempCourses)
-
+        // for (let i = 0; i < tempSkills.length; i++) {
+        //     const element = tempSkills[i];
+        //     console.log("skills" + element)
+        //     setRequiredSkills(prevArray => [...prevArray,element])
+            
+        // }
+        // console.log(tempCourses)
+        // for (let i = 0; i < tempCourses.length; i++) {
+        //     const element = tempCourses[i];
+            
+        //     setCurrentCoursesDoing(prevArray => [...prevArray,element])
+            
+        // }
+        // console.log(requiredSkills)
+        // console.log(currentCoursesDoing)
+        return {
+            "tempSkills" : tempSkills,
+            "tempCourses" : tempCourses,
+        }
     }
     const getData = async() => {
 
         const data = await Axios.get("http://localhost:5005/api/getGroupedSkillCourses")
 
-        // console.log(data.data)
+
         setAllSkills(data.data)
         const allCourseIDs = []
         data.data.map(skill => JSON.parse(skill.course_ids).map(IDs => allCourseIDs.includes(IDs) ? null : allCourseIDs.push(IDs)))
@@ -66,7 +88,10 @@ function AddCoursesFromLJ(props) {
      //     populateRelevantFields(data.data.role_id,data.data.journey_id)
          
      //    }
-        getJourneyData(learningJourneyID)
+        const journeyData = await getJourneyData(learningJourneyID)
+
+        journeyData.tempSkills.map(skill => setRequiredSkills(prevArray => [...prevArray,skill]))
+        journeyData.tempCourses.map(course => course === null ? null : setCurrentCoursesDoing(courseArray => [...courseArray,course]) )
 
      }
 
@@ -79,58 +104,69 @@ function AddCoursesFromLJ(props) {
         //     setCollapsableData(actualLearningJourneyData)
         //    }
         // actualLearningJourneyData.map((m) => console.log(m))
-        console.log("skills" +requiredSkills)
-        console.log("courses" + currentCoursesDoing)
+
     }, [])    
     const zip = (a1,a2) => a1.map((courseName ,courseSkill) => [courseName , a2[courseSkill]])
     // console.log(zip(JSON.parse(allSkills[0].course_names),JSON.parse(allSkills[0].course_ids)))
 
+    const handleDetailButtonClick = (e) => {
+        setIsDetailButtonPressed(current => !current)
 
+    }
 
+    const handleAddToLJ = (e) => {
+        var updatedList = [...currentCoursesDoing];
+        if (e.target.checked) {
+            updatedList = [...currentCoursesDoing,e.target.value]
+        } else {
+            updatedList.splice(currentCoursesDoing.indexOf(e.target.value),1)
+        } 
+        setCurrentCoursesDoing(updatedList)
 
+    }
+
+   const submitCourses = async() => {
+    const courses = currentCoursesDoing
+    const journey_id = learningJourneyID
+        await Axios.post("http://localhost:5005/api/createJourneyCourses", {journey_id,courses}).then((res) => console.log(res))
+   }
   return (
     <>
     <Header />
-        <div>AddCoursesFromLJ
-
+    <h1> Add Courses to Learning Journey to {learningJourneyName}</h1>
+        <div className="addCourseContainer">
+        <div className="requiredSkills">
+            <h3>Required Skills</h3>
+            <ul>
+            {requiredSkills.map((skill) => <><li>{skill}</li></>)}
+            </ul>
+        </div>
 
         <div className="selectedSkills">
+        <button onClick={handleDetailButtonClick} className="defaultButton">Show Course Details</button>
             {allSkills.map((skills) => <>
-            <div key={skills.skills_id}>
-                <Collapsible trigger={skills.skill_name}>
-                    {zip(JSON.parse(skills.course_names),JSON.parse(skills.course_ids)).map(((x) => <><label><input type="checkbox" value={x[1]} />{x[0]} <button>Details</button></label></>))}
-                    {courseDetail ? <p>Yes</p>: <p>no</p>}
+            <div className="collapsibleMenu" key={skills.skills_id}>
+                <Collapsible trigger={[skills.skill_name , <ArrowDropDownIcon />]}>
+                    <div className="innerContent">
+                    {zip(JSON.parse(skills.course_names),JSON.parse(skills.course_ids)).map(((x,index) => 
+                    <>
+                        <label>
+                            <input type="checkbox" value={x[1]} checked={currentCoursesDoing.includes(x[1]) ? true : false} onChange={handleAddToLJ}/>{x[0]} 
+                            {isDetailButtonPressed && <p>{JSON.parse(skills.course_desc)[index]}</p>}
+                        </label>
+                    </>
+                    ))}
+                    </div>
                 </Collapsible>
                 
 
                 
             </div></>)}
         </div>
-        {/* <div className = "selectedskills">
-          {selectedskills.map((skills, index)=>
-            <div key={index}>
-            <label>Skill {skills.skill_id}</label>
-            <Select
-            options={courses[index]}
-            isMulti
-            closeMenuOnSelect={false}
-            hideSelectedOptions={false}
-            onChange={(e)=>handleChange(e, index)}
-            allowSelectAll={true}
-            value={skills[index]}
-            />
-            </div>)}
-          
-           {/* <label>
-           <input type="checkbox" value = '' onChange={()=>handleChange(skills.skill_id)}/>Skill {skills.skill_id}</label> */}
-          {/* {courses.map((course)=><label><input type="checkbox" />{course.course_id}</label>)} */}
-
-        {/* </div>
-        <div>
-            <Button variant="outline-primary" type="submit" className="submit">
-                <Link to="/learningjourney">Create</Link>
-            </Button>
-        </div> */} 
+                    
+        </div>
+        <div className="createContainer">
+            <button onClick={submitCourses} className="defaultButton">Create</button>
         </div>
     </>
 
