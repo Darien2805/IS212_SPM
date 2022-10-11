@@ -24,7 +24,7 @@ app.get("/", (req,res)=>{
 // Route to get staff user type ---> to determine which header to show
 app.get("/api/getUserType/:staff_id", (req,res)=>{
     const staff_id = req.params.staff_id;
-    db.query("SELECT user_type FROM staff where staff_id = ?", staff_id, (err,result)=>{
+    db.query("SELECT * FROM staff where staff_id = ?", staff_id, (err,result)=>{
         console.log(result)
         if(err) {
             console.log(err)
