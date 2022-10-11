@@ -36,7 +36,7 @@ app.get("/api/getUserType/:staff_id", (req,res)=>{
 // Route to get all active skills
 app.get("/api/getActiveSkills", (req,res)=>{
     db.query("SELECT * FROM skill WHERE skill_status = 'Active'", (err,result)=>{
-        console.log(result)
+        // console.log(result)
         if(err) {
             console.log(err)
         }
@@ -54,14 +54,16 @@ app.post('/api/createSkill', (req,res)=> {
         if(err) {
             console.log(err)
         }
-        console.log("Success! \n", result)
+        else{
+            res.send(result)
+        }
     });
 })
 
 // Route to get all deleted skills
 app.get("/api/getDeletedSkills", (req,res)=>{
     db.query("SELECT * FROM skill WHERE skill_status != 'Active'", (err,result)=>{
-        console.log(result)
+        // console.log(result)
         if(err) {
             console.log(err)
         }
@@ -85,7 +87,7 @@ app.post('/api/updateDeletedSkill', (req,res)=> {
 // Route to get all skills
 app.get("/api/getAllSkills", (req,res)=>{
     db.query("SELECT * FROM skill", (err,result)=>{
-        console.log(result)
+        // console.log(result)
         if(err) {
             console.log(err)
         }
@@ -96,7 +98,7 @@ app.get("/api/getAllSkills", (req,res)=>{
 // Route to get all active job roles
 app.get("/api/getActiveRoles", (req,res)=>{
     db.query("SELECT * FROM jobrole WHERE role_status = 'Active'", (err,result)=>{
-        console.log(result)
+        // console.log(result)
         if(err) {
             console.log(err)
         }
@@ -114,14 +116,80 @@ app.post('/api/createRole', (req,res)=> {
         if(err) {
             console.log(err)
         }
-        console.log("Success! \n", result)
+        else{
+            db.query("SELECT role_id FROM jobrole WHERE role_name = ?", role_name, (err1,result1)=>{
+                if(err1) {
+                    console.log(err1)
+                }
+                else{
+                    console.log(result1)
+                    res.send(result1)
+                }
+            });
+        }
     });
+})
+
+// Route to create role skills
+app.post('/api/createRoleSkills', (req,res)=> {
+    const role_id = req.body.role_id;
+    const skills = req.body.skills; // list of skill ids
+
+    skills.forEach(skill => {
+        db.query("INSERT INTO roleskill (role_id, skill_id) VALUES (?,?)",[role_id, skill.value], (err,result)=>{
+            if(err) {
+                console.log(err)
+            }
+            else{
+                console.log("insert success")
+            }
+        });
+    });
+})
+
+// Route to get all skill ids and skill names related to selected role
+app.get("/api/getRoleSkillsInfo/:role_id", (req,res)=>{
+    const role_id = req.params.role_id;
+    db.query(`SELECT s.* FROM roleskill rs, skill s WHERE rs.skill_id = s.skill_id AND 
+            skill_status = 'Active' AND role_id = ?`, role_id, (err,result)=>{
+        console.log(result)
+        if(err) {
+            console.log(err)
+        }
+        res.send(result)
+    });
+});
+
+// Route to recreate role skills
+app.post('/api/recreateRoleSkills', (req,res)=> {
+    const role_id = req.body.role_id;
+    const skills = req.body.skills; // {value: skill_id, label: skill_name}
+
+    db.query("DELETE FROM roleskill WHERE role_id = ?", role_id, (err1,result1)=>{
+        if(err1) {
+            console.log(err1)
+        }
+        else{
+            console.log("success in deleting")
+            // Step 2: Create (updated) skills related to the role
+            skills.forEach(skill => {
+                db.query("INSERT INTO roleskill (role_id, skill_id) VALUES (?,?)",[role_id, skill.value], (err2,result2)=>{
+                    if(err2) {
+                        console.log(err2)
+                    }
+                    else{
+                        console.log("insert success")
+                    }
+                });
+            });
+        }
+    })
 })
 
 // Route to get all deleted job roles
 app.get("/api/getDeletedRoles", (req,res)=>{
     db.query("SELECT * FROM jobrole WHERE role_status != 'Active'", (err,result)=>{
-        console.log(result)
+        // console.log(result)
         if(err) {
             console.log(err)
         }
@@ -134,7 +202,7 @@ app.post('/api/updateDeletedRole', (req,res)=> {
     const role_id = req.body.role_id;
     const role_desc = req.body.role_desc;
 
-    db.query("UPDATE role SET role_desc = ?, role_status = 'Active' WHERE role_id = ?",[role_desc,role_id], (err,result)=>{
+    db.query("UPDATE jobrole SET role_desc = ?, role_status = 'Active' WHERE role_id = ?",[role_desc,role_id], (err,result)=>{
         if(err) {
             console.log(err)
         }
@@ -145,7 +213,7 @@ app.post('/api/updateDeletedRole', (req,res)=> {
 // Route to get all job roles
 app.get("/api/getAllRoles", (req,res)=>{
     db.query("SELECT * FROM jobrole", (err,result)=>{
-        console.log(result)
+        // console.log(result)
         if(err) {
             console.log(err)
         }
