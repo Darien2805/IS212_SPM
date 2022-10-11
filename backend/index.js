@@ -413,7 +413,8 @@ app.get("/api/getJourneyCourses/:journey_id", (req,res)=>{
 
 // Route to get all active courses grouped by active skills
 app.get("/api/getGroupedSkillCourses", (req,res)=>{
-    db.query(`SELECT s.*, JSON_ARRAYAGG(c.course_id) AS course_ids, JSON_ARRAYAGG(c.course_name) AS course_names 
+    db.query(`SELECT s.*, JSON_ARRAYAGG(c.course_id) AS course_ids, JSON_ARRAYAGG(c.course_name) AS course_names, 
+            JSON_ARRAYAGG(c.course_desc) AS course_desc  
             FROM course c, courseskill cs, skill s 
             WHERE c.course_id = cs.course_id AND cs.skill_id = s.skill_id AND skill_status = 'Active' AND course_status = 'Active' 
             GROUP BY s.skill_id`, (err,result)=>{
