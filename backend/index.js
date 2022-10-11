@@ -96,8 +96,17 @@ app.get("/api/getAllSkills", (req,res)=>{
 });
 
 // Route to get all active job roles
-app.get("/api/getActiveRoles", (req,res)=>{
-    db.query("SELECT * FROM jobrole WHERE role_status = 'Active'", (err,result)=>{
+app.get("/api/getActiveRoles/:staff_id", (req,res)=>{
+    const staff_id = req.params.staff_id;
+    db.query(`SELECT t1.*, journey_id FROM (
+        SELECT jr.*, JSON_ARRAYAGG(s.skill_id) AS skill_ids, JSON_ARRAYAGG(s.skill_name) AS skill_names 
+        FROM jobrole jr, roleskill rs, skill s 
+        WHERE jr.role_id = rs.role_id AND rs.skill_id = s.skill_id
+        AND role_status = 'Active' AND skill_status = 'Active' 
+        GROUP BY jr.role_id
+        ) as t1
+        LEFT JOIN journey j 
+        ON t1.role_id = j.role_id AND staff_id = ?`, staff_id, (err,result)=>{
         // console.log(result)
         if(err) {
             console.log(err)
