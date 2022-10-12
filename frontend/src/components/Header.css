@@ -43,8 +43,11 @@ height:10vh;
     color: #FFF;
     text-decoration: underline;
 }
+
 .userName{
-    margin-left:25px;
+    align-items: center;
+    text-align: center;
+    margin: auto;
 }
 
 /* Dropdown */
