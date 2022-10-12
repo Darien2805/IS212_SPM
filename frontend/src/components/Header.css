@@ -2,12 +2,11 @@
 
 
 .headerContainer{
-display:flex;
-justify-content:space-between;
-background-color: #7895B2;
-padding:1%;
-height:10vh;
-
+    display:flex;
+    justify-content:space-between;
+    background-color: #7895B2;
+    padding:1%;
+    height:10vh;
 }
 .brandingLeft{
     display:flex;
@@ -29,8 +28,7 @@ height:10vh;
 
 .headerRightContainer{
     display:flex;
-    flex:0.3;
-
+    flex:0.5;
 }
 
 
@@ -100,9 +98,13 @@ height:10vh;
 
 
 @media screen and (max-width:680px) {
+    .headerContainer{
+        height: 18vh !important;
+    }
+
 
     .images{
-        width: 40px;
+        width: 110px;
     }
 
     .searchBar{
@@ -132,7 +134,7 @@ height:10vh;
       .dropbtn {
         background-color: #7895B2;
         color: white;
-        padding: 10px;
+        padding: 0px;
         font-size: 16px;
         border: none;
         cursor: pointer;
@@ -152,5 +154,5 @@ height:10vh;
         padding:1%;
         height:6vh;
         
-        }
+    }
 }

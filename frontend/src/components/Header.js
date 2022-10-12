@@ -60,19 +60,19 @@ function Header() {
         {staffType == '1'? 
         (
           <div className="nav-links">
-            <Link to="/" className="headerLink">Home</Link>
+            <Link to="/learningjourney" className="headerLink">Home</Link>
             <Link to="/roles" className="headerLink">Roles</Link>
             <Link to="/courses" className="headerLink">Courses</Link>
             <div className="dropdown">
             
             <Link className="headerLink">Systems</Link>
             <div className="dropdown-content">
-                    <Link to="/" className="dropdownLink">Role Maintenance</Link>
+                    <Link to="/learningjourney" className="dropdownLink">Role Maintenance</Link>
                     <Link to="/SkillAssignment" className="dropdownLink">Skill Assignment</Link>
                     <Link to="/SkillMaintenance" className="dropdownLink">Skill Maintenance</Link>
             </div>
             <button className="dropbtn"><KeyboardArrowDownIcon  /></button>
-            <Link to="/" className="headerLink" onClick={e=>logout(e)}>Log Out</Link>
+            <Link to="/" className="headerLink" onClick={e=>logout(e)}>Logout</Link>
             </div>
             {staffName}
         </div>
@@ -80,19 +80,19 @@ function Header() {
           staffType == '2' || staffType == '4' ?
           <div className="nav-links">
 
-          <Link to="/" className="headerLink">Home</Link>
+          <Link to="/learningjourney" className="headerLink">Home</Link>
           <Link to="/roles" className="headerLink">Roles</Link>
           <Link to="/courses" className="headerLink">Courses</Link>
-          <Link to="/" className="headerLink" onClick={e=>logout(e)}>Log Out</Link>
+          <Link to="/" className="headerLink" onClick={e=>logout(e)}>Logout</Link>
           {staffName}
           </div> :
         ( staffType == '3' ?
             <div className="nav-links">
-              <Link to="/" className="headerLink">Home</Link>
+              <Link to="/learningjourney" className="headerLink">Home</Link>
               <Link to="/roles" className="headerLink">Roles</Link>
               <Link to="/courses" className="headerLink">Courses</Link>
               <Link to="/teams" className="headerLink">Teams</Link>
-              <Link to="/" className="headerLink" onClick={e=>logout(e)}>Log Out</Link>
+              <Link to="/" className="headerLink" onClick={e=>logout(e)}>Logout</Link>
               {staffName}
             </div> : 
 
