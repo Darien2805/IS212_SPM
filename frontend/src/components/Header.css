@@ -28,7 +28,7 @@
 
 .headerRightContainer{
     display:flex;
-    flex:0.5;
+    flex:0.3;
 }
 
 
@@ -43,9 +43,7 @@
 }
 
 .userName{
-    align-items: center;
-    text-align: center;
-    margin: auto;
+    margin-left:25px;
 }
 
 /* Dropdown */
@@ -102,8 +100,12 @@
         height: 18vh !important;
     }
 
+    .headerRightContainer{
+        margin-top: 5%;
+    }
 
     .images{
+        margin-top: 5%;
         width: 110px;
     }
 
