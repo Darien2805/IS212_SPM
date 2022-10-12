@@ -54,7 +54,8 @@ height:10vh;
 .dropdown {
     display: inline-block;
     position: relative;
-  }
+}
+
 .dropbtn {
     background-color: #7895B2;
     color: white;
@@ -92,8 +93,18 @@ height:10vh;
       color:#7895B2;
 }
 
+.images{
+    width: 60px;
+    border-radius: 10px;
+}
+
 
 @media screen and (max-width:680px) {
+
+    .images{
+        width: 40px;
+    }
+
     .searchBar{
         margin-left:1%;
     }

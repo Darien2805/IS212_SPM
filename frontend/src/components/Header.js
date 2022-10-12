@@ -6,6 +6,8 @@ import "./Header.css";
 //Axios
 import Axios from 'axios'
 
+import logo from './Images/logo.png';
+
 function Header() {
 
   const [staffid, setStaffid] = useState('');
@@ -42,7 +44,7 @@ function Header() {
       <div className="headerContainer">
         <div className="brandingLeft">
           <div>
-              <p>Logo</p>
+            <img className= "images" src={logo} />
           </div>
         </div>
         {/* <div className="searchBar">
@@ -55,7 +57,8 @@ function Header() {
       
 
         <div className="headerRightContainer">
-        {staffType == '1'? (
+        {staffType == '1'? 
+        (
           <div className="nav-links">
             <Link to="/" className="headerLink">Home</Link>
             <Link to="/roles" className="headerLink">Roles</Link>
@@ -73,7 +76,17 @@ function Header() {
             </div>
             {staffName}
         </div>
-        ) : ( staffType == '3' ?
+        ) : ( 
+          staffType == '2' || staffType == '4' ?
+          <div className="nav-links">
+
+          <Link to="/" className="headerLink">Home</Link>
+          <Link to="/roles" className="headerLink">Roles</Link>
+          <Link to="/courses" className="headerLink">Courses</Link>
+          <Link to="/" className="headerLink" onClick={e=>logout(e)}>Log Out</Link>
+          {staffName}
+          </div> :
+        ( staffType == '3' ?
             <div className="nav-links">
               <Link to="/" className="headerLink">Home</Link>
               <Link to="/roles" className="headerLink">Roles</Link>
@@ -84,14 +97,8 @@ function Header() {
             </div> : 
 
             <div className="nav-links">
-
-            <Link to="/" className="headerLink">Home</Link>
-            <Link to="/roles" className="headerLink">Roles</Link>
-            <Link to="/courses" className="headerLink">Courses</Link>
-            <Link to="/" className="headerLink" onClick={e=>logout(e)}>Log Out</Link>
-            {staffName}
             </div>
-      )}
+      ))}
         </div>
       </div>
   
