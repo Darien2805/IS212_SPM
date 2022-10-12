@@ -36,12 +36,12 @@ INSERT INTO registration (reg_id, course_id, staff_id, reg_status, completion_st
 INSERT INTO jobrole (role_name, role_desc, role_status) VALUES
 ('r1', 'role 1....','Active'),
 ('r2', 'role 2....','Active'),
-('r6', 'role 3....','Active'),
-('r1', 'role 4....','Active'),
-('r8', 'role 5....','Active'),
-('r3', 'role 6....','Deleted'),
-('r3', 'role 7....','Deleted'),
-('r4', 'role 8....','Deleted');
+('r3', 'role 3....','Active'),
+('r4', 'role 4....','Active'),
+('r5', 'role 5....','Active'),
+('r6', 'role 6....','Deleted'),
+('r7', 'role 7....','Deleted'),
+('r8', 'role 8....','Deleted');
 
 INSERT INTO skill (skill_name, skill_desc, skill_status) VALUES
 ('skill 1', 'skill 1....', 'Active'),

@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+/* .roleContainer{
+    margin: 25px 25px 25px 140px;
+    width: 80vw;
+
+    
+}    */
+.child{
+    margin:0 auto;
+    
+}
+
+h1{
+    text-align: center;
+    font-family: 'Poppins', cursive;
+    text-decoration: underline;
+    text-underline-offset: 15px;
+}
+
+.box{
+    border-radius: 25px;
+    padding: 8%;
+    margin: 5%;
+    background-color: bisque;
+}
+
+Button{
+    margin: 10px;
+}
