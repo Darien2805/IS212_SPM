@@ -15,7 +15,7 @@ function RoleMaintenance(){
     const navigate = useNavigate();
 
     useEffect(()=>{
-        setStaffId(1) // for now set as 1
+        setStaffId(window.localStorage.getItem('sessionId')) // for now set as 1
 
         if (staffId!==''){
             Axios.get(`http://localhost:5005/api/getActiveRoles/${staffId}`).then((response)=>{
