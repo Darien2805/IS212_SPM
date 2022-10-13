@@ -69,7 +69,6 @@ function Home() {
                 className = "field mb-3" 
                 placeholder="Enter Staff ID"
                 value= {staffid}
-                maxLength={6} 
                 onChange={(e) => {handleChange(e)}}/>
 
               { showAssignError ? 

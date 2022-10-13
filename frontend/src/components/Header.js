@@ -15,6 +15,7 @@ function Header() {
   const [staffName, setStaffName] = useState('');
   //const userIsStaff = true
   const sessionId = window.localStorage.getItem('sessionId');
+  //console.log(typeof sessionId);
   useEffect(()=>{
     if (sessionId != null){
       //console.log(sessionId)
