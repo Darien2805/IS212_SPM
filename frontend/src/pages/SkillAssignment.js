@@ -56,20 +56,18 @@ function SkillAssignment() {
         
         setStaffId(window.localStorage.getItem('sessionId'))
         //console.log(staffId)
-        if (staffId!==''){
-            Axios.get("http://localhost:5005/api/getActiveCourses/"+staffId).then((response)=>{
-            let course_Objects = []
-            
-            response.data.forEach(course => {
-                let skills = retrieveSkills(course.course_id)
-                //console.log(skills)
-                let courseObject = new courseObj(course.course_id, course.course_name, course.course_desc, course.course_status, course.course_type, skills)
-                course_Objects.push(courseObject)
-            });            
-            setCourseObjects(course_Objects) 
-            //console.log(course_Objects)
-        });
-        }
+        Axios.get("http://localhost:5005/api/getActiveCourses/"+1).then((response)=>{
+        let course_Objects = []
+        
+        response.data.forEach(course => {
+            let skills = retrieveSkills(course.course_id)
+            //console.log(skills)
+            let courseObject = new courseObj(course.course_id, course.course_name, course.course_desc, course.course_status, course.course_type, skills)
+            course_Objects.push(courseObject)
+        });            
+        setCourseObjects(course_Objects) 
+        //console.log(course_Objects)
+    });
         
     },[courseObject])
 

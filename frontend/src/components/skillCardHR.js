@@ -7,6 +7,7 @@ import "./skillCardHR.css";
 import { useNavigate } from "react-router-dom";
 
 function RoleCardHR({skill_id, skillName, skillDesc,}) {
+    
     const navigate = useNavigate(); 
 
     const editSkill = () =>{ 

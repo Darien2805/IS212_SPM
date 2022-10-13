@@ -55,7 +55,6 @@ function SkillMaintenance(){
                 }
             </div>
         </div>
-        
         </>
     )
 }
