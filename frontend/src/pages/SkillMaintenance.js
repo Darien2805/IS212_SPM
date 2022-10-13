@@ -50,7 +50,7 @@ function SkillMaintenance(){
                     })
                 :
                     <Alert className='alert' key='warning' variant='warning'>
-                        No active job roles at the moment
+                        No active skills at the moment
                     </Alert>
                 }
             </div>

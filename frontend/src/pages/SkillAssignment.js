@@ -31,7 +31,8 @@ function SkillAssignment() {
 
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [showAssignError, setShowAssignError] = useState(false);   
-    const [assignError, setAssignError] = useState('');     
+    const [assignError, setAssignError] = useState('');   
+    const [staffId, setStaffId] = useState('')  
 
 
     class courseObj {
@@ -52,7 +53,11 @@ function SkillAssignment() {
 
     useEffect(()=>{
         // store all existing course as objects
-        Axios.get("http://localhost:5005/api/getActiveCourses").then((response)=>{
+        
+        setStaffId(window.localStorage.getItem('sessionId'))
+        //console.log(staffId)
+        if (staffId!==''){
+            Axios.get("http://localhost:5005/api/getActiveCourses/"+staffId).then((response)=>{
             let course_Objects = []
             
             response.data.forEach(course => {
@@ -64,6 +69,8 @@ function SkillAssignment() {
             setCourseObjects(course_Objects) 
             //console.log(course_Objects)
         });
+        }
+        
     },[courseObject])
 
     useEffect(()=>{
