@@ -1,16 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins');
-.courseContainer{
-    margin: 25px 25px 25px 140px;
-    width: 80vw;
 
-    
-}
 .child{
     margin:0 auto;
     
 }
 
 h1{
+    margin-top: 25px;
     text-align: center;
     font-family: 'Poppins', cursive;
     text-decoration: underline;
@@ -20,4 +16,12 @@ h1{
 .create{
     margin-top: 5%;
     margin-left: 10%;
+}
+
+.alert{
+    max-width: 80vw;
+    margin: 0 auto;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 20px;
 }
