@@ -39,7 +39,6 @@ function Header() {
   //2 - User
   //3 - Manager
   //4 - Trainer
-
   return (
       <>
       <div className="headerContainer">
