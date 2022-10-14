@@ -7,9 +7,10 @@ import "./Roles.css"
 //Bootstrap
 function Role() {
   const [roles,setRoles] = useState([]);
+  const staff_id = 2
 
   useEffect(()=>{
-    Axios.get("http://localhost:5005/api/getActiveRoles").then((response)=>{
+    Axios.get(`http://localhost:5005/api/getActiveRoles/${staff_id}`).then((response)=>{
       setRoles(response.data)
     });
     },[])
@@ -23,7 +24,7 @@ function Role() {
         <div className="child">
           {roles.map((val)=>{
             return( val.role_status === "Active" ?
-            <RoleCard key={val.role_id} roleName={val.role_name} roleDesc={val.role_desc} roleRes={val.role_responsibilities}/> : [])
+            <RoleCard key={val.role_id} roleName={val.role_name} roleDesc={val.role_desc} skillNames={val.skill_names}/> : [])
             })}
         </div>
       </div>
