@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import "./roleCard.css";
 import { useNavigate } from "react-router-dom";
 
-function RoleCard({roleName,roleDesc,roleRes}) {
+function RoleCard({roleName,roleDesc,skillNames}) {
 
     let navigate = useNavigate(); 
     const routeChange = () =>{ 
@@ -12,11 +12,10 @@ function RoleCard({roleName,roleDesc,roleRes}) {
     }
 
   return (
-    
     <div className="roleCard">
         <h3>{roleName}</h3>
         <p>{roleDesc}</p>
-        <p>{roleRes}</p>
+        <p>{skillNames}</p>
         <div style={{ display: "flex" }}>
         <Button variant="secondary" style={{ marginLeft: "auto" }} onClick={routeChange}>Create Learning Journey</Button>
         </div>
