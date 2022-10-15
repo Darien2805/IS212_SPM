@@ -10,7 +10,7 @@ import Alert from 'react-bootstrap/Alert';
 
 function Role() {
   const [activeRoles,setRoles] = useState([]);
-  const staff_id = 2
+  const staff_id = 2 // Testing purpose
 
   useEffect(()=>{
     Axios.get(`http://localhost:5005/api/getActiveRoles/${staff_id}`).then((response)=>{
