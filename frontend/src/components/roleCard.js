@@ -33,7 +33,7 @@ function RoleCard({roleName,roleDesc,skillNames,journey_ID}) {
     <p>
       {skillNames.map((skill)=>{
         return( 
-        <Badge bg="secondary" className="me-1">{skill}</Badge>
+        <Badge bg="secondary" className="me-1"> {skill} </Badge>
         )
         })}
     </p>
