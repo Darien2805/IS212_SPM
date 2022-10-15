@@ -11,14 +11,20 @@ import { Link } from "react-router-dom";
 // import Form from 'react-bootstrap/Form';
 // import Dropdown from 'react-bootstrap/Dropdown';
 // import Tab from 'react-bootstrap/Tab';
+import { useNavigate, useLocation } from "react-router-dom";
 
 function SelectSkills(props) {
     const [selectedskills, setselectskills] = useState([])      // Skills for current role
     const [courses,setcourses] = useState([])                   // Course name and desc
     const [selectedcourses, setselectedcourses] = useState([])  // Dropdown box selections
-    const role_id =2
 
-    useEffect(()=>{        
+    const {state} = useLocation();
+    const {role_id} = state;
+
+    const navigate = useNavigate();
+    const [journey_id, setjourney_id] = useState()
+
+    useEffect(()=>{
         const getcourses = (skillid) => {
             let course = []
             axios.get("http://localhost:5005/api/getSkillCourses/" + skillid).then((response)=>
@@ -57,6 +63,40 @@ function SelectSkills(props) {
         setselectedcourses(newArray);
         }
 
+    
+
+    const routeChange = () =>{
+        // Filter course duplicates
+        let journey_courses = selectedcourses.flat();
+        journey_courses = [...new Set(journey_courses)];
+        console.log(journey_courses);
+
+        // Alert error if no courses
+        if (journey_courses.length == 1 && journey_courses[0] == null) {
+            alert("No courses selected!");
+            return;
+        }
+
+        // Create journey_id
+        let journey_data = {
+            staff_id: 1,
+            role_id: role_id
+        }
+        axios.post("http://localhost:5005/api/createJourney", journey_data).then((response)=>{
+            setjourney_id(response.data.insertId);
+            console.log("New Journey ID created " + response.data.insertId);
+        });
+        
+        // Create journey_course rows
+        let journey_course_data = {
+            journey_id: journey_id,
+            courses: journey_courses
+        }
+        axios.post("http://localhost:5005/api/createJourneyCourses", journey_course_data).then((response)=>{});
+
+        navigate('/learningjourney', { state: { role_id: role_id, journey_id: journey_id } });
+    }
+
   return (
     <div>
         <h1>Pick a skill for role {role_id}</h1>
@@ -81,9 +121,7 @@ function SelectSkills(props) {
 
         </div>
         <div>
-            <Button variant="outline-primary" type="submit" className="submit">
-                <Link to="/learningjourney">Create</Link>
-            </Button>
+            <Button variant="outline-primary" type="submit" className="submit" onClick={routeChange}>Create</Button>
         </div>
       
     </div>
