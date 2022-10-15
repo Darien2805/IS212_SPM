@@ -45,7 +45,7 @@ function RoleCardHR({roleName, roleDesc, skills, roleId}) {
                 <Modal.Body>Are you sure you want to delete this role?</Modal.Body>
                 <Modal.Footer>
                 <Button variant="danger" onClick={deleteRole}>
-                    Delete
+                    Confirm
                 </Button>
                 </Modal.Footer>
             </Modal>
