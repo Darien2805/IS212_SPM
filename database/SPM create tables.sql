@@ -28,10 +28,10 @@ CREATE TABLE course (
 
 CREATE TABLE registration (
     reg_id INT NOT NULL PRIMARY KEY,
-    course_id VARCHAR(20) NOT NULL,
-    staff_id INT NOT NULL,
-    reg_status VARCHAR(20) NOT NULL,
-    completion_status VARCHAR(20) NOT NULL,
+    course_id VARCHAR(20),
+    staff_id INT,
+    reg_status VARCHAR(20),
+    completion_status VARCHAR(20),
     CONSTRAINT registration_fk1 FOREIGN KEY (course_id)
         REFERENCES course (course_id),
     CONSTRAINT registration_fk2 FOREIGN KEY (staff_id)
@@ -42,15 +42,16 @@ CREATE TABLE jobrole (
     role_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     role_name VARCHAR(50) NOT NULL,
     role_desc VARCHAR(255) NOT NULL,
-    role_responsibilities VARCHAR(255) NOT NULL,
-    role_status VARCHAR(15) NOT NULL
+    role_status VARCHAR(15) NOT NULL,
+    CONSTRAINT jobrole_unique UNIQUE (role_name)
 );
 
 CREATE TABLE skill (
     skill_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     skill_name VARCHAR(20) NOT NULL,
     skill_desc VARCHAR(255) NOT NULL,
-    skill_status VARCHAR(15) NOT NULL
+    skill_status VARCHAR(15) NOT NULL,
+    CONSTRAINT skill_unique UNIQUE (skill_name)
 );
 
 CREATE TABLE roleskill (
@@ -77,10 +78,12 @@ CREATE TABLE journey (
     journey_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     staff_id INT NOT NULL,
     role_id INT NOT NULL,
+    starred BOOLEAN DEFAULT FALSE,
     CONSTRAINT journey_fk1 FOREIGN KEY (staff_id)
         REFERENCES staff (staff_id),
     CONSTRAINT journey_fk2 FOREIGN KEY (role_id)
-        REFERENCES jobrole (role_id)
+        REFERENCES jobrole (role_id),
+	CONSTRAINT journey_unique UNIQUE (staff_id, role_id)
 );
 
 CREATE TABLE journeycourse (

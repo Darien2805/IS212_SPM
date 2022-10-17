@@ -23,7 +23,7 @@ function Role() {
         <div className="child">
           {roles.map((val)=>{
             return( val.role_status === "Active" ?
-            <RoleCard key={val.role_id} roleId={val.role_id} roleName={val.role_name} roleDesc={val.role_desc} roleRes={val.role_responsibilities}/> : [])
+            <RoleCard key={val.role_id} roleName={val.role_name} roleDesc={val.role_desc} roleRes={val.role_responsibilities}/> : [])
             })}
         </div>
       </div>

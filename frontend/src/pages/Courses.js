@@ -8,7 +8,7 @@ function Courses() {
   const [courses,setCourses]=useState([]);
 
   useEffect(()=>{
-    Axios.get("http://localhost:5005/api/getCourses").then((response)=>{
+    Axios.get("http://localhost:5005/api/getActiveCourses").then((response)=>{
       setCourses(response.data)
     });
     },[])
@@ -24,7 +24,7 @@ function Courses() {
             {courses.map((val)=>{
             
               return( val.course_status === "Active" ?
-                <CourseCard key={val.course_id} title={val.course_name} description={val.course_desc} /> : "You suck, Ben"
+                <CourseCard key={val.course_id} title={val.course_name} description={val.course_desc}/> : "You suck, Ben"
               )
             })}
         </div>

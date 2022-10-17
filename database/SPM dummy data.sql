@@ -33,25 +33,25 @@ INSERT INTO registration (reg_id, course_id, staff_id, reg_status, completion_st
 (7, 'C3', 3,'Registered', 'Completed'),
 (8, 'C4', 8,'Registered', 'Completed');
 
-INSERT INTO jobrole (role_id, role_name, role_desc, role_responsibilities, role_status) VALUES
-(1, 'r1', 'role 1....','responsibilities 1', 'Active'),
-(2, 'r2', 'role 2....','responsibilities 2', 'Active'),
-(3, 'r6', 'role 3....','responsibilities 3', 'Active'),
-(4, 'r1', 'role 4....','responsibilities 4', 'Active'),
-(5, 'r8', 'role 5....','responsibilities 5', 'Active'),
-(6, 'r3', 'role 6....','responsibilities 6', 'Deleted'),
-(7, 'r3', 'role 7....','responsibilities 7', 'Deleted'),
-(8, 'r4', 'role 8....','responsibilities 8', 'Deleted');
+INSERT INTO jobrole (role_name, role_desc, role_status) VALUES
+('r1', 'role 1....','Active'),
+('r2', 'role 2....','Active'),
+('r3', 'role 3....','Active'),
+('r4', 'role 4....','Active'),
+('r5', 'role 5....','Active'),
+('r6', 'role 6....','Deleted'),
+('r7', 'role 7....','Deleted'),
+('r8', 'role 8....','Deleted');
 
-INSERT INTO skill (skill_id, skill_name, skill_desc, skill_status) VALUES
-(1, 'skill 1', 'skill 1....', 'Active'),
-(2, 'skill 2', 'skill 2....', 'Active'),
-(3, 'skill 3', 'skill 3....', 'Active'),
-(4, 'skill 4', 'skill 4....', 'Active'),
-(5, 'skill 5', 'skill 5....', 'Active'),
-(6, 'skill 6', 'skill 6....', 'Deleted'),
-(7, 'skill 7', 'skill 7....', 'Deleted'),
-(8, 'skill 8', 'skill 8....', 'Deleted');
+INSERT INTO skill (skill_name, skill_desc, skill_status) VALUES
+('skill 1', 'skill 1....', 'Active'),
+('skill 2', 'skill 2....', 'Active'),
+('skill 3', 'skill 3....', 'Active'),
+('skill 4', 'skill 4....', 'Active'),
+('skill 5', 'skill 5....', 'Active'),
+('skill 6', 'skill 6....', 'Deleted'),
+('skill 7', 'skill 7....', 'Deleted'),
+('skill 8', 'skill 8....', 'Deleted');
 
 INSERT INTO roleskill (role_id, skill_id) VALUES
 (1, 1),
@@ -97,15 +97,15 @@ INSERT INTO courseskill (course_id, skill_id) VALUES
 ('C8', 2),
 ('C8', 4);
 
-INSERT INTO journey (journey_id, staff_id, role_id) VALUES
-(1, 1, 5),
-(2, 8, 2),
-(3, 1, 7),
-(4, 4, 6),
-(5, 3, 1),
-(6, 7, 4),
-(7, 7, 3),
-(8, 2, 4);
+INSERT INTO journey (staff_id, role_id) VALUES
+(1, 5),
+(8, 2),
+(1, 7),
+(4, 6),
+(3, 1),
+(7, 4),
+(7, 3),
+(2, 4);
 
 INSERT INTO journeycourse (journey_id, course_id) VALUES
 (1, 'C1'),
