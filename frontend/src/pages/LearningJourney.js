@@ -87,7 +87,7 @@ function LearningJourney(props) {
                             {learningJourneyData[index].journeyCourses[journey].map((skill) => skill.course_name === null ? (<p>no course name</p>) : (
                             <div key={skill.course_id} className="courseJourney">
                             <p>{skill.course_name}</p>
-                            <button className="newButton"><DeleteIcon /></button>
+
                             </div>
                             ))}
                             </>
@@ -99,7 +99,7 @@ function LearningJourney(props) {
                         <Link to={`addCourses?journey_id=${learningJourneyData[index].journeyID}&role_name=${learningJourneyData[index].role[0].role_name}`} className="fancyLink" target="_blank">
                             
                         
-                        <p><AddIcon />Add Courses to Journey</p>
+                        <p><AddIcon />Update Courses in Journey</p>
                         
                         
                         
