@@ -45,7 +45,7 @@ function SkillMaintenance(){
                 activeSkills.length > 0 ?
                     activeSkills.map((skill)=>{
                         return( 
-                            <RoleCardHR key={skill.skill_id} skillName={skill.skill_name} skillDesc={skill.skill_desc}/> 
+                            <RoleCardHR key={skill.skill_id} skillId={skill.skill_id} skillName={skill.skill_name} skillDesc={skill.skill_desc}/> 
                         )
                     })
                 :

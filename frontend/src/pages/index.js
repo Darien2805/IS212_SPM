@@ -9,3 +9,4 @@ export {default as CreateSkill} from "./CreateSkill";
 export {default as LearningJourney } from "./LearningJourney";
 export {default as RoleMaintenance } from "./RoleMaintenance";
 export {default as CreateRole } from "./CreateRole";
+export {default as EditSkill } from "./EditSkill";

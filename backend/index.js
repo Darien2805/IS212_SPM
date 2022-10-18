@@ -7,7 +7,7 @@ const mysql = require('mysql');
 const db = mysql.createPool({
     host: "localhost",
     user: "root",
-    password: "root",
+    password: "",
     database:"spm" 
 })
 
@@ -37,6 +37,17 @@ app.get("/api/getUserType/:staff_id", (req,res)=>{
 app.get("/api/getActiveSkills", (req,res)=>{
     db.query("SELECT * FROM skill WHERE skill_status = 'Active'", (err,result)=>{
         // console.log(result)
+        if(err) {
+            console.log(err)
+        }
+        res.send(result)
+    });
+});
+
+//Route to get one active skill
+app.get("/api/getSkill/:skill_id", (req,res)=>{
+    const skill_id = req.params.skill_id;
+    db.query("SELECT * FROM skill WHERE skill_id = ?", skill_id, (err,result)=>{
         if(err) {
             console.log(err)
         }
