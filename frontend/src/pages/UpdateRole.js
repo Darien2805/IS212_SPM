@@ -9,7 +9,7 @@ import "./UpdateRole.css"
 import { Button } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form';
 
-function CreateRole(){
+function UpdateRole(){
     const [currRoleName, setCurrRoleName] = useState('');
     const [newRoleName, setNewRoleName] = useState('');
     const [roleDesc, setRoleDesc] = useState('');
@@ -31,20 +31,30 @@ function CreateRole(){
     useEffect(()=>{
         // set current role name, role desc, skills needed 
         Axios.get(`http://localhost:5005/api/getRole/${location.state.roleId}`).then((response)=>{
-            console.log(response.data[0].role_name)
+            // console.log(response.data[0].role_name)
             setCurrRoleName(response.data[0].role_name)
             setNewRoleName(response.data[0].role_name)
             setRoleDesc(response.data[0].role_desc)
 
             let skillsSelected = []
-            let skillIds = JSON.parse(response.data[0].skill_ids)
-            let skillNames = JSON.parse(response.data[0].skill_names)
+            let skillIds = JSON.parse(response.data[0].skill_ids).filter(skillId => {
+                return skillId !== null
+            })
+            let skillNames = JSON.parse(response.data[0].skill_names).filter(skillName => {
+                return skillName !== null
+            })
             for (let index = 0; index < skillIds.length; index++) {
                 let skillId = skillIds[index];
                 let skillName = skillNames[index];
                 skillsSelected.push({value: skillId, label: skillName})
             }
             setSelectedSkills(skillsSelected)
+
+            if (skillsSelected.length===0){
+                setSkillsError(`The skills needed for this role are all not active. Please add new skills needed or go to the "Skill Maintenance" tab to create new skills or recreate deleted skills.`)
+                setShowSkillsError(true)
+            }
+            
         });
 
         // set current role names (those existing in db)
@@ -63,7 +73,13 @@ function CreateRole(){
                 skills.push({value: skill.skill_id, 
                             label: skill.skill_name})
             })
-            setActiveSkills(skills)
+            if (skills.length===0){
+                setSkillsError(`There are no active skills at the moment. Please go to the "Skill Maintenance" tab to create new skills or recreate deleted skills.`)
+                setShowSkillsError(true)
+            }
+            else{
+                setActiveSkills(skills)
+            }
         });
 
         // set skills error (to show when there's no skills selected)
@@ -211,4 +227,4 @@ function CreateRole(){
         </>
     )
 }
-export default CreateRole
+export default UpdateRole
