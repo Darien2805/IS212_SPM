@@ -36,9 +36,6 @@ function CourseCard({courseName,courseDesc,skillNames,courseType}) {
       <p>
         <Badge bg="secondary" className="me-1">{courseType}</Badge>
       </p>
-      <div style={{ display: "flex" }}>
-        <Button variant="primary" style={{ marginLeft: "auto" }} onClick={routeChange}>View</Button>
-      </div>
   </div>  
   )
 }
