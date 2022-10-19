@@ -1,17 +1,10 @@
 import React from 'react';
 import "./courseCard.css";
-import { useNavigate } from "react-router-dom";
 
 //bootstrap
-import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 
 function CourseCard({courseName,courseDesc,skillNames,courseType}) {
-  let navigate = useNavigate();
-  const routeChange = () => {
-    let path = `../Roles`; //need to change the route 
-    navigate(path);
-  }
 
   return (
     <div className="courseCard">
