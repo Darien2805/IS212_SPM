@@ -12,6 +12,7 @@ import Form from 'react-bootstrap/Form';
 function EditSkill(){
     const [currSkillName, setCurrSkillName] = useState('');
     const [newSkillName, setNewSkillName] = useState('');
+    const [allSkillName, setAllSkillName] = useState([]);
     const [SkillDesc, setSkillDesc] = useState('');
 
     const [nameError, setNameError] = useState('');                     // error from new skill name
@@ -22,12 +23,22 @@ function EditSkill(){
     const navigate = useNavigate();
     const location = useLocation();
 
+    useEffect(()=>{
+        let allskills=[]
+        Axios.get('http://localhost:5005/api/getAllSkills').then((response)=>{
+            response.data.forEach(skill =>{
+                if(skill.skill_id !== location.state.skillId){
+                    allskills.push(skill.skill_name)
+                }
+            })
+        });
+        setAllSkillName(allskills)
+    },[location.state.roleId])
 
     useEffect(()=>{
-        // set current role name, role desc, skills needed
-        console.log(location.state.skillId)
-        Axios.get('http://localhost:5005/api/getSkill/'+1).then((response)=>{
-            console.log(response.data[0])
+        //console.log(location.state.skillId)
+        Axios.get('http://localhost:5005/api/getSkill/'+location.state.skillId).then((response)=>{
+            //console.log(response.data[0])
             setCurrSkillName(response.data[0].skill_name)
             setNewSkillName(response.data[0].skill_name)
             setSkillDesc(response.data[0].skill_desc)
@@ -35,7 +46,8 @@ function EditSkill(){
     },[location.state.roleId])
     const checkSkillName = (user_input) => {
         setNewSkillName(user_input)
-        if (currSkillName.includes(user_input.toLowerCase())){
+        const same = (element) => element === user_input.toLowerCase();
+        if (allSkillName.some(same)){
             setNameError("The skill name already exists in the system.")
             setShowNameError(true)
         }
