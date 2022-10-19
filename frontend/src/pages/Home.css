@@ -1,0 +1,25 @@
+
+html, body{
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+h1{
+    font-size: 30px;
+    text-align: center;
+    font-family: 'Poppins', cursive;
+    text-decoration: underline;
+    text-underline-offset: 15px;
+}
+
+.container{
+    align-items: center;
+    text-align: center;
+    margin-top: 30%;
+    border: solid black;
+    border-radius: 20px;
+}
+.field {
+    min-width: 100%;
+    width: auto;
+}

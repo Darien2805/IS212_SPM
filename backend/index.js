@@ -24,7 +24,7 @@ app.get("/", (req,res)=>{
 // Route to get staff user type ---> to determine which header to show
 app.get("/api/getUserType/:staff_id", (req,res)=>{
     const staff_id = req.params.staff_id;
-    db.query("SELECT user_type FROM staff where staff_id = ?", staff_id, (err,result)=>{
+    db.query("SELECT * FROM staff where staff_id = ?", staff_id, (err,result)=>{
         console.log(result)
         if(err) {
             console.log(err)
@@ -99,11 +99,14 @@ app.get("/api/getAllSkills", (req,res)=>{
 app.get("/api/getActiveRoles/:staff_id", (req,res)=>{
     const staff_id = req.params.staff_id;
     db.query(`SELECT t1.*, journey_id FROM (
-        SELECT jr.*, JSON_ARRAYAGG(s.skill_id) AS skill_ids, JSON_ARRAYAGG(s.skill_name) AS skill_names 
-        FROM jobrole jr, roleskill rs, skill s 
-        WHERE jr.role_id = rs.role_id AND rs.skill_id = s.skill_id
-        AND role_status = 'Active' AND skill_status = 'Active' 
-        GROUP BY jr.role_id
+        SELECT t1.*, JSON_ARRAYAGG(s.skill_id) AS skill_ids, JSON_ARRAYAGG(s.skill_name) AS skill_names 
+        FROM (
+            SELECT jr.*, rs.skill_id FROM jobrole jr, roleskill rs
+            WHERE jr.role_id = rs.role_id AND role_status = 'Active' 
+            ) as t1
+        LEFT JOIN skill s 
+        ON t1.skill_id = s.skill_id AND skill_status = 'Active'
+        GROUP BY t1.role_id
         ) as t1
         LEFT JOIN journey j 
         ON t1.role_id = j.role_id AND staff_id = ?`, staff_id, (err,result)=>{
@@ -234,12 +237,15 @@ app.get("/api/getAllRoles", (req,res)=>{
 app.get("/api/getActiveCourses/:staff_id", (req,res)=>{
     const staff_id = req.params.staff_id;
     db.query(`SELECT t1.*, completion_status FROM (
-                SELECT c.*, JSON_ARRAYAGG(s.skill_id) AS skill_ids, JSON_ARRAYAGG(s.skill_name) AS skill_names 
-                FROM course c, courseskill cs, skill s 
-                WHERE c.course_id = cs.course_id AND cs.skill_id = s.skill_id
-                AND skill_status = 'Active' and course_status = 'Active' 
-                GROUP BY c.course_id
+            SELECT t1.*, JSON_ARRAYAGG(s.skill_id) AS skill_ids, JSON_ARRAYAGG(s.skill_name) AS skill_names 
+                FROM (
+                    SELECT c.*, cs.skill_id FROM course c, courseskill cs
+                    WHERE c.course_id = cs.course_id and course_status = 'Active' 
                 ) as t1
+                LEFT JOIN skill s 
+            on t1.skill_id = s.skill_id AND skill_status = 'Active'
+            GROUP BY t1.course_id
+            ) as t1
             LEFT JOIN registration r 
             ON t1.course_id = r.course_id AND staff_id = ?`, staff_id, (err,result)=>{
         if(err) {
@@ -262,10 +268,10 @@ app.get("/api/getCourse/:course_id", (req,res)=>{
     });
 });
 
-// Route to get skill name from one course
+// Route to get active skills (skill_ids, skill_names) from one course
 app.get("/api/getCourseSkill/:course_id", (req,res)=>{
     const course_id = req.params.course_id;
-    db.query("SELECT skill_id, skill_name from skill WHERE skill_id IN (SELECT skill_id FROM courseskill WHERE course_id = ?)", course_id, (err,result)=>{
+    db.query("SELECT skill_id, skill_name from skill WHERE skill_id IN (SELECT skill_id FROM courseskill WHERE course_id = ?) AND skill_status = 'Active'", course_id, (err,result)=>{
         if(err) {
             console.log(err)
         }
@@ -302,10 +308,14 @@ app.post('/api/createCourseSkills', (req,res)=> {
 // Route to get one job role
 app.get("/api/getRole/:role_id", (req,res)=>{
     const role_id = req.params.role_id;
-    db.query(`SELECT jr.*, JSON_ARRAYAGG(s.skill_id) AS skill_ids, JSON_ARRAYAGG(s.skill_name) AS skill_names 
-            FROM jobrole jr, roleskill rs, skill s 
-            WHERE jr.role_id = rs.role_id AND rs.skill_id = s.skill_id
-            AND role_status = 'Active' AND skill_status = 'Active' AND jr.role_id = ?`, role_id, (err,result)=>{
+    db.query(`SELECT t1.*, JSON_ARRAYAGG(s.skill_id) AS skill_ids, JSON_ARRAYAGG(s.skill_name) AS skill_names 
+            FROM (
+                SELECT jr.*, rs.skill_id FROM jobrole jr, roleskill rs
+                WHERE jr.role_id = rs.role_id AND role_status = 'Active' 
+                ) as t1
+            LEFT JOIN skill s 
+            ON t1.skill_id = s.skill_id AND skill_status = 'Active'
+            WHERE t1.role_id = ?`, role_id, (err,result)=>{
         if(err) {
             console.log(err)
         }
@@ -313,10 +323,10 @@ app.get("/api/getRole/:role_id", (req,res)=>{
     });
 });
 
-// Route to get all skills related to selected role
+// Route to get all active skills (skill_ids) related to selected role
 app.get("/api/getRoleSkills/:role_id", (req,res)=>{
     const role_id = req.params.role_id;
-    db.query("SELECT skill_id FROM roleskill WHERE role_id = ?", role_id, (err,result)=>{
+    db.query("SELECT rs.skill_id FROM roleskill rs, skill s WHERE rs.skill_id = s.skill_id AND skill_status = 'Active' AND role_id = ?", role_id, (err,result)=>{
         console.log(result)
         if(err) {
             console.log(err)
@@ -325,10 +335,10 @@ app.get("/api/getRoleSkills/:role_id", (req,res)=>{
     });
 });
 
-// Route to get all courses related to selected skill
+// Route to get all active courses (course_ids) related to selected skill
 app.get("/api/getSkillCourses/:skill_id", (req,res)=>{
     const skill_id = req.params.skill_id;
-    db.query("SELECT course_id FROM courseskill WHERE skill_id = ?", skill_id, (err,result)=>{
+    db.query("SELECT cs.course_id FROM courseskill cs, course c WHERE cs.course_id = c.course_id AND course_status = 'Active' AND skill_id = ?", skill_id, (err,result)=>{
         console.log(result)
         if(err) {
             console.log(err)
