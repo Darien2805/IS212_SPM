@@ -18,8 +18,8 @@ function CourseCard({courseName,courseDesc,skillNames,courseType}) {
       </b>
       <p>
         {skillNames.map((skill)=>{
-          return( 
-          <Badge bg="secondary" className="me-1"> {skill} </Badge>
+          return( skill !== null ?
+          <Badge bg="secondary" className="me-1"> {skill} </Badge>: []
           )
         })}
       </p>
