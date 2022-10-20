@@ -31,11 +31,13 @@ function RoleCard({roleName,roleDesc,skillNames,journey_ID}) {
       <u>Skills needed</u>
     </b>
     <p>
-      {skillNames.map((skill)=>{
-        return( 
-        <Badge bg="secondary" className="me-1"> {skill} </Badge>
+      {
+      skillNames.map((skill)=>{
+        return( skill !== null ?
+        <Badge bg="secondary" className="me-1"> {skill} </Badge> : []
         )
-        })}
+      })
+      }
     </p>
     <div style={{ display: "flex" }}>
       <Button variant="secondary" style={{ marginLeft: "auto" }} onClick={HandleValidation}>Create Learning Journey</Button>
