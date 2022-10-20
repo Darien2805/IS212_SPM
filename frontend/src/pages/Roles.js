@@ -7,17 +7,17 @@ import "./Roles.css"
 //Bootstrap
 import Alert from 'react-bootstrap/Alert';
 
-
 function Role() {
-  const [activeRoles,setRoles] = useState([]);
+  const [activeRoles,setActiveRoles] = useState([]);
   const staff_id = 2 // Testing purpose
 
   useEffect(()=>{
     Axios.get(`http://localhost:5005/api/getActiveRoles/${staff_id}`).then((response)=>{
-      setRoles(response.data)
+      setActiveRoles(response.data)
     });
     },[])
-
+    
+    
   return (
     <>
     <Header />
@@ -25,15 +25,19 @@ function Role() {
       <div >
         <h1>All Roles</h1>
         <div className="child">
-          {activeRoles.map((role)=>{
-            return( role.role_status === "Active" ?
-            <RoleCard key={role.role_id} roleName={role.role_name} roleDesc={role.role_desc} skillNames={JSON.parse(role.skill_names)}
-              journey_ID={role.journey_id}/> 
+          { 
+          activeRoles.length > 0 ?
+            activeRoles.map((role)=>{
+              return( 
+                <RoleCard key={role.role_id} roleName={role.role_name} roleDesc={role.role_desc} skillNames={JSON.parse(role.skill_names)}
+                journey_ID={role.journey_id}/> 
+                )
+              })
             :
             <Alert className='alert' key='warning' variant='warning'>
               No active job roles at the moment
-            </Alert>)
-          })}
+            </Alert>
+          }
         </div>
       </div>
     </div>
