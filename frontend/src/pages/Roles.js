@@ -9,6 +9,7 @@ import Alert from 'react-bootstrap/Alert';
 
 function Role() {
   const [activeRoles,setActiveRoles] = useState([]);
+  const style = { textAlign: 'center' }
   const staff_id = 2 // Testing purpose
 
   useEffect(()=>{
@@ -34,9 +35,12 @@ function Role() {
                 )
               })
             :
-            <Alert className='alert' key='warning' variant='warning'>
-              No active job roles at the moment
-            </Alert>
+            <p style = {style}>
+              <Alert className='alert' key='warning' variant='warning'>
+                No active job roles at the moment
+              </Alert>
+            </p>
+            
           }
         </div>
       </div>
