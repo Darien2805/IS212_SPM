@@ -8,12 +8,13 @@ import "./Courses.css"
 import Alert from 'react-bootstrap/Alert';
 
 function Courses() {
-  const [activeCourses,setCourses] = useState([]);
+  const [activeCourses,setActiveCourses] = useState([]);
+  const style = { textAlign: 'center' }
   const staff_id = 2 // Testing purpose
 
   useEffect(()=>{
     Axios.get(`http://localhost:5005/api/getActiveCourses/${staff_id}`).then((response)=>{
-      setCourses(response.data)
+      setActiveCourses(response.data)
     });
     },[])
     
@@ -24,19 +25,20 @@ function Courses() {
       <div >
         <h1>All courses</h1>
         <div className="child">
-            {activeCourses.map((course)=>{
-              return(course.course_status === "Active" ?
+            { activeCourses.length > 0 ?
+            activeCourses.map((course)=>{
+              return(
                 <CourseCard key={course.course_id} courseName={course.course_name} courseDesc={course.course_desc}
                 skillNames={JSON.parse(course.skill_names)} courseType={course.course_type}/> 
-                : 
-                <p>
-                  <Alert className='alert' key='warning' variant='warning'>
-                    No active courses at the moment
-                  </Alert>
-                </p>
-                
-              )
-            })}
+                 )
+              }) 
+              :
+              <p style = {style}>
+                <Alert className='alert' key='warning' variant='warning'>
+                  No active courses at the moment
+                </Alert>
+              </p>
+            }
         </div>
         </div>
     </div>
