@@ -308,6 +308,17 @@ app.post('/api/createCourseSkills', (req,res)=> {
 // Route to get one job role
 app.get("/api/getRole/:role_id", (req,res)=>{
     const role_id = req.params.role_id;
+    db.query("SELECT * FROM jobrole WHERE role_id = ?", role_id, (err,result)=>{
+        if(err) {
+            console.log(err)
+        }
+        res.send(result)
+    });
+});
+
+// Route to get one active job role
+app.get("/api/getActiveRole/:role_id", (req,res)=>{
+    const role_id = req.params.role_id;
     db.query(`SELECT t1.*, JSON_ARRAYAGG(s.skill_id) AS skill_ids, JSON_ARRAYAGG(s.skill_name) AS skill_names 
             FROM (
                 SELECT jr.*, rs.skill_id FROM jobrole jr, roleskill rs
