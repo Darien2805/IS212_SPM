@@ -7,5 +7,6 @@ export {default as SkillAssignment} from "./SkillAssignment";
 export {default as SkillMaintenance} from "./SkillMaintenance";
 export {default as CreateSkill} from "./CreateSkill";
 export {default as LearningJourney } from "./LearningJourney";
+export {default as SelectSkills } from "./SelectSkills";
 export {default as RoleMaintenance } from "./RoleMaintenance";
 export {default as CreateRole } from "./CreateRole";
