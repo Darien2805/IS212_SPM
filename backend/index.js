@@ -239,8 +239,10 @@ app.get("/api/getActiveCourses/:staff_id", (req,res)=>{
     db.query(`SELECT t1.*, completion_status FROM (
             SELECT t1.*, JSON_ARRAYAGG(s.skill_id) AS skill_ids, JSON_ARRAYAGG(s.skill_name) AS skill_names 
                 FROM (
-                    SELECT c.*, cs.skill_id FROM course c, courseskill cs
-                    WHERE c.course_id = cs.course_id and course_status = 'Active' 
+                    SELECT c.*, cs.skill_id FROM course c
+                    LEFT JOIN courseskill cs
+                    ON c.course_id = cs.course_id
+                    WHERE course_status = 'Active'
                 ) as t1
                 LEFT JOIN skill s 
             on t1.skill_id = s.skill_id AND skill_status = 'Active'
