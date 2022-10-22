@@ -30,7 +30,7 @@ function UpdateRole(){
 
     useEffect(()=>{
         // set current role name, role desc, skills needed 
-        Axios.get(`http://localhost:5005/api/getRole/${location.state.roleId}`).then((response)=>{
+        Axios.get(`http://localhost:5005/api/getActiveRole/${location.state.roleId}`).then((response)=>{
             // console.log(response.data[0].role_name)
             setCurrRoleName(response.data[0].role_name)
             setNewRoleName(response.data[0].role_name)
