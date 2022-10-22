@@ -7,5 +7,7 @@ export const EDITSKILL = "/EditSkill"
 
 export const LEARNINGJOURNEY = "/learningjourney"
 export const SKILLASSIGNMENT = "/SkillAssignment"
+export const SELECTSKILLS = "/SelectSkills"
 export const ROLEMAINTENANCE = "/RoleMaintenance"
 export const CREATEROLE = "/CreateRole"
+export const UPDATEROLE = "/UpdateRole"
