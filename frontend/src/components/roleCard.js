@@ -6,14 +6,14 @@ import { useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 
-function RoleCard({roleId,roleName,roleDesc,skillNames,journey_ID}) {
+function RoleCard({role_id, roleName, roleDesc, skillNames, journey_ID}) {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = React.useState("");
   const style = { color: 'red' };
   
   const HandleValidation = () => {
     if (journey_ID === null) {
-      navigate('/SelectSkills', { state: { role_id: roleId } });
+      navigate('/SelectSkills', { state: { role_id: role_id } });
     } else {
       setErrorMessage("Learning Journey has already been created!")
     }
