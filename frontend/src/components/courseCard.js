@@ -4,7 +4,7 @@ import "./courseCard.css";
 //bootstrap
 import Badge from 'react-bootstrap/Badge';
 
-function CourseCard({courseName,courseDesc,skillNames,courseType}) {
+function CourseCard({courseName, courseDesc, skillNames, courseType, courseCompletion}) {
 
   return (
     <div className="courseCard">
@@ -28,6 +28,12 @@ function CourseCard({courseName,courseDesc,skillNames,courseType}) {
       </b>
       <p>
         <Badge bg="secondary" className="me-1">{courseType}</Badge>
+      </p>
+      <b>
+        <u>Completion Status</u>
+      </b>
+      <p>
+        <Badge bg="secondary" className="me-1">{courseCompletion}</Badge>
       </p>
   </div>  
   )
