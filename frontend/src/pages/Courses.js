@@ -29,7 +29,7 @@ function Courses() {
             activeCourses.map((course)=>{
               return(
                 <CourseCard key={course.course_id} courseName={course.course_name} courseDesc={course.course_desc}
-                skillNames={JSON.parse(course.skill_names)} courseType={course.course_type}/> 
+                skillNames={JSON.parse(course.skill_names)} courseType={course.course_type} courseCompletion={course.completion_status}/> 
                  )
               }) 
               :
