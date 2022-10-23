@@ -1,12 +1,12 @@
 import React,{useState,useEffect } from 'react'
 import Select from 'react-select'
 import { useNavigate, useLocation } from "react-router-dom";
-import Axios from 'axios'
-import Header from '../components/Header'
-import "./EditSkill.css"
+import Axios from 'axios';
+import Header from '../components/Header';
+import "./EditSkill.css";
 
 //Bootstrap
-import { Button } from 'react-bootstrap'
+import { Button } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 
 function EditSkill(){
@@ -44,6 +44,8 @@ function EditSkill(){
             setSkillDesc(response.data[0].skill_desc)
         });
     },[location.state.roleId])
+
+    //Checking of skill name
     const checkSkillName = (user_input) => {
         setNewSkillName(user_input)
         const same = (element) => element === user_input.toLowerCase();
@@ -87,6 +89,7 @@ function EditSkill(){
         }
     }
 
+    //update upon clicking button
     const updateRole = (e) => {
         e.preventDefault()
 
@@ -100,6 +103,8 @@ function EditSkill(){
 
         successAlert(newSkillName, SkillDesc)
     }
+
+    //alerts
     const successAlert = (newSkillName, SkillDesc) => {
         alert("The skill has been updated successfully.\n\nSkill Name: "+newSkillName+"\nRole Description: "+SkillDesc)
         navigate('/SkillMaintenance')

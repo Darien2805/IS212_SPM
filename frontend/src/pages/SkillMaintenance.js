@@ -32,7 +32,7 @@ function SkillMaintenance(){
             setActiveSkills(skills)
         });
     },[])
-    console.log(activeSkills)
+    //console.log(activeSkills)
 
     return (
         <>
