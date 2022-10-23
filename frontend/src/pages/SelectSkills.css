@@ -3,12 +3,12 @@ input[type=checkbox] {
     position: relative;
     bottom: 1px;
 }
-label {
+/* label {
     display: block;
     background-color: beige;
     border: black solid 1px;
     padding-top: 10px;
-}
+} */
 
 .selectedskills {
     padding: 20px;

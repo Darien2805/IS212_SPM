@@ -44,6 +44,17 @@ app.get("/api/getActiveSkills", (req,res)=>{
     });
 });
 
+//Route to get one active skill
+app.get("/api/getSkill/:skill_id", (req,res)=>{
+    const skill_id = req.params.skill_id;
+    db.query("SELECT * FROM skill WHERE skill_id = ?", skill_id, (err,result)=>{
+        if(err) {
+            console.log(err)
+        }
+        res.send(result)
+    });
+});
+
 // Route to create skill
 app.post('/api/createSkill', (req,res)=> {
     const skill_name = req.body.skill_name;
