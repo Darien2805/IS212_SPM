@@ -8,15 +8,16 @@ import "./Roles.css"
 import Alert from 'react-bootstrap/Alert';
 
 function Role() {
+  const [staff_id, setStaffId] = useState('')
   const [activeRoles,setActiveRoles] = useState([]);
   const style = { textAlign: 'center' }
-  const staff_id = 2 // Testing purpose
 
   useEffect(()=>{
+    setStaffId(window.localStorage.getItem('sessionId')) 
     Axios.get(`http://localhost:5005/api/getActiveRoles/${staff_id}`).then((response)=>{
       setActiveRoles(response.data)
     });
-    },[])
+    },[staff_id])
     
     
   return (
@@ -30,7 +31,7 @@ function Role() {
           activeRoles.length > 0 ?
             activeRoles.map((role)=>{
               return( 
-                <RoleCard key={role.role_id} roleId={role.role_id} roleName={role.role_name} roleDesc={role.role_desc} skillNames={JSON.parse(role.skill_names)}
+                <RoleCard role_id = {role.role_id} roleName={role.role_name} roleDesc={role.role_desc} skillNames={JSON.parse(role.skill_names)}
                 journey_ID={role.journey_id}/> 
                 )
               })
