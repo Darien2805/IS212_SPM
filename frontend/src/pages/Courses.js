@@ -8,15 +8,16 @@ import "./Courses.css"
 import Alert from 'react-bootstrap/Alert';
 
 function Courses() {
+  const [staff_id, setStaffId] = useState('')
   const [activeCourses,setActiveCourses] = useState([]);
   const style = { textAlign: 'center' }
-  const staff_id = 2 // Testing purpose
 
   useEffect(()=>{
+    setStaffId(window.localStorage.getItem('sessionId')) 
     Axios.get(`http://localhost:5005/api/getActiveCourses/${staff_id}`).then((response)=>{
       setActiveCourses(response.data)
     });
-    },[])
+    },[staff_id])
     
   return (
     <>
