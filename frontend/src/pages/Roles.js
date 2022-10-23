@@ -30,7 +30,7 @@ function Role() {
           activeRoles.length > 0 ?
             activeRoles.map((role)=>{
               return( 
-                <RoleCard key={role.role_id} roleName={role.role_name} roleDesc={role.role_desc} skillNames={JSON.parse(role.skill_names)}
+                <RoleCard key={role.role_id} roleId={role.role_id} roleName={role.role_name} roleDesc={role.role_desc} skillNames={JSON.parse(role.skill_names)}
                 journey_ID={role.journey_id}/> 
                 )
               })

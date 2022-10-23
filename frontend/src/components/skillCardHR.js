@@ -14,9 +14,9 @@ function RoleCardHR({skillId, skillName, skillDesc,}) {
     
     const navigate = useNavigate(); 
 
-    const editSkill = () =>{ 
-        let path = `../EditSkill`; //need to change the route to edit role page
-        navigate(path);
+    const editSkill = event =>{ 
+        //console.log(skillId)
+        navigate('/EditSkill',{state:{skillId:skillId}});
     }
 
     const showModal = () =>{ 
