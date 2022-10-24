@@ -19,7 +19,11 @@ function CourseCard({courseName, courseDesc, skillNames, courseType, courseCompl
       <p>
         {skillNames.map((skill)=>{
           return( skill !== null ?
-          <Badge bg="secondary" className="me-1"> {skill} </Badge>: []
+          <Badge bg="secondary" className="me-1"> {skill} </Badge>
+          : 
+          <div>
+            No skills found
+          </div>
           )
         })}
       </p>
