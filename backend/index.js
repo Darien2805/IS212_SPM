@@ -473,18 +473,28 @@ app.get("/api/getGroupedSkillCourses", (req,res)=>{
     });
 });
 
-// Route to delete a journey course
-app.delete('/api/deleteJourneyCourse/:journey_id/:course_id',(req,res)=>{
-    const journey_id = req.params.journey_id;
-    const course_id = req.params.course_id;
+// Route to update a journey course (remove all then add) -- to be edited
+app.post('/api/updateJourneyCourse',(req,res)=>{
+    const journey_id = req.body.journey_id;
+    const courses = req.body.coursees; // list of course_ids
 
-    db.query("DELETE FROM journeycourse WHERE journey_id = ? AND course_id = ?", [journey_id, course_id], (err,result)=>{
+    // Step 1: Clear all learning journey courses
+    db.query("DELETE FROM journeycourse WHERE journey_id = ?", journey_id, (err1,result1)=>{
         if(err) {
-            console.log(err)
+            console.log(err1)
         }
-        // else{
-        //     res.send(result)
-        // }
+        else{
+            console.log("success in deleting")
+            // Step 2: Create updated learning journey courses
+            courses.forEach(course_id => {
+                db.query("INSERT INTO journeycourse (journey_id, course_id) VALUES (?,?)",[journey_id,course_id], (err2,result2)=>{
+                    if(err2) {
+                        console.log(err2)
+                    }
+                    console.log("Success! \n", result2)
+                });
+            });
+        }
     }) 
 })
 
@@ -546,80 +556,27 @@ app.put('/api/deleteActiveRole',(req,res)=>{
 })
 
 
+// Route to delete learning journey and learning journey courses
+app.delete('/api/deleteJourney/:journey_id', (req,res)=> {
+    const journey_id = req.params.journey_id;
 
-
-
-
-// // Route to get courses related to skill that are added for selected journey
-// app.get("/api/getJourneySkillCourses/:journey_id/:skill_id", (req,res)=>{
-//     const journey_id = req.params.journey_id;
-//     const skill_id = req.params.skill_id;
-//     const stmt = `SELECT * FROM course WHERE course_id in (
-//                         SELECT course_id FROM courseskill WHERE skill_id = ?
-//                     ) AND course_id in (
-//                         SELECT course_id FROM journeycourse WHERE journey_id = ?
-//                     )`
-//     db.query(stmt, [skill_id, journey_id], (err,result)=>{
-//         if(err) {
-//             console.log(err)
-//         }
-//         res.send(result)
-//     });
-// });
-
-// // Route to get other courses that are added for selected journey (not related to the skills of the role)
-// app.get("/api/getJourneyOtherCourses/:journey_id", (req,res)=>{
-//     const journey_id = req.params.journey_id;
-//     const skill_id = req.params.skill_id;
-//     const stmt = `SELECT * FROM course WHERE course_id in (
-//                         SELECT course_id FROM courseskill WHERE skill_id = ?
-//                     ) AND course_id in (
-//                         SELECT course_id FROM journeycourse WHERE journey_id = ?
-//                     )`
-//     db.query(stmt, [skill_id, journey_id], (err,result)=>{
-//         if(err) {
-//             console.log(err)
-//         }
-//         res.send(result)
-//     });
-// });
-
-
-
-// // Route for creating the post
-// app.post('/api/create', (req,res)=> {
-//     const username = req.body.userName;
-//     const title = req.body.title;
-//     const text = req.body.text;
-
-//     db.query("INSERT INTO posts (title, post_text, user_name) VALUES (?,?,?)",[title,text,username], (err,result)=>{
-//         if(err) {
-//         console.log(err)
-//         }
-//         console.log(result)
-//     });
-// })
-
-// // Route to like a post
-// app.post('/api/like/:id',(req,res)=>{
-
-// const id = req.params.id;
-// db.query("UPDATE posts SET likes = likes + 1 WHERE id = ?",id, (err,result)=>{
-//     if(err) {
-//    console.log(err)   } 
-//    console.log(result)
-//     });    
-// });
-
-// // Route to delete a post
-
-// app.delete('/api/delete/:id',(req,res)=>{
-// const id = req.params.id;
-
-// db.query("DELETE FROM posts WHERE id= ?", id, (err,result)=>{
-// if(err) {
-// console.log(err)
-//         } }) })
+    // Step 1: Delete all learning journey courses
+    db.query("DELETE FROM journeycourse WHERE journey_id = ?", journey_id, (err1,result1)=>{
+        if(err1) {
+            console.log(err1)
+        }
+        else{
+            console.log("success in deleting")
+            // Step 2: Delete the learning journey
+            db.query("DELETE FROM journey WHERE journey_id = ?", journey_id, (err2,result2)=>{
+                if(err2) {
+                    console.log(err2)
+                }
+                console.log("Success in deleting !")
+            });
+        }
+    })
+})
 
 app.listen(PORT, ()=>{
     console.log(`Server is running on ${PORT}`)
