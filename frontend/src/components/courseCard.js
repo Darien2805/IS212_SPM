@@ -33,7 +33,7 @@ function CourseCard({courseName, courseDesc, skillNames, courseType, courseCompl
         <u>Completion Status</u>
       </b>
       <p>
-        <Badge bg="secondary" className="me-1">{courseCompletion}</Badge>
+        <Badge bg="secondary" className="me-1"> {courseCompletion} </Badge>
       </p>
   </div>  
   )
