@@ -4,6 +4,7 @@ import Collapsible from "react-collapsible"
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
+
 import { Link } from 'react-router-dom';
 import { getJourneyCoursesData,
     getJourneyData,
@@ -25,7 +26,7 @@ function LearningJourney(props) {
         console.log(journey)
         // const journey = await Axios.get(`http://localhost:5005/api/getJourneyCourses/${journey_id}`)
 
-        const groups = journey.data.reduce((groups, item) => {
+        const groups = journey.reduce((groups, item) => {
             const group = (groups[item.role_skill_name] || []);
             group.push(item);
             groups[item.role_skill_name] = group;
@@ -43,7 +44,9 @@ function LearningJourney(props) {
         return result
     }
     const getData = async() => {
+
         const data = await getJourneyData(staffID)
+
         data.data.map(journey => populateRelevantFields(journey.role_id,journey.journey_id))
         
        
@@ -55,10 +58,22 @@ function LearningJourney(props) {
         if(dataFetchedRef.current) return;
         dataFetchedRef.current = true
         getData().catch(console.error)
+
+    },)     
+        if(learningJourneyData.length > 0 ){
+            // for(const key in learningJourneyData[0].journeyCourses){
+            //     console.log(key)
+            //     console.log(learningJourneyData[0].journeyCourses[key])
+            // console.log("I am happening"+ learningJourneyData[0])
+            
+            console.log(learningJourneyData)
+        // console.log(learningJourneyData[0].journeyCourses.map(x=>console.log(x)))
+
     },)    
     //     if(learningJourneyData.length > 0 ){
-            console.log(learningJourneyData)
+    //         console.log(learningJourneyData)
     //     // console.log(learningJourneyData[0].journeyCourses.map(x=>console.log(x)))
+
     
     // }
   return (

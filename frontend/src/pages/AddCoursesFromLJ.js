@@ -4,12 +4,14 @@ import Axios from 'axios'
 import Header from '../components/Header'
 import Collapsible from "react-collapsible"
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+
 import { getJourneyCoursesData,
     getGroupedSkillCourses} from "../actions/getCourseApi.js"
 
 import "./AddCoursesFromLJ.css"
 function AddCoursesFromLJ(props) {
     const [allSkills,setAllSkills] = useState([])
+
     const [requiredSkills , setRequiredSkills] = useState([])
     const [currentCoursesDoing, setCurrentCoursesDoing] = useState([])
     const [isUpdated , setIsUpdated] = useState(false)
@@ -25,26 +27,21 @@ function AddCoursesFromLJ(props) {
         await Axios.get(`http://localhost:5005/api/getCourseSkill/${courseID}`).then((res) => console.log("To be done, this is getCourse"))
     }
     const getJourneyData = async (journeyID) => {
+
         const journey = await getJourneyCoursesData(journeyID)
+
         const tempSkills = []
         const tempCourses = []
         console.log(journey.data)
         const groups = journey.data.reduce((groups, item) => {
             const group = (groups[item.role_skill_name] || []);
             group.push(item);
-            // if(!tempCourses.includes(item)){
-            //     tempCourses.push(item)
-            // }
             groups[item.role_skill_name] = group;
-            // if(!tempSkills.includes(item.role_skill_name)){
-            //     tempSkills.push(item.role_skill_name)
-            // }
             return groups;
           }, {});
 
 
         for(const [key,value] of Object.entries(groups)){
-            // tempCourses.includes(item) ? null : tempCourses.push(item) setCurrentCoursesDoing(prevArray => [...prevArray,item])
             value.map(item => tempCourses.includes(item.course_id) ? null : tempCourses.push(item.course_id))
             
             if (!tempSkills.includes(key)){
@@ -59,7 +56,9 @@ function AddCoursesFromLJ(props) {
     }
     const getData = async() => {
 
+
         const data = await getGroupedSkillCourses()
+
 
 
         setAllSkills(data.data)
@@ -111,6 +110,7 @@ function AddCoursesFromLJ(props) {
 
    const submitCourses = async() => {
     const courses = currentCoursesDoing
+
     console.log(courses)
     const journey_id = learningJourneyID
        const res =  await Axios.post("http://localhost:5005/api/updateJourneyCourse", {journey_id,courses})
@@ -118,10 +118,12 @@ function AddCoursesFromLJ(props) {
        if(res.data.message === "ok") {
         setIsUpdated(true)
        }
+
    }
   return (
     <>
     <Header />
+
     <h1> Update Courses to Learning Journey to {learningJourneyName}</h1>
     {isUpdated ? <p className="updatePara">Great success, Courses Updated!</p> : <p className="updatePara">Nothing is updated yet hold on!</p>}
         <div className="addCourseContainer">
@@ -129,6 +131,7 @@ function AddCoursesFromLJ(props) {
         <div className="requiredSkills">
             <h3>Required Skills</h3>
             <p>Check the boxes on the right to add courses to your learning journey and uncheck the boxes to remove them from your learning journey!</p>
+
             <ul>
             {requiredSkills.map((skill) => <><li>{skill}</li></>)}
             </ul>
@@ -158,7 +161,9 @@ function AddCoursesFromLJ(props) {
                     
         </div>
         <div className="createContainer">
+
             <button onClick={submitCourses} className="defaultButton">Update</button>
+
         </div>
     </>
 
