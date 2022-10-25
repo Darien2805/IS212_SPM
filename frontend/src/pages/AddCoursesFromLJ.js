@@ -5,16 +5,14 @@ import Header from '../components/Header'
 import Collapsible from "react-collapsible"
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { getJourneyCoursesData,
-    getJourneyData,
-    getRoleData,getGroupedSkillCourses} from "../actions/getCourseApi.js"
+    getGroupedSkillCourses} from "../actions/getCourseApi.js"
 
 import "./AddCoursesFromLJ.css"
 function AddCoursesFromLJ(props) {
     const [allSkills,setAllSkills] = useState([])
-
-    const staffID = window.localStorage.getItem('sessionId')
     const [requiredSkills , setRequiredSkills] = useState([])
     const [currentCoursesDoing, setCurrentCoursesDoing] = useState([])
+    const [isUpdated , setIsUpdated] = useState(false)
     const [searchParams, setSearchParams] = useSearchParams()
     const [roleName , setRoleName] = useSearchParams()
     const [isDetailButtonPressed , setIsDetailButtonPressed] = useState(false)
@@ -113,13 +111,19 @@ function AddCoursesFromLJ(props) {
 
    const submitCourses = async() => {
     const courses = currentCoursesDoing
+    console.log(courses)
     const journey_id = learningJourneyID
-        await Axios.post("http://localhost:5005/api/createJourneyCourses", {journey_id,courses}).then((res) => console.log(res))
+       const res =  await Axios.post("http://localhost:5005/api/updateJourneyCourse", {journey_id,courses})
+       console.log(res)
+       if(res.data.message === "ok") {
+        setIsUpdated(true)
+       }
    }
   return (
     <>
     <Header />
     <h1> Update Courses to Learning Journey to {learningJourneyName}</h1>
+    {isUpdated ? <p className="updatePara">Great success, Courses Updated!</p> : <p className="updatePara">Nothing is updated yet hold on!</p>}
         <div className="addCourseContainer">
            
         <div className="requiredSkills">
