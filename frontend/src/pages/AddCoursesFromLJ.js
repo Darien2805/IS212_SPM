@@ -15,8 +15,9 @@ function AddCoursesFromLJ(props) {
     const [requiredSkills , setRequiredSkills] = useState([])
     const [currentCoursesDoing, setCurrentCoursesDoing] = useState([])
     const [isUpdated , setIsUpdated] = useState(false)
-    const searchParams = useSearchParams()
-    const roleName = useSearchParams()
+    const [errMsg, setErrMsg] = useState(null)
+    const [searchParams,setSearchParams ]= useSearchParams()
+    const [roleName,setRoleName ] = useSearchParams()
     const [isDetailButtonPressed , setIsDetailButtonPressed] = useState(false)
     const dataFetchedRef = useRef(false)
     const learningJourneyID = searchParams.get("journey_id")
@@ -29,10 +30,10 @@ function AddCoursesFromLJ(props) {
     const getJourneyData = async (journeyID) => {
 
         const journey = await getJourneyCoursesData(journeyID)
-
+        console.log(journey.data)
         const tempSkills = []
         const tempCourses = []
-        console.log(journey.data)
+
         const groups = journey.data.reduce((groups, item) => {
             const group = (groups[item.role_skill_name] || []);
             group.push(item);
@@ -42,17 +43,19 @@ function AddCoursesFromLJ(props) {
 
 
         for(const [key,value] of Object.entries(groups)){
+            
             value.map(item => tempCourses.includes(item.course_id) ? null : tempCourses.push(item.course_id))
             
             if (!tempSkills.includes(key)){
                 tempSkills.push(key)
             }
         }
-
+        
         return {
             "tempSkills" : tempSkills,
             "tempCourses" : tempCourses,
         }
+        
     }
     const getData = async() => {
 
@@ -104,20 +107,33 @@ function AddCoursesFromLJ(props) {
         } else {
             updatedList.splice(currentCoursesDoing.indexOf(e.target.value),1)
         } 
+        setErrMsg(null)
         setCurrentCoursesDoing(updatedList)
 
     }
-
+    const verifyToSubmit = async() => {
+        const courses = currentCoursesDoing
+        console.log(courses)
+        if(currentCoursesDoing.length === 0){
+            console.log(currentCoursesDoing)
+            setErrMsg("You Must have at least one course in your learning journey! update button is locked, please select at least one course")
+            return false
+        }
+        else{
+        const journey_id = learningJourneyID
+           const res =  await Axios.post("http://localhost:5005/api/updateJourneyCourse", {journey_id,courses})
+    
+           if(res.data.message === "ok") {
+            setIsUpdated(true)
+            window.location.reload()
+           }
+        }
+    }
    const submitCourses = async() => {
-    const courses = currentCoursesDoing
+        const result = verifyToSubmit()
+        if(result === false) {
 
-    console.log(courses)
-    const journey_id = learningJourneyID
-       const res =  await Axios.post("http://localhost:5005/api/updateJourneyCourse", {journey_id,courses})
-       console.log(res)
-       if(res.data.message === "ok") {
-        setIsUpdated(true)
-       }
+        }
 
    }
   return (
@@ -126,6 +142,7 @@ function AddCoursesFromLJ(props) {
 
     <h1> Update Courses to Learning Journey to {learningJourneyName}</h1>
     {isUpdated ? <p className="updatePara">Great success, Courses Updated!</p> : <p className="updatePara">Nothing is updated yet hold on!</p>}
+    {errMsg ? <p className="errorPara">{errMsg}</p> : ""}
         <div className="addCourseContainer">
            
         <div className="requiredSkills">
@@ -162,7 +179,7 @@ function AddCoursesFromLJ(props) {
         </div>
         <div className="createContainer">
 
-            <button onClick={submitCourses} className="defaultButton">Update</button>
+            <button onClick={submitCourses} className="defaultButton" disabled={errMsg ? true : false}>Update</button>
 
         </div>
     </>

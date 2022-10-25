@@ -26,7 +26,7 @@ function LearningJourney(props) {
         console.log(journey)
         // const journey = await Axios.get(`http://localhost:5005/api/getJourneyCourses/${journey_id}`)
 
-        const groups = journey.reduce((groups, item) => {
+        const groups = journey.data.reduce((groups, item) => {
             const group = (groups[item.role_skill_name] || []);
             group.push(item);
             groups[item.role_skill_name] = group;
