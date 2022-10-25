@@ -104,9 +104,9 @@ describe('Test Apis', () => {
                         "starred": 0
                     }
                 ]
-                const url = 'http://localhost:5005/api/getRole/3';
+                const url = 'http://localhost:5005/api/getJourneys/140002';
                 Axios.get.mockResolvedValueOnce(mockData)
-                const result = await APIServices.getJourneyData()
+                const result = await APIServices.getJourneyData(140002)
 
                 expect(Axios.get).toHaveBeenCalledWith(url)
                 expect(Axios.get).toHaveBeenCalledTimes(1)
