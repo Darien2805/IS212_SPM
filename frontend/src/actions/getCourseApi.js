@@ -3,7 +3,7 @@ import Axios from 'axios'
 
 const getJourneyCoursesData = async (journeyID) => {
     try{
-        console.log(`http://localhost:5005/api/getJourneyCourses/${journeyID}`)
+
         const journey = await Axios.get(`http://localhost:5005/api/getJourneyCourses/${journeyID}`)
 
         return journey
@@ -27,9 +27,9 @@ const getRoleData = async (role_id) =>{
    return response
 }
 
-const getJourneyData = async (staffID) =>{
+const getJourneyData = async (staff_id) =>{
     try{
-        const response = await Axios.get(`http://localhost:5005/api/getJourneys/${staffID}`)
+        const response = await Axios.get(`http://localhost:5005/api/getJourneys/${staff_id}`)
         return response
     } catch (err){
         return err
@@ -45,13 +45,21 @@ const getGroupedSkillCourses = async () =>{
     }
 
 }
+const getActiveCourses = async (staff_id) =>{
+    try{
+        const response = await Axios.get(`http://localhost:5005//api/getActiveCourses/${staff_id}`)
+        return response
+    } catch (err){
+        return err
+    }
 
+}
 export {
     getJourneyCoursesData,
     getJourneyData,
     getCourseData,
     getRoleData,
-    getGroupedSkillCourses
-
+    getGroupedSkillCourses,
+    getActiveCourses
 }
 

@@ -78,7 +78,7 @@ describe('Test Apis', () => {
                 const url = 'http://localhost:5005/api/getJourneyCourses/1';
                 Axios.get.mockResolvedValueOnce(mockData)
                 const result = await APIServices.getJourneyCoursesData("1")
-                console.log(result)
+ 
                 expect(Axios.get).toHaveBeenCalledWith(url)
                 expect(Axios.get).toHaveBeenCalledTimes(1)
                 expect(result).toEqual(mockData)
@@ -104,10 +104,10 @@ describe('Test Apis', () => {
                         "starred": 0
                     }
                 ]
-                const url = 'http://localhost:5005/api/getJourneys/1';
+                const url = 'http://localhost:5005/api/getRole/3';
                 Axios.get.mockResolvedValueOnce(mockData)
                 const result = await APIServices.getJourneyData()
-                console.log(result)
+
                 expect(Axios.get).toHaveBeenCalledWith(url)
                 expect(Axios.get).toHaveBeenCalledTimes(1)
                 expect(result).toEqual(mockData)
@@ -130,18 +130,21 @@ describe('Test Apis', () => {
                 const url = 'http://localhost:5005/api/getRole/3';
                 Axios.get.mockResolvedValueOnce(mockData)
                 const result = await APIServices.getRoleData(3)
-                console.log(result)
+
                 expect(Axios.get).toHaveBeenCalledWith(url)
+
                 expect(Axios.get).toHaveBeenCalledTimes(1)
                 expect(result).toEqual(mockData)
             });
 
         });
     });
+    // copy and paste start from here 
     describe('getCourse', () => {
         describe('with success', ()=> {
 
             it('should call axios get with given url', async () => {
+                // change the mockdata
                 const mockData = [
                     {
                         "skill_id": 3,
@@ -152,8 +155,10 @@ describe('Test Apis', () => {
                         "skill_name": "skill 6"
                     }
                 ]
+                // change the url
                 const url = 'http://localhost:5005/api/getCourseSkill/C6';
                 Axios.get.mockResolvedValueOnce(mockData)
+                // change the user input if need be
                 const result = await APIServices.getCourseData("C6")
                 expect(Axios.get).toHaveBeenCalledWith(url)
                 expect(Axios.get).toHaveBeenCalledTimes(1)
@@ -162,6 +167,7 @@ describe('Test Apis', () => {
 
         });
     });
+    // to here
     
 });
 
