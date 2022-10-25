@@ -476,11 +476,11 @@ app.get("/api/getGroupedSkillCourses", (req,res)=>{
 // Route to update a journey course (remove all then add) -- to be edited
 app.post('/api/updateJourneyCourse',(req,res)=>{
     const journey_id = req.body.journey_id;
-    const courses = req.body.coursees; // list of course_ids
+    const courses = req.body.courses; // list of course_ids
 
     // Step 1: Clear all learning journey courses
     db.query("DELETE FROM journeycourse WHERE journey_id = ?", journey_id, (err1,result1)=>{
-        if(err) {
+        if(err1) {
             console.log(err1)
         }
         else{
@@ -494,6 +494,7 @@ app.post('/api/updateJourneyCourse',(req,res)=>{
                     console.log("Success! \n", result2)
                 });
             });
+            res.send({"message" :"ok"})
         }
     }) 
 })
