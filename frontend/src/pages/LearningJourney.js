@@ -4,20 +4,17 @@ import Collapsible from "react-collapsible"
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-<<<<<<< Updated upstream
-import { ClassNames } from '@emotion/react'
-=======
+
 import { Link } from 'react-router-dom';
 import { getJourneyCoursesData,
     getJourneyData,
     getRoleData} from "../actions/getCourseApi.js"
->>>>>>> Stashed changes
 
 import "./LearningJourney.css"
 import "../index.css"
 
-function LearningJourney() {
-
+function LearningJourney(props) {
+    const staffID = window.localStorage.getItem('sessionId')
     const [learningJourneyData, setLearningJourneyData] = useState([])
     const dataFetchedRef = useRef(false)
     const populateRelevantFields = async(role_id,journey_id) => {
@@ -40,31 +37,29 @@ function LearningJourney() {
         const result = {
             "role": role.data,
             "journeyCourses": groups,
-
+            "journeyID" : journey_id
         }
         // setCollapsableData(actualLearningJourneyData)
         setLearningJourneyData(prevArray => [...prevArray,result])
         return result
     }
     const getData = async() => {
-        const data = await getJourneyData()
+
+        const data = await getJourneyData(staffID)
+
         data.data.map(journey => populateRelevantFields(journey.role_id,journey.journey_id))
         
        
      
      }
+
     useEffect(() => {
 
         if(dataFetchedRef.current) return;
         dataFetchedRef.current = true
         getData().catch(console.error)
-<<<<<<< Updated upstream
-        // if(collapsableData.length === 0){
-        //     setCollapsableData(actualLearningJourneyData)
-        //    }
-        // actualLearningJourneyData.map((m) => console.log(m))
 
-    }, [])    
+    },)     
         if(learningJourneyData.length > 0 ){
             // for(const key in learningJourneyData[0].journeyCourses){
             //     console.log(key)
@@ -73,12 +68,12 @@ function LearningJourney() {
             
             console.log(learningJourneyData)
         // console.log(learningJourneyData[0].journeyCourses.map(x=>console.log(x)))
-=======
+
     },)    
     //     if(learningJourneyData.length > 0 ){
     //         console.log(learningJourneyData)
     //     // console.log(learningJourneyData[0].journeyCourses.map(x=>console.log(x)))
->>>>>>> Stashed changes
+
     
     // }
   return (
@@ -91,7 +86,7 @@ function LearningJourney() {
                 <>
                 <div className="collapsibleMenu" key={index}>
                 
-                <Collapsible trigger={[`LJ to ${learningJourneyData[index].role[0].role_name}`,<ArrowDropDownIcon />]}>
+                <Collapsible trigger={[`LJ to ${learningJourneyData[index].role[0].role_name}`,<><div className="test"><ArrowDropDownIcon /><button className="newButton" ><DeleteIcon /></button></div></>]}>
                     <div className="innerContent">
                     {
                         Object.keys(learningJourneyData[index].journeyCourses).map((journey) => journey === "null" ? (<p>whoops no skill</p>) : (
@@ -99,8 +94,8 @@ function LearningJourney() {
                             <h3 key={journey}>{journey}</h3>
                             {learningJourneyData[index].journeyCourses[journey].map((skill) => skill.course_name === null ? (<p>no course name</p>) : (
                             <div key={skill.course_id} className="courseJourney">
-                            <p>{skill.course_name} {skill.course_status}</p>
-                            <button className="newButton"><DeleteIcon /></button>
+                            <p>{skill.course_name}</p>
+
                             </div>
                             ))}
                             </>
@@ -109,16 +104,23 @@ function LearningJourney() {
                     
 
                     <div className="addJourney">
-                        <button className="addButton"><AddIcon /></button>
+                        <Link to={`addCourses?journey_id=${learningJourneyData[index].journeyID}&role_name=${learningJourneyData[index].role[0].role_name}`} className="fancyLink" target="_blank">
+                            
+                        
+                        <p><AddIcon />Update Courses in Journey</p>
+                        
+                        
+                        
+                        </Link>
                         
                     </div>
                     </div>
                 </Collapsible>
                 
                 
-                <div className="triggerComponent">
-                    <button className="newButton"><DeleteIcon /></button>
-                </div>
+                {/* <div className="triggerComponent">
+                    <button className="newButton" ><DeleteIcon /></button>
+                </div> */}
 
                 </div>
                 </>

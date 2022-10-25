@@ -12,3 +12,4 @@ export {default as RoleMaintenance } from "./RoleMaintenance";
 export {default as CreateRole } from "./CreateRole";
 export {default as EditSkill } from "./EditSkill";
 export {default as UpdateRole } from "./UpdateRole";
+export {default as UpdateJourney } from "./AddCoursesFromLJ";
