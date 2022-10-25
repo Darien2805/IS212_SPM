@@ -13,8 +13,8 @@ function AddCoursesFromLJ(props) {
 
     const [requiredSkills , setRequiredSkills] = useState([])
     const [currentCoursesDoing, setCurrentCoursesDoing] = useState([])
-    const [searchParams, setSearchParams] = useSearchParams()
-    const [roleName , setRoleName] = useSearchParams()
+    const searchParams = useSearchParams()
+    const roleName = useSearchParams()
     const [isDetailButtonPressed , setIsDetailButtonPressed] = useState(false)
     const dataFetchedRef = useRef(false)
     const learningJourneyID = searchParams.get("journey_id")

@@ -4,14 +4,10 @@ import Collapsible from "react-collapsible"
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-<<<<<<< Updated upstream
-import { ClassNames } from '@emotion/react'
-=======
-import { Link } from 'react-router-dom';
+
 import { getJourneyCoursesData,
     getJourneyData,
     getRoleData} from "../actions/getCourseApi.js"
->>>>>>> Stashed changes
 
 import "./LearningJourney.css"
 import "../index.css"
@@ -58,27 +54,10 @@ function LearningJourney() {
         if(dataFetchedRef.current) return;
         dataFetchedRef.current = true
         getData().catch(console.error)
-<<<<<<< Updated upstream
-        // if(collapsableData.length === 0){
-        //     setCollapsableData(actualLearningJourneyData)
-        //    }
-        // actualLearningJourneyData.map((m) => console.log(m))
-
-    }, [])    
-        if(learningJourneyData.length > 0 ){
-            // for(const key in learningJourneyData[0].journeyCourses){
-            //     console.log(key)
-            //     console.log(learningJourneyData[0].journeyCourses[key])
-            // console.log("I am happening"+ learningJourneyData[0])
-            
-            console.log(learningJourneyData)
-        // console.log(learningJourneyData[0].journeyCourses.map(x=>console.log(x)))
-=======
     },)    
     //     if(learningJourneyData.length > 0 ){
     //         console.log(learningJourneyData)
     //     // console.log(learningJourneyData[0].journeyCourses.map(x=>console.log(x)))
->>>>>>> Stashed changes
     
     // }
   return (
