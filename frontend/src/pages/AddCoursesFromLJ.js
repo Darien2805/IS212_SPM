@@ -11,7 +11,7 @@ import { getJourneyCoursesData,
 import "./AddCoursesFromLJ.css"
 function AddCoursesFromLJ(props) {
     const [allSkills,setAllSkills] = useState([])
-
+    
     const [requiredSkills , setRequiredSkills] = useState([])
     const [currentCoursesDoing, setCurrentCoursesDoing] = useState([])
     const [isUpdated , setIsUpdated] = useState(false)
@@ -124,8 +124,8 @@ function AddCoursesFromLJ(props) {
            const res =  await Axios.post("http://localhost:5005/api/updateJourneyCourse", {journey_id,courses})
     
            if(res.data.message === "ok") {
-            setIsUpdated(true)
-            window.location.reload()
+            setIsUpdated("Successfullyl updated! you can go back to home now! uWu")
+
            }
         }
     }
