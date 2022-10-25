@@ -1,8 +1,10 @@
 .addCourseContainer{
     display: flex;
+    margin-top:5%;
 }
 .requiredSkills{
     flex:1;
+    padding:5%;
 }
 .selectedSkills{
     flex:0.7;
@@ -41,4 +43,9 @@
 .createContainer{
     float:right;
     margin:5%;
+}
+
+.selectedSkills > .defaultButton {
+    margin-left:10%;
+
 }

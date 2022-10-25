@@ -4,13 +4,15 @@ import Axios from 'axios'
 import Header from '../components/Header'
 import Collapsible from "react-collapsible"
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-
+import { getJourneyCoursesData,
+    getJourneyData,
+    getRoleData,getGroupedSkillCourses} from "../actions/getCourseApi.js"
 
 import "./AddCoursesFromLJ.css"
 function AddCoursesFromLJ(props) {
     const [allSkills,setAllSkills] = useState([])
 
-
+    const staffID = window.localStorage.getItem('sessionId')
     const [requiredSkills , setRequiredSkills] = useState([])
     const [currentCoursesDoing, setCurrentCoursesDoing] = useState([])
     const [searchParams, setSearchParams] = useSearchParams()
@@ -25,7 +27,7 @@ function AddCoursesFromLJ(props) {
         await Axios.get(`http://localhost:5005/api/getCourseSkill/${courseID}`).then((res) => console.log("To be done, this is getCourse"))
     }
     const getJourneyData = async (journeyID) => {
-        const journey = await Axios.get(`http://localhost:5005/api/getJourneyCourses/${journeyID}`)
+        const journey = await getJourneyCoursesData(journeyID)
         const tempSkills = []
         const tempCourses = []
         console.log(journey.data)
@@ -59,7 +61,7 @@ function AddCoursesFromLJ(props) {
     }
     const getData = async() => {
 
-        const data = await Axios.get("http://localhost:5005/api/getGroupedSkillCourses")
+        const data = await getGroupedSkillCourses()
 
 
         setAllSkills(data.data)
@@ -117,10 +119,12 @@ function AddCoursesFromLJ(props) {
   return (
     <>
     <Header />
-    <h1> Add Courses to Learning Journey to {learningJourneyName}</h1>
+    <h1> Update Courses to Learning Journey to {learningJourneyName}</h1>
         <div className="addCourseContainer">
+           
         <div className="requiredSkills">
             <h3>Required Skills</h3>
+            <p>Check the boxes on the right to add courses to your learning journey and uncheck the boxes to remove them from your learning journey!</p>
             <ul>
             {requiredSkills.map((skill) => <><li>{skill}</li></>)}
             </ul>
@@ -150,7 +154,7 @@ function AddCoursesFromLJ(props) {
                     
         </div>
         <div className="createContainer">
-            <button onClick={submitCourses} className="defaultButton">Create</button>
+            <button onClick={submitCourses} className="defaultButton">Update</button>
         </div>
     </>
 

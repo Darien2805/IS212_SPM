@@ -13,7 +13,7 @@ import "./LearningJourney.css"
 import "../index.css"
 
 function LearningJourney(props) {
-
+    const staffID = window.localStorage.getItem('sessionId')
     const [learningJourneyData, setLearningJourneyData] = useState([])
     const dataFetchedRef = useRef(false)
     const populateRelevantFields = async(role_id,journey_id) => {
@@ -25,7 +25,7 @@ function LearningJourney(props) {
         console.log(journey)
         // const journey = await Axios.get(`http://localhost:5005/api/getJourneyCourses/${journey_id}`)
 
-        const groups = journey.reduce((groups, item) => {
+        const groups = journey.data.reduce((groups, item) => {
             const group = (groups[item.role_skill_name] || []);
             group.push(item);
             groups[item.role_skill_name] = group;
@@ -43,7 +43,7 @@ function LearningJourney(props) {
         return result
     }
     const getData = async() => {
-        const data = await getJourneyData()
+        const data = await getJourneyData(staffID)
         data.data.map(journey => populateRelevantFields(journey.role_id,journey.journey_id))
         
        
@@ -57,7 +57,7 @@ function LearningJourney(props) {
         getData().catch(console.error)
     },)    
     //     if(learningJourneyData.length > 0 ){
-    //         console.log(learningJourneyData)
+            console.log(learningJourneyData)
     //     // console.log(learningJourneyData[0].journeyCourses.map(x=>console.log(x)))
     
     // }
