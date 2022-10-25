@@ -66,12 +66,12 @@ function LearningJourney(props) {
             //     console.log(learningJourneyData[0].journeyCourses[key])
             // console.log("I am happening"+ learningJourneyData[0])
             
-            console.log(learningJourneyData)
+            // console.log(learningJourneyData)
         // console.log(learningJourneyData[0].journeyCourses.map(x=>console.log(x)))
 
     }    
     //     if(learningJourneyData.length > 0 ){
-    //         console.log(learningJourneyData)
+
     //     // console.log(learningJourneyData[0].journeyCourses.map(x=>console.log(x)))
     
     // }
@@ -88,7 +88,7 @@ function LearningJourney(props) {
                 <Collapsible trigger={[`LJ to ${learningJourneyData[index].role[0].role_name}`,<><div className="test"><ArrowDropDownIcon /><button className="newButton" ><DeleteIcon /></button></div></>]}>
                     <div className="innerContent">
                     {
-                        Object.keys(learningJourneyData[index].journeyCourses).map((journey) => journey === "null" ? (<p>whoops no skill</p>) : (
+                        Object.keys(learningJourneyData[index].journeyCourses).map((journey) => journey === "null" ? (<p>No skill needed</p>) : (
                             <>
                             <h3 key={journey}>{journey}</h3>
                             {learningJourneyData[index].journeyCourses[journey].map((skill) => skill.course_name === null ? (<p>no course name</p>) : (

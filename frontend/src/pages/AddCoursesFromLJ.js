@@ -131,9 +131,6 @@ function AddCoursesFromLJ(props) {
     }
    const submitCourses = async() => {
         const result = verifyToSubmit()
-        if(result === false) {
-
-        }
 
    }
   return (
