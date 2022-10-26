@@ -168,6 +168,26 @@ describe('Test Apis', () => {
         });
     });
     // to here
+    describe('updateJourneyCourse', () => {
+        describe('with success', ()=> {
+
+            it('should call axios get with given url', async () => {
+                // change the mockdata
+                const mockData = {"message" : "ok"}
+            
+                // change the url
+                const url = 'http://localhost:5005/api/updateJourneyCourse';
+                Axios.get.mockResolvedValueOnce(mockData)
+                // change the user input if need be
+                const result = await APIServices.updateJourneyCourse({"courses": [ "COR001", "SAL004" ], "journey_id":"1"})
+                console.log(result)
+                expect(Axios.post).toHaveBeenCalledWith(url, {"courses": [ "COR001", "SAL004" ], "journey_id":"1"})
+                expect(Axios.post).toHaveBeenCalledTimes(1)
+                expect(result).toEqual(mockData)
+            });
+
+        });
+    });
     
 });
 

@@ -6,7 +6,7 @@ import Collapsible from "react-collapsible"
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import { getJourneyCoursesData,
-    getGroupedSkillCourses} from "../actions/getCourseApi.js"
+    getGroupedSkillCourses,updateJourneyCourse} from "../actions/getCourseApi.js"
 
 import "./AddCoursesFromLJ.css"
 function AddCoursesFromLJ(props) {
@@ -121,8 +121,9 @@ function AddCoursesFromLJ(props) {
         }
         else{
         const journey_id = learningJourneyID
-           const res =  await Axios.post("http://localhost:5005/api/updateJourneyCourse", {journey_id,courses})
-    
+           const res =  await updateJourneyCourse({journey_id,courses})
+           console.log({journey_id,courses})
+            console.log(res)
            if(res.data.message === "ok") {
             setIsUpdated("Successfullyl updated! you can go back to home now! uWu")
 
