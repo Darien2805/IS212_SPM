@@ -1,6 +1,5 @@
 import React,{useState,useEffect,useRef} from 'react'
 import { useSearchParams } from "react-router-dom";
-import Axios from 'axios'
 import Header from '../components/Header'
 import Collapsible from "react-collapsible"
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -23,10 +22,6 @@ function AddCoursesFromLJ(props) {
     const learningJourneyID = searchParams.get("journey_id")
     const learningJourneyName = roleName.get("role_name")
 
-    const getCourseData = async (courseID) => {
-
-        await Axios.get(`http://localhost:5005/api/getCourseSkill/${courseID}`).then((res) => console.log("To be done, this is getCourse"))
-    }
     const getJourneyData = async (journeyID) => {
 
         const journey = await getJourneyCoursesData(journeyID)
@@ -65,10 +60,7 @@ function AddCoursesFromLJ(props) {
 
 
         setAllSkills(data.data)
-        const allCourseIDs = []
-        data.data.map(skill => JSON.parse(skill.course_ids).map(IDs => allCourseIDs.includes(IDs) ? null : allCourseIDs.push(IDs)))
 
-        allCourseIDs.map(IDs => getCourseData(IDs))
      //    for (let i = 0; i < data.data.length; i++) {
      //     console.log("I am being called")
      //     populateRelevantFields(data.data.role_id,data.data.journey_id)
@@ -113,17 +105,13 @@ function AddCoursesFromLJ(props) {
     }
     const verifyToSubmit = async() => {
         const courses = currentCoursesDoing
-        console.log(courses)
         if(currentCoursesDoing.length === 0){
-            console.log(currentCoursesDoing)
             setErrMsg("You Must have at least one course in your learning journey! update button is locked, please select at least one course")
             return false
         }
         else{
         const journey_id = learningJourneyID
            const res =  await updateJourneyCourse({journey_id,courses})
-           console.log({journey_id,courses})
-            console.log(res)
            if(res.data.message === "ok") {
             setIsUpdated("Successfullyl updated! you can go back to home now! uWu")
 
@@ -131,7 +119,7 @@ function AddCoursesFromLJ(props) {
         }
     }
    const submitCourses = async() => {
-        const result = verifyToSubmit()
+        verifyToSubmit()
 
    }
   return (
