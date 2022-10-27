@@ -11,12 +11,18 @@ function Courses() {
   const [staff_id, setStaffId] = useState('')
   const [activeCourses,setActiveCourses] = useState([]);
   const style = { textAlign: 'center' }
-
+  const getData = async(staff_id) =>{
+    const data = await getActiveCourses(staff_id)
+    return data
+  }
   useEffect(()=>{
     setStaffId(window.localStorage.getItem('sessionId')) 
-    Axios.get(`http://localhost:5005/api/getActiveCourses/${staff_id}`).then((response)=>{
-      setActiveCourses(response.data)
-    });
+    getData(staff_id).then((res) => {
+      setActiveCourses(res.data)
+    })
+    // Axios.get(`http://localhost:5005/api/getActiveCourses/${staff_id}`).then((response)=>{
+    //   setActiveCourses(response.data)
+    // });
     },[staff_id])
     
   return (
