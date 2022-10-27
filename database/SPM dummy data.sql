@@ -1,3 +1,4 @@
+use spm;
 INSERT INTO usertype (user_type_id, user_type_name) VALUES
 (1, 'Admin'),
 (2, 'User'),

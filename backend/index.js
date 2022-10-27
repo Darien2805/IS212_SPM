@@ -7,7 +7,7 @@ const mysql = require('mysql');
 const db = mysql.createPool({
     host: "localhost",
     user: "root",
-    password: "",
+    password: "yolotroller12",
     database:"spm" 
 })
 
@@ -37,6 +37,17 @@ app.get("/api/getUserType/:staff_id", (req,res)=>{
 app.get("/api/getActiveSkills", (req,res)=>{
     db.query("SELECT * FROM skill WHERE skill_status = 'Active'", (err,result)=>{
         // console.log(result)
+        if(err) {
+            console.log(err)
+        }
+        res.send(result)
+    });
+});
+
+//Route to get one active skill
+app.get("/api/getSkill/:skill_id", (req,res)=>{
+    const skill_id = req.params.skill_id;
+    db.query("SELECT * FROM skill WHERE skill_id = ?", skill_id, (err,result)=>{
         if(err) {
             console.log(err)
         }
@@ -99,11 +110,14 @@ app.get("/api/getAllSkills", (req,res)=>{
 app.get("/api/getActiveRoles/:staff_id", (req,res)=>{
     const staff_id = req.params.staff_id;
     db.query(`SELECT t1.*, journey_id FROM (
-        SELECT jr.*, JSON_ARRAYAGG(s.skill_id) AS skill_ids, JSON_ARRAYAGG(s.skill_name) AS skill_names 
-        FROM jobrole jr, roleskill rs, skill s 
-        WHERE jr.role_id = rs.role_id AND rs.skill_id = s.skill_id
-        AND role_status = 'Active' AND skill_status = 'Active' 
-        GROUP BY jr.role_id
+        SELECT t1.*, JSON_ARRAYAGG(s.skill_id) AS skill_ids, JSON_ARRAYAGG(s.skill_name) AS skill_names 
+        FROM (
+            SELECT jr.*, rs.skill_id FROM jobrole jr, roleskill rs
+            WHERE jr.role_id = rs.role_id AND role_status = 'Active' 
+            ) as t1
+        LEFT JOIN skill s 
+        ON t1.skill_id = s.skill_id AND skill_status = 'Active'
+        GROUP BY t1.role_id
         ) as t1
         LEFT JOIN journey j 
         ON t1.role_id = j.role_id AND staff_id = ?`, staff_id, (err,result)=>{
@@ -234,12 +248,17 @@ app.get("/api/getAllRoles", (req,res)=>{
 app.get("/api/getActiveCourses/:staff_id", (req,res)=>{
     const staff_id = req.params.staff_id;
     db.query(`SELECT t1.*, completion_status FROM (
-                SELECT c.*, JSON_ARRAYAGG(s.skill_id) AS skill_ids, JSON_ARRAYAGG(s.skill_name) AS skill_names 
-                FROM course c, courseskill cs, skill s 
-                WHERE c.course_id = cs.course_id AND cs.skill_id = s.skill_id
-                AND skill_status = 'Active' and course_status = 'Active' 
-                GROUP BY c.course_id
+            SELECT t1.*, JSON_ARRAYAGG(s.skill_id) AS skill_ids, JSON_ARRAYAGG(s.skill_name) AS skill_names 
+                FROM (
+                    SELECT c.*, cs.skill_id FROM course c
+                    LEFT JOIN courseskill cs
+                    ON c.course_id = cs.course_id
+                    WHERE course_status = 'Active'
                 ) as t1
+                LEFT JOIN skill s 
+            on t1.skill_id = s.skill_id AND skill_status = 'Active'
+            GROUP BY t1.course_id
+            ) as t1
             LEFT JOIN registration r 
             ON t1.course_id = r.course_id AND staff_id = ?`, staff_id, (err,result)=>{
         if(err) {
@@ -262,10 +281,10 @@ app.get("/api/getCourse/:course_id", (req,res)=>{
     });
 });
 
-// Route to get skill name from one course
+// Route to get active skills (skill_ids, skill_names) from one course
 app.get("/api/getCourseSkill/:course_id", (req,res)=>{
     const course_id = req.params.course_id;
-    db.query("SELECT skill_id, skill_name from skill WHERE skill_id IN (SELECT skill_id FROM courseskill WHERE course_id = ?)", course_id, (err,result)=>{
+    db.query("SELECT skill_id, skill_name from skill WHERE skill_id IN (SELECT skill_id FROM courseskill WHERE course_id = ?) AND skill_status = 'Active'", course_id, (err,result)=>{
         if(err) {
             console.log(err)
         }
@@ -310,10 +329,28 @@ app.get("/api/getRole/:role_id", (req,res)=>{
     });
 });
 
-// Route to get all skills related to selected role
+// Route to get one active job role
+app.get("/api/getActiveRole/:role_id", (req,res)=>{
+    const role_id = req.params.role_id;
+    db.query(`SELECT t1.*, JSON_ARRAYAGG(s.skill_id) AS skill_ids, JSON_ARRAYAGG(s.skill_name) AS skill_names 
+            FROM (
+                SELECT jr.*, rs.skill_id FROM jobrole jr, roleskill rs
+                WHERE jr.role_id = rs.role_id AND role_status = 'Active' 
+                ) as t1
+            LEFT JOIN skill s 
+            ON t1.skill_id = s.skill_id AND skill_status = 'Active'
+            WHERE t1.role_id = ?`, role_id, (err,result)=>{
+        if(err) {
+            console.log(err)
+        }
+        res.send(result)
+    });
+});
+
+// Route to get all active skills (skill_ids) related to selected role
 app.get("/api/getRoleSkills/:role_id", (req,res)=>{
     const role_id = req.params.role_id;
-    db.query("SELECT skill_id FROM roleskill WHERE role_id = ?", role_id, (err,result)=>{
+    db.query("SELECT rs.skill_id FROM roleskill rs, skill s WHERE rs.skill_id = s.skill_id AND skill_status = 'Active' AND role_id = ?", role_id, (err,result)=>{
         console.log(result)
         if(err) {
             console.log(err)
@@ -322,10 +359,10 @@ app.get("/api/getRoleSkills/:role_id", (req,res)=>{
     });
 });
 
-// Route to get all courses related to selected skill
+// Route to get all active courses (course_ids) related to selected skill
 app.get("/api/getSkillCourses/:skill_id", (req,res)=>{
     const skill_id = req.params.skill_id;
-    db.query("SELECT course_id FROM courseskill WHERE skill_id = ?", skill_id, (err,result)=>{
+    db.query("SELECT cs.course_id FROM courseskill cs, course c WHERE cs.course_id = c.course_id AND course_status = 'Active' AND skill_id = ?", skill_id, (err,result)=>{
         console.log(result)
         if(err) {
             console.log(err)
@@ -436,18 +473,29 @@ app.get("/api/getGroupedSkillCourses", (req,res)=>{
     });
 });
 
-// Route to delete a journey course
-app.delete('/api/deleteJourneyCourse/:journey_id/:course_id',(req,res)=>{
-    const journey_id = req.params.journey_id;
-    const course_id = req.params.course_id;
+// Route to update a journey course (remove all then add) -- to be edited
+app.post('/api/updateJourneyCourse',(req,res)=>{
+    const journey_id = req.body.journey_id;
+    const courses = req.body.courses; // list of course_ids
 
-    db.query("DELETE FROM journeycourse WHERE journey_id = ? AND course_id = ?", [journey_id, course_id], (err,result)=>{
-        if(err) {
-            console.log(err)
+    // Step 1: Clear all learning journey courses
+    db.query("DELETE FROM journeycourse WHERE journey_id = ?", journey_id, (err1,result1)=>{
+        if(err1) {
+            console.log(err1)
         }
-        // else{
-        //     res.send(result)
-        // }
+        else{
+            console.log("success in deleting")
+            // Step 2: Create updated learning journey courses
+            courses.forEach(course_id => {
+                db.query("INSERT INTO journeycourse (journey_id, course_id) VALUES (?,?)",[journey_id,course_id], (err2,result2)=>{
+                    if(err2) {
+                        console.log(err2)
+                    }
+                    console.log("Success! \n", result2)
+                });
+            });
+            res.send({"message" :"ok"})
+        }
     }) 
 })
 
@@ -509,80 +557,27 @@ app.put('/api/deleteActiveRole',(req,res)=>{
 })
 
 
+// Route to delete learning journey and learning journey courses
+app.delete('/api/deleteJourney/:journey_id', (req,res)=> {
+    const journey_id = req.params.journey_id;
 
-
-
-
-// // Route to get courses related to skill that are added for selected journey
-// app.get("/api/getJourneySkillCourses/:journey_id/:skill_id", (req,res)=>{
-//     const journey_id = req.params.journey_id;
-//     const skill_id = req.params.skill_id;
-//     const stmt = `SELECT * FROM course WHERE course_id in (
-//                         SELECT course_id FROM courseskill WHERE skill_id = ?
-//                     ) AND course_id in (
-//                         SELECT course_id FROM journeycourse WHERE journey_id = ?
-//                     )`
-//     db.query(stmt, [skill_id, journey_id], (err,result)=>{
-//         if(err) {
-//             console.log(err)
-//         }
-//         res.send(result)
-//     });
-// });
-
-// // Route to get other courses that are added for selected journey (not related to the skills of the role)
-// app.get("/api/getJourneyOtherCourses/:journey_id", (req,res)=>{
-//     const journey_id = req.params.journey_id;
-//     const skill_id = req.params.skill_id;
-//     const stmt = `SELECT * FROM course WHERE course_id in (
-//                         SELECT course_id FROM courseskill WHERE skill_id = ?
-//                     ) AND course_id in (
-//                         SELECT course_id FROM journeycourse WHERE journey_id = ?
-//                     )`
-//     db.query(stmt, [skill_id, journey_id], (err,result)=>{
-//         if(err) {
-//             console.log(err)
-//         }
-//         res.send(result)
-//     });
-// });
-
-
-
-// // Route for creating the post
-// app.post('/api/create', (req,res)=> {
-//     const username = req.body.userName;
-//     const title = req.body.title;
-//     const text = req.body.text;
-
-//     db.query("INSERT INTO posts (title, post_text, user_name) VALUES (?,?,?)",[title,text,username], (err,result)=>{
-//         if(err) {
-//         console.log(err)
-//         }
-//         console.log(result)
-//     });
-// })
-
-// // Route to like a post
-// app.post('/api/like/:id',(req,res)=>{
-
-// const id = req.params.id;
-// db.query("UPDATE posts SET likes = likes + 1 WHERE id = ?",id, (err,result)=>{
-//     if(err) {
-//    console.log(err)   } 
-//    console.log(result)
-//     });    
-// });
-
-// // Route to delete a post
-
-// app.delete('/api/delete/:id',(req,res)=>{
-// const id = req.params.id;
-
-// db.query("DELETE FROM posts WHERE id= ?", id, (err,result)=>{
-// if(err) {
-// console.log(err)
-//         } }) })
+    // Step 1: Delete all learning journey courses
+    db.query("DELETE FROM journeycourse WHERE journey_id = ?", journey_id, (err1,result1)=>{
+        if(err1) {
+            console.log(err1)
+        }
+        else{
+            console.log("success in deleting")
+            // Step 2: Delete the learning journey
+            db.query("DELETE FROM journey WHERE journey_id = ?", journey_id, (err2,result2)=>{
+                if(err2) {
+                    console.log(err2)
+                }
+                console.log("Success in deleting !")
+            });
+        }
+    })
+})
 
 app.listen(PORT, ()=>{
     console.log(`Server is running on ${PORT}`)

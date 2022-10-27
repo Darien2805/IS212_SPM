@@ -4,15 +4,15 @@ import Badge from 'react-bootstrap/Badge';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import "./skillCardHR.css";
-import { useNavigate } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 
-function RoleCardHR({skill_id, skillName, skillDesc,}) {
+function RoleCardHR({skillId, skillName, skillDesc}) {
     
     const navigate = useNavigate(); 
 
-    const editSkill = () =>{ 
-        let path = `../EditSkill`; //need to change the route to edit role page
-        navigate(path);
+    const editSkill = event =>{ 
+        //console.log(skillId)
+        navigate('/EditSkill',{state:{skillId:skillId}});
     }
 
     const deleteSkill = () =>{ 
@@ -25,7 +25,7 @@ function RoleCardHR({skill_id, skillName, skillDesc,}) {
             <h3>
                 {skillName}
                 <div className="float-end">
-                <Button className="m-0 me-2 btn-sm" variant="secondary" onClick={editSkill}><EditIcon /></Button>
+                <Button className="m-0 me-2 btn-sm" variant="secondary" onClick={editSkill} value={skillId}><EditIcon /></Button>
                 <Button className="m-0 btn-sm" variant="danger" onClick={deleteSkill}><DeleteIcon /></Button>
                 </div>
             </h3>

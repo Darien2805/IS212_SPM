@@ -2,6 +2,8 @@ DROP DATABASE IF EXISTS spm;
 CREATE DATABASE IF NOT EXISTS spm DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE spm;
 
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+
 CREATE TABLE usertype (
     user_type_id INT NOT NULL PRIMARY KEY,
     user_type_name VARCHAR(20) NOT NULL

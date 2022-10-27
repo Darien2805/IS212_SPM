@@ -14,8 +14,8 @@ function RoleCardHR({roleName, roleDesc, skills, roleId}) {
     const [show, setShow] = useState(false);
 
     const editRole = () =>{ 
-        let path = `../EditRole`; //need to change the route to edit role page
-        navigate(path);
+        let path = `../UpdateRole`;
+        navigate(path, {state:{roleId: roleId}});
     }
 
     const showModal = () =>{ 

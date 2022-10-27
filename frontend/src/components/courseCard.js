@@ -1,25 +1,35 @@
 import React from 'react';
 import "./courseCard.css";
 
-function CourseCard({title,description}) {
+//bootstrap
+import Badge from 'react-bootstrap/Badge';
+
+function CourseCard({courseName,courseDesc,skillNames,courseType}) {
+
   return (
-    
     <div className="courseCard">
-        <h1>{title}</h1>
-        <p>{description}</p>
-        {/* subject to change , pending th completion of skeel table */}
-        {/* {skills.map((skill) =>(
-            <div key={skill._id}>
-                <p>{skill.name}</p>
-            </div>
-        ))} */}
-        <p>Skeels:</p>
-        <div className="stageRight">
-            <button>View</button>
-        </div>
-    </div>
-    
+      <h2>{courseName}</h2>
+      <b>
+        <u>Description</u>
+      </b>
+      <p>{courseDesc}</p>
+      <b>
+        <u>Skills needed</u>
+      </b>
+      <p>
+        {skillNames.map((skill)=>{
+          return( skill !== null ?
+          <Badge bg="secondary" className="me-1"> {skill} </Badge>: []
+          )
+        })}
+      </p>
+      <b>
+        <u>Course Type</u>
+      </b>
+      <p>
+        <Badge bg="secondary" className="me-1">{courseType}</Badge>
+      </p>
+  </div>  
   )
 }
-
 export default CourseCard
