@@ -17,7 +17,7 @@ function Courses() {
   const getData = async() =>{
   
     const data = await getActiveCourses(staffID)
-    console.log(data)
+    setActiveCourses(data.data)
     return data
   }
   useEffect(()=>{
