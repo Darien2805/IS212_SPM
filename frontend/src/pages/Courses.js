@@ -9,22 +9,24 @@ import { getActiveCourses } from '../actions/getCourseApi';
 import Alert from 'react-bootstrap/Alert';
 
 function Courses() {
-  const [staff_id, setStaffId] = useState('')
+  
   const [activeCourses,setActiveCourses] = useState([]);
   const style = { textAlign: 'center' }
-  const getData = async(staff_id) =>{
-    const data = await getActiveCourses(staff_id)
+  const staffID = window.localStorage.getItem('sessionId')
+  
+  const getData = async() =>{
+  
+    const data = await getActiveCourses(staffID)
+    console.log(data)
     return data
   }
   useEffect(()=>{
-    setStaffId(window.localStorage.getItem('sessionId')) 
-    getData(staff_id).then((res) => {
-      setActiveCourses(res.data)
-    })
+    
+    getData()
     // Axios.get(`http://localhost:5005/api/getActiveCourses/${staff_id}`).then((response)=>{
     //   setActiveCourses(response.data)
     // });
-    },[staff_id])
+    },[])
     
   return (
     <>

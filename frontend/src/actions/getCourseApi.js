@@ -47,7 +47,7 @@ const getGroupedSkillCourses = async () =>{
 }
 const getActiveCourses = async (staff_id) =>{
     try{
-        const response = await Axios.get(`http://localhost:5005//api/getActiveCourses/${staff_id}`)
+        const response = await Axios.get(`http://localhost:5005/api/getActiveCourses/${staff_id}`)
         return response
     } catch (err){
         return err
