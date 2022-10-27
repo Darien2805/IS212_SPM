@@ -54,6 +54,15 @@ const getActiveCourses = async (staff_id) =>{
     }
 
 }
+const getActiveRoles = async (staff_id) =>{
+    try{
+        const response = await Axios.get(`http://localhost:5005/api/getActiveRoles/${staff_id}`)
+        return response
+    } catch (err){
+        return err
+    }
+
+}
 const updateJourneyCourse = async ({journey_id,courses}) =>{
     try{
         const response = await Axios.post("http://localhost:5005/api/updateJourneyCourse", {journey_id,courses})
@@ -64,6 +73,7 @@ const updateJourneyCourse = async ({journey_id,courses}) =>{
 
 }
 
+
 export {
     getJourneyCoursesData,
     getJourneyData,
@@ -71,6 +81,7 @@ export {
     getRoleData,
     getGroupedSkillCourses,
     getActiveCourses,
-    updateJourneyCourse
+    updateJourneyCourse,
+    getActiveRoles
 }
 

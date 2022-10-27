@@ -22,8 +22,8 @@ function LearningJourney(props) {
         // const role = await Axios.get(`http://localhost:5005/api/getRole/${role_id}`)
         
         const journey = await getJourneyCoursesData(journey_id)
-        console.log("this is journey")
-        console.log(journey)
+ 
+
         // const journey = await Axios.get(`http://localhost:5005/api/getJourneyCourses/${journey_id}`)
 
         const groups = journey.data.reduce((groups, item) => {
@@ -103,14 +103,17 @@ function LearningJourney(props) {
                     
 
                     <div className="addJourney">
+                        {element.role.rolestatus === "Deleted" ? " " : <>
                         <Link to={`addCourses?journey_id=${learningJourneyData[index].journeyID}&role_name=${learningJourneyData[index].role[0].role_name}`} className="fancyLink" target="_blank">
                             
                         
-                        <p><AddIcon />Update Courses in Journey</p>
-                        
-                        
-                        
-                        </Link>
+                            <p><AddIcon />Update Courses in Journey</p>
+                            
+                            
+                            
+                            </Link>
+                        </>}
+
                         
                     </div>
                     </div>

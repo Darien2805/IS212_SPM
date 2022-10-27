@@ -529,6 +529,7 @@ app.put('/api/updateActiveRole', (req,res)=> {
         //     console.log("Success! \n", result)
         // }
     });
+    res.send({"message": "ok"})
 })
 
 // Route to update status of skill to deleted
