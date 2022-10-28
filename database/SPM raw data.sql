@@ -615,7 +615,7 @@ CREATE TABLE jobrole (
 
 CREATE TABLE skill (
     skill_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    skill_name VARCHAR(20) NOT NULL,
+    skill_name VARCHAR(50) NOT NULL,
     skill_desc VARCHAR(256) NOT NULL,
     skill_status VARCHAR(15) NOT NULL,
     CONSTRAINT skill_unique UNIQUE (skill_name)

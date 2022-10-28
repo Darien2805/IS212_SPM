@@ -22,7 +22,7 @@ function SelectSkills(props) {
     const {role_id} = state;
 
     const navigate = useNavigate();
-    const [journey_id, setjourney_id] = useState()
+    const [journey_id, setjourney_id] = useState('')
 
     useEffect(()=>{
         const getcourses = (skillid) => {
@@ -55,6 +55,28 @@ function SelectSkills(props) {
     });
       },[])
 
+    useEffect(()=>{
+        if (journey_id!==''){
+            // Filter course duplicates
+            let journey_courses = selectedcourses.flat();
+
+            let course_ids = []
+            journey_courses.forEach(element => {
+                if (!course_ids.includes(element.value)){
+                    course_ids.push(element.value)
+                }
+            });
+            // Create journey_course rows
+            let journey_course_data = {
+                journey_id: journey_id,
+                courses: course_ids
+            }
+            axios.post("http://localhost:5005/api/createJourneyCourses", journey_course_data).then((response)=>{});
+
+            navigate('/learningjourney');
+        }
+    },[journey_id])
+
     const handleChange = (data, index) => {
         const newArray = selectedcourses.map((v, i) => {
             if (i === index) return data;
@@ -79,22 +101,23 @@ function SelectSkills(props) {
 
         // Create journey_id
         let journey_data = {
-            staff_id: 1,
+            staff_id: window.localStorage.getItem('sessionId'),
             role_id: role_id
         }
         axios.post("http://localhost:5005/api/createJourney", journey_data).then((response)=>{
-            setjourney_id(response.data.insertId);
-            console.log("New Journey ID created " + response.data.insertId);
+            setjourney_id(response.data[0].journey_id);
+            console.log("New Journey ID created " + response.data[0].journey_id);
         });
         
-        // Create journey_course rows
-        let journey_course_data = {
-            journey_id: journey_id,
-            courses: journey_courses
-        }
-        axios.post("http://localhost:5005/api/createJourneyCourses", journey_course_data).then((response)=>{});
+        // // Create journey_course rows
+        // let journey_course_data = {
+        //     journey_id: journey_id,
+        //     courses: journey_courses
+        // }
+        // axios.post("http://localhost:5005/api/createJourneyCourses", journey_course_data).then((response)=>{});
 
-        navigate('/learningjourney', { state: { role_id: role_id, journey_id: journey_id } });
+
+        // navigate('/learningjourney', { state: { role_id: role_id, journey_id: journey_id } });
     }
 
   return (

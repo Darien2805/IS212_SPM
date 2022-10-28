@@ -64,7 +64,7 @@ function Header() {
             <Link to="/roles" className="headerLink">Roles</Link>
             <Link to="/courses" className="headerLink">Courses</Link>
             <div className="dropdown">
-            
+            <Link to="/teams" className="headerLink">Teams</Link>
             <Link className="headerLink">Systems</Link>
             <div className="dropdown-content">
                     <Link to="/RoleMaintenance" className="dropdownLink">Role Maintenance</Link>

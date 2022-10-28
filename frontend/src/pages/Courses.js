@@ -4,18 +4,28 @@ import Header from '../components/Header'
 import CourseCard from '../components/courseCard';
 import "./Courses.css"
 
+import { getActiveCourses } from '../actions/getCourseApi';
 //Bootstrap
 import Alert from 'react-bootstrap/Alert';
 
 function Courses() {
+  
   const [activeCourses,setActiveCourses] = useState([]);
   const style = { textAlign: 'center' }
-  const staff_id = 2 // Testing purpose
-
+  const staffID = window.localStorage.getItem('sessionId')
+  
+  const getData = async() =>{
+  
+    const data = await getActiveCourses(staffID)
+    setActiveCourses(data.data)
+    return data
+  }
   useEffect(()=>{
-    Axios.get(`http://localhost:5005/api/getActiveCourses/${staff_id}`).then((response)=>{
-      setActiveCourses(response.data)
-    });
+    
+    getData()
+    // Axios.get(`http://localhost:5005/api/getActiveCourses/${staff_id}`).then((response)=>{
+    //   setActiveCourses(response.data)
+    // });
     },[])
     
   return (
@@ -29,7 +39,7 @@ function Courses() {
             activeCourses.map((course)=>{
               return(
                 <CourseCard key={course.course_id} courseName={course.course_name} courseDesc={course.course_desc}
-                skillNames={JSON.parse(course.skill_names)} courseType={course.course_type}/> 
+                skillNames={JSON.parse(course.skill_names)} courseType={course.course_type} courseCompletionStatus={course.completion_status}/> 
                  )
               }) 
               :

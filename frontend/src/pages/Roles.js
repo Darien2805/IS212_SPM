@@ -6,16 +6,20 @@ import "./Roles.css"
 
 //Bootstrap
 import Alert from 'react-bootstrap/Alert';
+import { getActiveRoles } from '../actions/getCourseApi';
 
 function Role() {
+
   const [activeRoles,setActiveRoles] = useState([]);
   const style = { textAlign: 'center' }
-  const staff_id = 2 // Testing purpose
-
+  const staffID = window.localStorage.getItem('sessionId')
+  const getData = async() => {
+    const result = await getActiveRoles(staffID)
+    setActiveRoles(result.data)
+  }
   useEffect(()=>{
-    Axios.get(`http://localhost:5005/api/getActiveRoles/${staff_id}`).then((response)=>{
-      setActiveRoles(response.data)
-    });
+
+    getData()
     },[])
     
     
@@ -30,7 +34,7 @@ function Role() {
           activeRoles.length > 0 ?
             activeRoles.map((role)=>{
               return( 
-                <RoleCard key={role.role_id} roleId={role.role_id} roleName={role.role_name} roleDesc={role.role_desc} skillNames={JSON.parse(role.skill_names)}
+                <RoleCard role_id = {role.role_id} roleName={role.role_name} roleDesc={role.role_desc} skillNames={JSON.parse(role.skill_names)}
                 journey_ID={role.journey_id}/> 
                 )
               })
