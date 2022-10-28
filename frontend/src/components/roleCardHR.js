@@ -6,7 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import "./roleCardHR.css";
 import { useNavigate } from "react-router-dom";
-import Axios from 'axios'
+import { updateHRRoleCard } from '../actions/getCourseApi';
 
 function RoleCardHR({roleName, roleDesc, skills, roleId}) {
     const navigate = useNavigate(); 
@@ -27,11 +27,14 @@ function RoleCardHR({roleName, roleDesc, skills, roleId}) {
     }
 
     const deleteRole = () =>{ 
-        Axios.put(`http://localhost:5005/api/deleteActiveRole`,{
-            role_id: roleId
-        }).then(()=>{
+        updateHRRoleCard(roleId).then(()=>{
             console.log("success")
         });
+        // Axios.put(`http://localhost:5005/api/deleteActiveRole`,{
+        //     role_id: roleId
+        // }).then(()=>{
+        //     console.log("success")
+        // });
 
         window.location.reload(false);
     }

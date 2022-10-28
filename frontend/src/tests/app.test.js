@@ -187,6 +187,26 @@ describe('Test Apis', () => {
 
         });
     });
+    describe('updateHRRoleCard', () => {
+        describe('with success', ()=> {
+
+            it('should call axios get with given url', async () => {
+                // change the mockdata
+                const mockData = {"message" : "ok"}
+            
+                // change the url
+                const url = 'http://localhost:5005/api/deleteActiveRole';
+                Axios.put.mockResolvedValueOnce(mockData)
+                // change the user input if need be
+                const result = await APIServices.updateHRRoleCard(4)
+                console.log(result)
+                expect(Axios.put).toHaveBeenCalledWith(url, {"role_id" : 4})
+                expect(Axios.put).toHaveBeenCalledTimes(1)
+                expect(result).toEqual(mockData)
+            });
+
+        });
+    });
     
 });
 

@@ -72,6 +72,17 @@ const updateJourneyCourse = async ({journey_id,courses}) =>{
     }
 
 }
+const updateHRRoleCard = async (roleID) =>{
+    try{
+        const response = await Axios.put(`http://localhost:5005/api/deleteActiveRole`,{
+            role_id: roleID
+        })
+        return response
+    } catch (err){
+        return err
+    }
+
+}
 
 
 export {
@@ -82,6 +93,7 @@ export {
     getGroupedSkillCourses,
     getActiveCourses,
     updateJourneyCourse,
-    getActiveRoles
+    getActiveRoles,
+    updateHRRoleCard
 }
 

@@ -555,6 +555,7 @@ app.put('/api/deleteActiveRole',(req,res)=>{
             console.log(err)
         }
     }) 
+    res.send({'message':"ok"})
 })
 
 
