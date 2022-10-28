@@ -380,7 +380,17 @@ app.post('/api/createJourney', (req,res)=> {
         if(err) {
             console.log(err)
         }
-        console.log("Success! \n", result)
+        else{
+            db.query("SELECT journey_id FROM journey WHERE staff_id = ? AND role_id = ?", [staff_id, role_id], (err1,result1)=>{
+                if(err1) {
+                    console.log(err1)
+                }
+                else{
+                    console.log(result1)
+                    res.send(result1)
+                }
+            });
+        }
     });
 })
 
