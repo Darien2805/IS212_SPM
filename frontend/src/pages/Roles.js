@@ -6,18 +6,21 @@ import "./Roles.css"
 
 //Bootstrap
 import Alert from 'react-bootstrap/Alert';
+import { getActiveRoles } from '../actions/getCourseApi';
 
 function Role() {
-  const [staff_id, setStaffId] = useState('')
+
   const [activeRoles,setActiveRoles] = useState([]);
   const style = { textAlign: 'center' }
-
+  const staffID = window.localStorage.getItem('sessionId')
+  const getData = async() => {
+    const result = await getActiveRoles(staffID)
+    setActiveRoles(result.data)
+  }
   useEffect(()=>{
-    setStaffId(window.localStorage.getItem('sessionId')) 
-    Axios.get(`http://localhost:5005/api/getActiveRoles/${staff_id}`).then((response)=>{
-      setActiveRoles(response.data)
-    });
-    },[staff_id])
+
+    getData()
+    },[])
     
     
   return (
