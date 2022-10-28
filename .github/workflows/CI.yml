@@ -27,6 +27,9 @@ jobs:
       # - name: run npm CI
       #   working-directory: ./app
       #   run: npm ci
+      - name: do a package install
+        working-directory: ./frontend
+        run: npm install
 
       - name: run Tests
         working-directory: ./frontend
