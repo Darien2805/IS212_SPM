@@ -25,7 +25,7 @@ function AddCoursesFromLJ(props) {
     const getJourneyData = async (journeyID) => {
 
         const journey = await getJourneyCoursesData(journeyID)
-        console.log(journey.data)
+
         const tempSkills = []
         const tempCourses = []
 
