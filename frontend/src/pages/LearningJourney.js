@@ -93,7 +93,7 @@ function LearningJourney(props) {
                             <h3 key={journey}>{journey}</h3>
                             {learningJourneyData[index].journeyCourses[journey].map((skill) => skill.course_name === null ? (<p>no course name</p>) : (
                             <div key={skill.course_id} className="courseJourney">
-                            <p>{skill.course_name}</p>
+                            <p>{skill.course_name}{skill.course_status}</p>
 
                             </div>
                             ))}
