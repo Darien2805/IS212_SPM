@@ -136,7 +136,7 @@ function AddCoursesFromLJ(props) {
             <p>Check the boxes on the right to add courses to your learning journey and uncheck the boxes to remove them from your learning journey!</p>
 
             <ul>
-            {requiredSkills.map((skill) => <><li>{skill}</li></>)}
+            {requiredSkills.map((skill) => skill !== "null" ? <><li>{skill}</li></> : null)}
             </ul>
         </div>
 
