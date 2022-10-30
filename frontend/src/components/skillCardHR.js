@@ -7,6 +7,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import "./skillCardHR.css";
 import { useNavigate } from "react-router-dom";
 import Axios from 'axios'
+import { updateHRSkillCard } from '../actions/getCourseApi';
+
 
 function RoleCardHR({skillId, skillName, skillDesc,}) {
 
@@ -28,12 +30,15 @@ function RoleCardHR({skillId, skillName, skillDesc,}) {
     }
 
     const deleteSkill = () =>{
-        console.log(skillId)
-        Axios.put(`http://localhost:5005/api/deleteActiveSkill`,{
-            skill_id: skillId
-        }).then(()=>{
+        updateHRSkillCard(skillId).then(()=>{
             console.log("success")
         });
+        // console.log(skillId)
+        // Axios.put(`http://localhost:5005/api/deleteActiveSkill`,{
+        //     skill_id: skillId
+        // }).then(()=>{
+        //     console.log("success")
+        // });
 
         window.location.reload(false);
     }

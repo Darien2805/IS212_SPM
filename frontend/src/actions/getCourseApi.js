@@ -84,6 +84,18 @@ const updateHRRoleCard = async (roleID) =>{
 
 }
 
+const updateHRSkillCard = async (skillID) =>{
+    try{
+        const response = await Axios.put(`http://localhost:5005/api/deleteActiveSkill`,{
+            skill_id: skillID
+        })
+        return response
+    } catch (err){
+        return err
+    }
+
+}
+
 
 export {
     getJourneyCoursesData,
@@ -94,6 +106,7 @@ export {
     getActiveCourses,
     updateJourneyCourse,
     getActiveRoles,
-    updateHRRoleCard
+    updateHRRoleCard,
+    updateHRSkillCard
 }
 
