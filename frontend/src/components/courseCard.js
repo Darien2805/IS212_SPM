@@ -4,11 +4,22 @@ import "./courseCard.css";
 //bootstrap
 import Badge from 'react-bootstrap/Badge';
 
-function CourseCard({courseName, courseDesc, skillNames, courseType, courseCompletionStatus}) {
+function CourseCard({courseNames, courseDesc, skillNames, courseType, courseCompletionStatus, props}) {
+
+  const filteredData = courseNames.filter((el) => {
+    //if no input the return the original
+    if (props.input === '') {
+        return el;
+    }
+    //return the item which contains the user input
+    else {
+        return el.text.toLowerCase().includes(props.input)
+    }
+  })
 
   return (
     <div className="courseCard">
-      <h2>{courseName}</h2>
+      <h2>{courseNames}</h2>
       <b>
         <u>Description</u>
       </b>
@@ -35,7 +46,7 @@ function CourseCard({courseName, courseDesc, skillNames, courseType, courseCompl
       <p>
         <Badge bg="secondary" className="me-1"> {courseCompletionStatus ? courseCompletionStatus : "Uncompleted"} </Badge>
       </p>
-  </div>  
+  </div>
   )
 }
 export default CourseCard
