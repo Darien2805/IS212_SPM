@@ -57,3 +57,11 @@
 .addJourney{
     margin-left:90%;
 }
+.errMsg{
+    margin-left:35vw;
+    color: #20a020;
+    background-color: #eeffe0;
+    max-width:29%;
+    margin-top:1%;
+    border-radius:5px;
+}

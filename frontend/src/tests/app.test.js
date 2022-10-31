@@ -453,6 +453,28 @@ describe('Test Apis', () => {
 
         });
     });
+    describe('deleteJourney', () => {
+        describe('with success', ()=> {
+
+            it('should call axios get with given url', async () => {
+                // change the mockdata
+                const mockData = 
+                    {
+                        "message": "success in deleting",
+                    }
+                
+                // change the url
+                const url = 'http://localhost:5005/api/deleteJourney/1';
+                Axios.delete.mockResolvedValueOnce(mockData)
+                // change the user input if need be
+                const result = await APIServices.deleteJourney("1")
+                expect(Axios.delete).toHaveBeenCalledWith(url)
+                expect(Axios.delete).toHaveBeenCalledTimes(1)
+                expect(result).toEqual(mockData)
+            });
+
+        });
+    });
 
 });
 

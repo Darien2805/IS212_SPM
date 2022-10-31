@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 
 import { Link } from 'react-router-dom';
-import { getJourneyCoursesData,
+import { deleteJourney, getJourneyCoursesData,
     getJourneyData,
     getRoleData} from "../actions/getCourseApi.js"
 
@@ -16,6 +16,7 @@ import "../index.css"
 function LearningJourney(props) {
     const staffID = window.localStorage.getItem('sessionId')
     const [learningJourneyData, setLearningJourneyData] = useState([])
+    const [somethingDeleted,setSomethingDeleted] = useState(false)
     const dataFetchedRef = useRef(false)
     const populateRelevantFields = async(role_id,journey_id) => {
         const role = await getRoleData(role_id)
@@ -32,14 +33,12 @@ function LearningJourney(props) {
             groups[item.role_skill_name] = group;
             return groups;
           }, {});
-        //   console.log(journey.data)
-        // console.log(groups)
+
         const result = {
             "role": role.data,
             "journeyCourses": groups,
             "journeyID" : journey_id
         }
-        // setCollapsableData(actualLearningJourneyData)
         setLearningJourneyData(prevArray => [...prevArray,result])
         return result
     }
@@ -52,40 +51,51 @@ function LearningJourney(props) {
        
      
      }
+    const deleteAJourney = async(journeyID) => {
+        const data = await deleteJourney(journeyID)
+        return data
+    }
+    const handleDelete = async(journeyID) => {
+        setSomethingDeleted("Journey successfully deleted, please reload the page to see changes")
+ 
+         const data = await deleteAJourney(journeyID)
+        
 
-    useEffect(() => {
+
+    }
+     useEffect(() => {
 
         if(dataFetchedRef.current) return;
         dataFetchedRef.current = true
         getData().catch(console.error)
+        
 
     },)     
-        if(learningJourneyData.length > 0 ){
-            // for(const key in learningJourneyData[0].journeyCourses){
-            //     console.log(key)
-            //     console.log(learningJourneyData[0].journeyCourses[key])
-            // console.log("I am happening"+ learningJourneyData[0])
-            
-            // console.log(learningJourneyData[0].role[0].role_status)
-        // console.log(learningJourneyData[0].journeyCourses.map(x=>console.log(x)))
-
-    }    
+  
     //     if(learningJourneyData.length > 0 ){
 
-    //     // console.log(learningJourneyData[0].journeyCourses.map(x=>console.log(x)))
+    //     console.log(learningJourneyData[0])
     
     // }
   return (
     <>
     <Header />
     <div className="learningJourneyContainer">
+
+    {somethingDeleted ? <p className="errMsg">{somethingDeleted}</p> : <p>{somethingDeleted}</p>}
+        
+
         <h1>All learning journeys</h1>
+
         {
             learningJourneyData.map((element, index) => (
                 <>
                 <div className="collapsibleMenu" key={index}>
                 
-                <Collapsible trigger={[`Learning Journey for ${learningJourneyData[index].role[0].role_name}`,<><div className="test"><ArrowDropDownIcon /><button className="newButton" ><DeleteIcon /></button></div></>]}>
+
+                <Collapsible trigger={[`LJ to ${learningJourneyData[index].role[0].role_name}`,<><div className="test"><ArrowDropDownIcon /></div></>]}>
+                <button className="newButton" onClick={() => handleDelete(learningJourneyData[index].journeyID)}><DeleteIcon /></button>
+
                     <div className="innerContent">
                     {
                         Object.keys(learningJourneyData[index].journeyCourses).map((journey) => journey === "null" ? (

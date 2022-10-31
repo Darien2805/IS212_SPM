@@ -588,12 +588,15 @@ app.delete('/api/deleteJourney/:journey_id', (req,res)=> {
         }
         else{
             console.log("success in deleting")
+
             // Step 2: Delete the learning journey
             db.query("DELETE FROM journey WHERE journey_id = ?", journey_id, (err2,result2)=>{
                 if(err2) {
                     console.log(err2)
                 }
                 console.log("Success in deleting !")
+                res.send({"message" : "success in deleting"})
+
             });
         }
     })

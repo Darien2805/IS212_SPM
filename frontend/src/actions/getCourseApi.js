@@ -95,6 +95,15 @@ const updateHRSkillCard = async (skillID) =>{
     }
 
 }
+const deleteJourney = async(journeyID) => {
+    try{
+        const response = await Axios.delete(`http://localhost:5005/api/deleteJourney/${journeyID}`)
+        return response
+    } catch (err){
+        return err
+    }
+
+}
 
 
 export {
@@ -107,6 +116,7 @@ export {
     updateJourneyCourse,
     getActiveRoles,
     updateHRRoleCard,
-    updateHRSkillCard
+    updateHRSkillCard,
+    deleteJourney
 }
 
