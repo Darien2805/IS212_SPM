@@ -3,16 +3,17 @@ import Axios from 'axios'
 import Header from '../components/Header'
 import CourseCard from '../components/courseCard';
 import "./Courses.css"
+import TextField from "@mui/material/TextField";
 
 import { getActiveCourses } from '../actions/getCourseApi';
 //Bootstrap
 import Alert from 'react-bootstrap/Alert';
 
 function Courses() {
-  
   const [activeCourses,setActiveCourses] = useState([]);
   const style = { textAlign: 'center' }
   const staffID = window.localStorage.getItem('sessionId')
+  const [inputText, setInputText] = useState("");
   
   const getData = async() =>{
   
@@ -20,26 +21,45 @@ function Courses() {
     setActiveCourses(data.data)
     return data
   }
+
   useEffect(()=>{
-    
     getData()
     // Axios.get(`http://localhost:5005/api/getActiveCourses/${staff_id}`).then((response)=>{
     //   setActiveCourses(response.data)
     // });
-    },[])
+  },[])
+
+  let inputHandler = (e) => {
+    //convert input text to lower case
+    var lowerCase = e.target.value.toLowerCase();
+    setInputText(lowerCase);
+  };
     
   return (
     <>
     <Header />
     <div className="courseContainer">
-      <div >
+      <div>
         <h1>All courses</h1>
+        <div className = "main">
+          <div className = "search">
+            <TextField
+            id="outlined-basic"
+            variant="outlined"
+            onChange={inputHandler}
+            fullWidth
+            label="Search"
+            />
+          </div>
+        </div>
         <div className="child">
-            { activeCourses.length > 0 ?
+          { activeCourses.length > 0 ?
             activeCourses.map((course)=>{
               return(
-                <CourseCard key={course.course_id} courseName={course.course_name} courseDesc={course.course_desc}
+                <div>
+                  <CourseCard input={inputText} key={course.course_id} courseNames={course.course_name} courseDesc={course.course_desc}
                 skillNames={JSON.parse(course.skill_names)} courseType={course.course_type} courseCompletionStatus={course.completion_status}/> 
+                </div>
                  )
               }) 
               :
