@@ -4,18 +4,7 @@ import "./courseCard.css";
 //bootstrap
 import Badge from 'react-bootstrap/Badge';
 
-function CourseCard({courseNames, courseDesc, skillNames, courseType, courseCompletionStatus, props}) {
-
-  const filteredData = courseNames.filter((el) => {
-    //if no input the return the original
-    if (props.input === '') {
-        return el;
-    }
-    //return the item which contains the user input
-    else {
-        return el.text.toLowerCase().includes(props.input)
-    }
-  })
+function CourseCard({courseNames, courseDesc, skillNames, courseType, courseCompletionStatus}) {
 
   return (
     <div className="courseCard">
