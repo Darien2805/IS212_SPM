@@ -81,15 +81,21 @@ function LearningJourney(props) {
     <>
     <Header />
     <div className="learningJourneyContainer">
+
     {somethingDeleted ? <p className="errMsg">{somethingDeleted}</p> : <p>{somethingDeleted}</p>}
         
+
+        <h1>All learning journeys</h1>
+
         {
             learningJourneyData.map((element, index) => (
                 <>
                 <div className="collapsibleMenu" key={index}>
                 
+
                 <Collapsible trigger={[`LJ to ${learningJourneyData[index].role[0].role_name}`,<><div className="test"><ArrowDropDownIcon /></div></>]}>
                 <button className="newButton" onClick={() => handleDelete(learningJourneyData[index].journeyID)}><DeleteIcon /></button>
+
                     <div className="innerContent">
                     {
                         Object.keys(learningJourneyData[index].journeyCourses).map((journey) => journey === "null" ? (
