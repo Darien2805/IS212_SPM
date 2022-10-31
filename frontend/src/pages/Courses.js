@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React, {useState,useEffect} from 'react'
 import Axios from 'axios'
 import Header from '../components/Header'
 import CourseCard from '../components/courseCard';
@@ -6,6 +6,7 @@ import "./Courses.css"
 import TextField from "@mui/material/TextField";
 
 import { getActiveCourses } from '../actions/getCourseApi';
+
 //Bootstrap
 import Alert from 'react-bootstrap/Alert';
 
@@ -13,10 +14,9 @@ function Courses() {
   const [activeCourses,setActiveCourses] = useState([]);
   const style = { textAlign: 'center' }
   const staffID = window.localStorage.getItem('sessionId')
-  const [inputText, setInputText] = useState("");
+  const [query, setQuery] = useState("")
   
   const getData = async() =>{
-  
     const data = await getActiveCourses(staffID)
     setActiveCourses(data.data)
     return data
@@ -28,12 +28,6 @@ function Courses() {
     //   setActiveCourses(response.data)
     // });
   },[])
-
-  let inputHandler = (e) => {
-    //convert input text to lower case
-    var lowerCase = e.target.value.toLowerCase();
-    setInputText(lowerCase);
-  };
     
   return (
     <>
@@ -43,34 +37,34 @@ function Courses() {
         <h1>All courses</h1>
         <div className = "main">
           <div className = "search">
-            <TextField
-            id="outlined-basic"
-            variant="outlined"
-            onChange={inputHandler}
-            fullWidth
-            label="Search"
-            />
+            <TextField id="outlined-basic" variant="outlined" fullwidth label="Search" onChange={event => setQuery(event.target.value)} />
           </div>
         </div>
         <div className="child">
           { activeCourses.length > 0 ?
-            activeCourses.map((course)=>{
-              return(
-                <div>
-                  <CourseCard input={inputText} key={course.course_id} courseNames={course.course_name} courseDesc={course.course_desc}
-                skillNames={JSON.parse(course.skill_names)} courseType={course.course_type} courseCompletionStatus={course.completion_status}/> 
-                </div>
-                 )
-              }) 
-              :
-              <p style = {style}>
-                <Alert className='alert' key='warning' variant='warning'>
-                  No active courses at the moment
-                </Alert>
-              </p>
-            }
+            activeCourses.filter(course => {
+              if (query === "") {
+                // if the query is empty
+                return course;
+              } else if (course.course_name.toLowerCase().includes(query.toLowerCase())){
+                //returns filtered array
+                return course;
+              } 
+             }).map((course) => {
+                return(
+                  <CourseCard key={course.course_id} courseNames={course.course_name} courseDesc={course.course_desc}
+                  skillNames={JSON.parse(course.skill_names)} courseType={course.course_type} courseCompletionStatus={course.completion_status}/> 
+              )
+            })
+            :
+            <p style = {style}>
+              <Alert className='alert' key='warning' variant='warning'>
+                No active courses at the moment
+              </Alert>
+            </p>
+          }
         </div>
-        </div>
+      </div>
     </div>
     </>
   )
