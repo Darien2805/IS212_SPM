@@ -50,12 +50,12 @@ function Courses() {
                 //returns filtered array
                 return course;
               } 
-             }).map((course) => {
+              }).map((course) => {
                 return(
                   <CourseCard key={course.course_id} courseNames={course.course_name} courseDesc={course.course_desc}
                   skillNames={JSON.parse(course.skill_names)} courseType={course.course_type} courseCompletionStatus={course.completion_status}/> 
-              )
-            })
+                )
+              })
             :
             <p style = {style}>
               <Alert className='alert' key='warning' variant='warning'>
