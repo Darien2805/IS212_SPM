@@ -1,10 +1,17 @@
 .rolesContainer{
     margin: 15px 15px 15px 140px;
     width: 80vw;
-
-    
 }
 .child{
     margin:0 auto;
     
+}
+.main{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 25px 25px 25px 25px;
+}
+.search{
+    width: 20%;
 }
