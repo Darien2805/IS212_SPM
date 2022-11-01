@@ -1,5 +1,5 @@
 # IS212_SPM
-# Getting Started with Create React App
+# Getting Started with Our Project
 
 This project was bootstrapped and created with React & NodeJS.
 Our database is a relational database and uses SQL.
