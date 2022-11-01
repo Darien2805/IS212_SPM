@@ -4,11 +4,11 @@ import "./courseCard.css";
 //bootstrap
 import Badge from 'react-bootstrap/Badge';
 
-function CourseCard({courseName, courseDesc, skillNames, courseType, courseCompletionStatus}) {
+function CourseCard({courseNames, courseDesc, skillNames, courseType, courseCompletionStatus}) {
 
   return (
     <div className="courseCard">
-      <h2>{courseName}</h2>
+      <h2>{courseNames}</h2>
       <b>
         <u>Description</u>
       </b>
@@ -35,7 +35,7 @@ function CourseCard({courseName, courseDesc, skillNames, courseType, courseCompl
       <p>
         <Badge bg="secondary" className="me-1"> {courseCompletionStatus ? courseCompletionStatus : "Uncompleted"} </Badge>
       </p>
-  </div>  
+  </div>
   )
 }
 export default CourseCard
