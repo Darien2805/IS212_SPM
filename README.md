@@ -7,9 +7,10 @@ Our database is a relational database and uses SQL.
 ### Prerequisites
 You have to have your MAMP/ WAMP working, SQL server is running.
 
-##Database
+## Database
 You have to run the "raw data sql script" in the /database folder in your SQLWorkbench or in [phpMyAdmin](http://localhost/phpmyadmin/import.php) in order to populate the database.
 
+##Cloning of Git Repository
 When you clone this Git Repository locally, be sure to install all packages with `npm i` first
 
 ## Available Scripts
