@@ -94,7 +94,7 @@ function SelectSkills(props) {
         console.log(journey_courses);
 
         // Alert error if no courses
-        if (journey_courses.length == 1 && journey_courses[0] == null) {
+        if (journey_courses.length == 0 && journey_courses[0] == null) {
             alert("No courses selected!");
             return;
         }
