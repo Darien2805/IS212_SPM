@@ -1,12 +1,16 @@
 # IS212_SPM
 # Getting Started with Our Project
 
-This project was bootstrapped and created with React & NodeJS.
+This project was bootstrapped and created with React , NodeJS, ExpressJS.
 Our database is a relational database and uses SQL.
 
 ## Available Scripts
 
 In the respective directories, you can run:
+
+### `npm run devStart`
+
+Runs the backend server and starts the api routes. Different from npm start because this command had nodemon built in, which allows updates to automatically restart the server to see the changes.
 
 ### `npm start`
 
@@ -38,15 +42,17 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 ### Prerequisites
 You have to have your MAMP/ WAMP working, SQL server is running.
 
+You have to run the "raw data sql script" in the /database folder in your SQLWorkbench in order to populate the database.
+
 When you clone this Git Repository locally, be sure to install all packages with `npm i` first
 
 ### Running the backend
-From the main directory, do cd /backend and then run `npm start`
+From the main directory, do cd /backend and then run `npm run devStart`
 
 ### Running the frontend
 From the main directory , do cd /frontend and then run `npm start`
 
 ### Known Bugs
-If you are running SQL v8.0 and above, there is an error that prevents data from being retrieved and crashes the whole database. It is something to do with SQL= only_full_group_by. We have shown prof Keith and acknowledges that there is nothing that can be done except downgrading your SQL
+If you are running SQL v8.0 and above on a Mac, there is an error that prevents data from being retrieved and crashes the whole database. It is something to do with SQL= only_full_group_by. We have shown prof Keith and acknowledges that there is nothing that can be done except downgrading your SQL
 
 If you are running a Mac, be sure to enter your password in the index.js in the backend folder.
