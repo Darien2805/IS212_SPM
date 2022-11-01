@@ -28,6 +28,10 @@ function Courses() {
     //   setActiveCourses(response.data)
     // });
   },[])
+
+  const filterCourses = (course) => {
+    return course.course_name.toLowerCase().includes(query.toLowerCase())
+  }
     
   return (
     <>
@@ -41,21 +45,21 @@ function Courses() {
           </div>
         </div>
         <div className="child">
-          { activeCourses.length > 0 ?
-            activeCourses.filter(course => {
-              if (query === "") {
-                // if the query is empty
-                return course;
-              } else if (course.course_name.toLowerCase().includes(query.toLowerCase())){
-                //returns filtered array
-                return course;
-              } 
-            }).map((course) => {
+          { activeCourses.length > 0 ? (
+            activeCourses.filter(filterCourses).length === 0 ? 
+              <p style = {style}>
+                <Alert className='alert' key='warning' variant='warning'>
+                  No courses match the search input
+                </Alert>
+              </p>
+            :
+              activeCourses.filter(filterCourses).map((course) => {
                 return(
                   <CourseCard key={course.course_id} courseNames={course.course_name} courseDesc={course.course_desc}
                   skillNames={JSON.parse(course.skill_names)} courseType={course.course_type} courseCompletionStatus={course.completion_status}/> 
                 )
               })
+          )
             :
             <p style = {style}>
               <Alert className='alert' key='warning' variant='warning'>
