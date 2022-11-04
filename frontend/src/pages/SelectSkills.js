@@ -58,7 +58,9 @@ function SelectSkills(props) {
     useEffect(()=>{
         if (journey_id!==''){
             // Filter course duplicates
-            let journey_courses = selectedcourses.flat();
+            let journey_courses = selectedcourses.flat().filter(course => {
+                return course !== null
+            });
 
             let course_ids = []
             journey_courses.forEach(element => {
@@ -89,12 +91,14 @@ function SelectSkills(props) {
 
     const routeChange = () =>{
         // Filter course duplicates
-        let journey_courses = selectedcourses.flat();
+        let journey_courses = selectedcourses.flat().filter(course => {
+            return course !== null
+        });
         journey_courses = [...new Set(journey_courses)];
         console.log(journey_courses);
 
         // Alert error if no courses
-        if (journey_courses.length == 0 && journey_courses[0] == null) {
+        if (journey_courses.length == 0) {
             alert("No courses selected!");
             return;
         }
