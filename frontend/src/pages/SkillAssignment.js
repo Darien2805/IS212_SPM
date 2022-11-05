@@ -48,7 +48,7 @@ function SkillAssignment() {
 
     useEffect(()=>{
         // set name and desc errors
-        setAssignError("Assigning of skills cannot be empty")
+        setAssignError("Please assign new skills or delete skills")
     },[])
 
     useEffect(()=>{
@@ -107,6 +107,7 @@ function SkillAssignment() {
     const handleChange = (options) => {
         setSelectedOptions(options);
         if (options.length == 0){
+            setAssignError("Assigning of skills cannot be empty")
             setShowAssignError(true)
         }else{
             setShowAssignError(false)
