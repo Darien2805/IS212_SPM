@@ -448,7 +448,7 @@ app.get("/api/getJourneyCourses/:journey_id", (req,res)=>{
                 SELECT skills.skill_id as role_skill_id, skills.skill_name as role_skill_name, course_id, 
                 course_name, course_desc, course_status, course_type FROM (
                     SELECT s.skill_id, skill_name FROM skill s, roleskill rs WHERE role_id = 
-                        (SELECT role_id FROM journey WHERE journey_id = ?) AND s.skill_id = rs.skill_id
+                        (SELECT role_id FROM journey WHERE journey_id = ?) AND s.skill_id = rs.skill_id AND skill_status = 'Active'
                     ) AS skills
                 RIGHT JOIN (
                     SELECT c.course_id, course_name, course_desc, course_status, course_type, s.skill_id, 
