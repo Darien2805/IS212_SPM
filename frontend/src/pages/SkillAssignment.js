@@ -30,7 +30,7 @@ function SkillAssignment() {
     // const [selectedCourseType, setselectedCourseType] = useState(''); 
 
     const [selectedOptions, setSelectedOptions] = useState([]);
-    const [showAssignError, setShowAssignError] = useState(false);   
+    const [showAssignError, setShowAssignError] = useState(true);   
     const [assignError, setAssignError] = useState('');   
     const [staffId, setStaffId] = useState('')  
 
@@ -83,8 +83,11 @@ function SkillAssignment() {
             });            
             setAllSkills(all_skills) 
             //console.log('skills', all_skills)
+
         });
     },[skill])
+
+
 
     function retrieveSkills(course_id){
         var skills = []
@@ -99,6 +102,7 @@ function SkillAssignment() {
         //console.log(course_id, skills) 
         return (skills)
     }
+
 
     const handleChange = (options) => {
         setSelectedOptions(options);
