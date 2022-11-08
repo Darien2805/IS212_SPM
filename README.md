@@ -1,17 +1,17 @@
 # IS212_SPM
 # Getting Started with Our Project
 
-This project was bootstrapped and created with React , NodeJS, ExpressJS.
-Our database is a relational database and uses SQL.
+This project was bootstrapped and created with React, NodeJS, and ExpressJS.
+Our database is a relational database and uses MySQL.
 
 ### Prerequisites
-You have to have your MAMP/ WAMP working, SQL server is running.
+You have to have your MAMP/ WAMP working, MySQL server is running.
 
 ## Database
-You have to run the "raw data sql script" in the /database folder in your SQLWorkbench or in [phpMyAdmin](http://localhost/phpmyadmin/import.php) in order to populate the database.
+You have to run the SPM raw data.sql file in the /database folder in your MySQL Workbench or in [phpMyAdmin](http://localhost/phpmyadmin/import.php) in order to populate the database.
 
 ## Cloning of Git Repository
-When you clone this Git Repository locally, be sure to install all packages with `npm i` first
+When you clone this Git Repository locally, be sure to install all packages with `npm i` first.
 
 ## Available Scripts
 
@@ -35,7 +35,7 @@ Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 Only works in the /frontend folder because that is where all our tests are. However, these tests are automatically run via CI codes.
-see "Actions" in Github.
+See "Actions" in Github.
 
 
 ### `npm run eject`
@@ -49,12 +49,10 @@ Instead, it will copy all the configuration files and the transitive dependencie
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
 ### Running the backend
-From the main directory, do cd /backend and then run `npm run devStart`
+From the main directory, do cd /backend and then run `npm run devStart`. If you are running a Mac, be sure to enter your password in the index.js file in the backend folder.
 
 ### Running the frontend
-From the main directory , do cd /frontend and then run `npm start`
+From the main directory , do cd /frontend and then run `npm start`.
 
 ### Known Bugs
-If you are running SQL v8.0 and above on a Mac, there is an error that prevents data from being retrieved and crashes the whole database. It is something to do with SQL= only_full_group_by. We have shown prof Keith and acknowledges that there is nothing that can be done except downgrading your SQL
-
-If you are running a Mac, be sure to enter your password in the index.js in the backend folder.
+If you are running MySQL v8.0 and above on a Mac, there is an error that prevents data from being retrieved and crashes the whole database. It is something to do with the incompatibility with sql_mode=only_full_group_by. 
