@@ -68,49 +68,49 @@ User ID: 160008
 <u>Staff<u>
 User ID: 140002
 
-![loginpage](ReadMe_Images/Login)
+![loginpage](ReadMe_Images/Login.png)
 
 ## Staff login (Login using ID: 140002)
 When the user is signed in, the user will be brought directly to the homepage where he would be able to see different pages he would be able to navigate to. 2 learning journeys will be displayed based on the data.
-![login_user](ReadMe_Images/Login_User)
+![login_user](ReadMe_Images/Login_User.png)
 
 ## Roles page
 The user can browse through the roles at the roles page
-![role](ReadMe_Images/Roles)
+![role](ReadMe_Images/Roles.png)
 
 ## Creating learning journey
 User can create thier learning journey by clicking the "Create Learning Journey" on the roles page and will be navigated to selection of courses
 
 ## Selecting courses
 User will then select the courses he/she would like to take and pressing the "Create" button will create a new learning journey
-![create_lj](ReadMe_Images/Create_Lj)
+![create_lj](ReadMe_Images/Create_Lj.png)
 
 ## Course page
 The user can browse through the courses at the roles page
-![courses](ReadMe_Images/Courses)
+![courses](ReadMe_Images/Courses.png)
 
 ## Updating of learning journey
 User may edit the learning journey by clicking the "Update the courses in journey" button
-![lj](ReadMe_Images/Lj)
+![lj](ReadMe_Images/Lj.png)
 
 If skills are retired, user will not be able to edit the learning journey as shown below
-![skillsRetired](ReadMe_Images/Skills_Retired)
+![skillsRetired](ReadMe_Images/Skills_Retired.png)
 
 User will be brought to another page where they are able to add or remove courses from their learning journey
-![Update_of_lj](ReadMe_Images/Update_of_lj)
+![Update_of_lj](ReadMe_Images/Update_of_lj.png)
 
 ## HR Login (Login using ID: 160008)
 HR are given the accessibility to create/edit the roles, assign skills to courses and create/edit skills
-![loginhr](ReadMe_Images/Login_Hr)
+![loginhr](ReadMe_Images/Login_Hr.png)
 
 ## Role Maintenance
 HR are able to create/edit roles
-![Role_Maint](ReadMe_Images/Role_Maint)
+![Role_Maint](ReadMe_Images/Role_Maint.png)
 
 ## Skill Maintenance
 HR are able to create/edit skills
-![Skill_Maint](ReadMe_Images/Skill_Maint)
+![Skill_Maint](ReadMe_Images/Skill_Maint.png)
 
 ## Skill Assignment
 HR are able to assign skills to courses
-![Skill_Assign](ReadMe_Images/Skill_Assign)
+![Skill_Assign](ReadMe_Images/Skill_Assign.png)
