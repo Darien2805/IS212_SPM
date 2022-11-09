@@ -60,7 +60,7 @@ From the main directory , do cd /frontend and then run `npm start`.
 If you are running MySQL v8.0 and above on a Mac, there is an error that prevents data from being retrieved and crashes the whole database. It is something to do with the incompatibility with sql_mode=only_full_group_by. 
 
 # Our web application
-Upon visiting our website, the user will be brought to the sign in page. Currently, users are populated based on an excel file given and there are 2 users who has a learning journey created. We will be using these 2 roles to showcase our process flow of the web application.
+Upon visiting our website, the user will be brought to the sign in page. Currently, users are populated based on an excel file given. We will be using these 2 roles to showcase our process flow of the web application.
 
 <u>Human Resource<u>
 User ID: 160008
@@ -79,28 +79,28 @@ The user can browse through the roles at the roles page
 ![role](ReadMe_Images/Roles.png)
 
 ## Creating learning journey
-User can create thier learning journey by clicking the "Create Learning Journey" on the roles page and will be navigated to selection of courses
+User can create their learning journey by clicking the "Create Learning Journey" on the roles page and will be navigated to selection of courses
 
 ## Selecting courses
 User will then select the courses he/she would like to take and pressing the "Create" button will create a new learning journey
 ![create_lj](ReadMe_Images/Create_Lj.png)
 
 ## Course page
-The user can browse through the courses at the roles page
+The user can browse through the courses at the courses page
 ![courses](ReadMe_Images/Courses.png)
 
 ## Updating of learning journey
 User may edit the learning journey by clicking the "Update the courses in journey" button
 ![lj](ReadMe_Images/Lj.png)
 
-If skills are retired, user will not be able to edit the learning journey as shown below
+If roles are retired, user will not be able to edit the learning journey as shown below
 ![skillsRetired](ReadMe_Images/Skills_Retired.png)
 
 User will be brought to another page where they are able to add or remove courses from their learning journey
 ![Update_of_lj](ReadMe_Images/Update_of_lj.png)
 
 ## HR Login (Login using ID: 160008)
-HR are given the accessibility to create/edit the roles, assign skills to courses and create/edit skills
+HR are given the accessibility to create/edit/delete the roles, assign skills to courses and create/edit/delete skills
 ![loginhr](ReadMe_Images/Login_Hr.png)
 
 ## Role Maintenance
