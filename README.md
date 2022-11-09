@@ -100,15 +100,15 @@ User will be brought to another page where they are able to add or remove course
 ![Update_of_lj](ReadMe_Images/Update_of_lj.png)
 
 ## HR Login (Login using ID: 160008)
-HR are given the accessibility to create/edit/delete the roles, assign skills to courses and create/edit/delete skills
+HR are given the accessibility to create, edit and/or delete the roles, assign skills to courses and create, edit and/or delete
 ![loginhr](ReadMe_Images/Login_Hr.png)
 
 ## Role Maintenance
-HR are able to create/edit roles
+HR are able to create, edit and/or delete roles
 ![Role_Maint](ReadMe_Images/Role_Maint.png)
 
 ## Skill Maintenance
-HR are able to create/edit skills
+HR are able to create, edit and/or delete skills
 ![Skill_Maint](ReadMe_Images/Skill_Maint.png)
 
 ## Skill Assignment
