@@ -10,7 +10,7 @@ You have to have your MAMP/ WAMP working, MySQL server is running.
 ## Database
 You have to run the SPM raw data.sql file in the /database folder in your MySQL Workbench or in [phpMyAdmin](http://localhost/phpmyadmin/import.php) in order to populate the database.
 
-For Mac users, ensure that 
+For Mac users, ensure that the "only_full_group_by" has been removed from the sql_mode under the varaibles tab in [phpMyAdmin](http://localhost/phpmyadmin/import.php)
 
 ## Cloning of Git Repository
 When you clone this Git Repository locally, be sure to install all packages with `npm i` first.
